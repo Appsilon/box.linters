@@ -21,10 +21,13 @@ Imports:
   xml2
 Suggests:
   covr,
+  fs,
   rcmdcheck,
   R6,
   rex,
+  shiny,
   spelling,
+  stringr,
   testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Config/testthat/parallel: true
