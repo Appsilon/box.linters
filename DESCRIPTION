@@ -21,6 +21,7 @@ Imports:
   xml2
 Suggests:
   covr,
+  dplyr,
   fs,
   rcmdcheck,
   R6,
