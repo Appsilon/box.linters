@@ -44,9 +44,10 @@ stringr[
 ],
 )"
 
-  bad_code_2 <- '
-# Long line
-"1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"'
+  bad_code_2 <- as.character(glue::glue(
+    '"12345678901234567890123456789012345678901234567890',
+    '12345678901234567890123456789012345678901234567890"',
+  ))
 
   lint_message_1 <- rex::rex("Indentation should be 2 spaces but is 0 spaces.")
   lintr::expect_lint(bad_code_1, list(message = lint_message_1), linters)
