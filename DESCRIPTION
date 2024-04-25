@@ -19,7 +19,10 @@ Imports:
   lintr,
   xml2
 Suggests:
-    rex,
-    testthat (>= 3.0.0)
+  covr,
+  rcmdcheck,
+  rex,
+  spelling,
+  testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Config/testthat/parallel: true
