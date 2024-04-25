@@ -1,3 +1,4 @@
+#' `box` library object usage linter
 #' @export
 box_usage_linter <- function() {
   lintr::Linter(function(source_expression) {

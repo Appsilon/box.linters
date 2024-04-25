@@ -1,3 +1,4 @@
+#' `box` library unused attached package function linter
 #' @export
 box_unused_attached_fun_linter <- function() {
   lintr::Linter(function(source_expression) {

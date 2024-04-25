@@ -4,8 +4,8 @@ test_that("box_trailing_commas_linter skips allowed package import usage", {
   good_package_commas <- "box::use(
     dplyr,
     stringr[
-      select,
-      mutate
+      str_pad,
+      str_trim
     ],
   )"
 
@@ -51,12 +51,12 @@ test_that("box_trailing_commas_linter check_functions = TRUE blocks no trailing 
   bad_package_function_commas <- "box::use(
     dplyr,
     stringr[
-      select,
-      mutate
+      str_pad,
+      str_trim
     ],
   )"
 
-  bad_pkg_function_commas_inline <- "box::use(stringr[select, mutate],)"
+  bad_pkg_function_commas_inline <- "box::use(stringr[str_pad, str_trim],)"
 
   lintr::expect_lint(bad_package_function_commas, list(message = bracket_lint_msg), linter)
   lintr::expect_lint(bad_pkg_function_commas_inline, list(message = bracket_lint_msg), linter)

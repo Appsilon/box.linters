@@ -1,3 +1,4 @@
+#' Unused declared function linter
 #' @export
 unused_declared_func_linter <- function() {
   lintr::Linter(function(source_expression) {

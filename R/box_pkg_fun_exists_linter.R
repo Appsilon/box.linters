@@ -1,3 +1,4 @@
+#' `box` library attached function exists in package linter
 #' @export
 box_pkg_fun_exists_linter <- function() {
   box_base_path <- "
