@@ -1,2 +1,11 @@
-^box\.linters\.Rproj$
+^.*\.Rproj$
+^\.git$
+^\.github$
+^\.gitignore$
+^\.lintr$
 ^\.Rproj\.user$
+^pkgdown$
+^README\.md$
+^vignettes$
+^docs$
+^box\.linters\.Rproj$
