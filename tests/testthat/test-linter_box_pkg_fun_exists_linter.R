@@ -3,10 +3,10 @@ test_that("box_pkg_fun_exists_linter skips valid package-function attachments", 
 
   good_box_usage_1 <- "box::use(
     fs[path_file],
-    glue[glue, glue_sql, trim],
+    glue[glue, fun_alias = glue_sql, trim],
     shiny,
   )
-  
+
   box::use(
     path/to/module1,
     path/to/module2[a, b, c],
@@ -26,7 +26,7 @@ test_that("box_pkg_fun_exists_linter blocks functions that do not exist in packa
     glue[glue, xyz, trim],
     shiny,
   )
-  
+
   box::use(
     path/to/module1,
     path/to/module2[a, b, c],
