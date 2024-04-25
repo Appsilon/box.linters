@@ -18,3 +18,4 @@ vignettes/*.pdf
 docs/
 po/*~
 rsconnect/
+.Rproj.user
