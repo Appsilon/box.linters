@@ -4,7 +4,7 @@ test_that("box_usage_linter skips allowed package[function] attachment.", {
   good_box_usage_1 <- "box::use(
     dplyr[`%>%`, select, filter],
   )
-  
+
   box::use(
     path/to/module1,
     path/to/module2[a, b, c],
@@ -19,6 +19,31 @@ test_that("box_usage_linter skips allowed package[function] attachment.", {
   lintr::expect_lint(good_box_usage_1, NULL, linter)
 })
 
+test_that("box_usage_linter skips allowed package[function] alias attachment.", {
+  skip("TO DO")
+  linter <- box_usage_linter()
+
+  good_box_usage_1 <- "box::use(
+    dplyr[`%>%`, fun_alias = select, filter],
+    stringr[str_pad],
+  )
+
+  box::use(
+    path/to/module1,
+    path/to/module2[a, b, c],
+    path/to/module3[...]
+  )
+
+  mtcars %>%
+    fun_alias(mpg, cyl) %>%
+    filter(mpg <= 10)
+
+  str_pad()
+  "
+
+  lintr::expect_lint(good_box_usage_1, NULL, linter)
+})
+
 test_that("box_usage_linter skips allowed package attachment", {
   linter <- box_usage_linter()
 
@@ -27,7 +52,7 @@ test_that("box_usage_linter skips allowed package attachment", {
     glue,
     fs[path_file],
   )
-  
+
   box::use(
     path/to/module1,
     path/to/module2[a, b, c],
@@ -45,13 +70,40 @@ test_that("box_usage_linter skips allowed package attachment", {
   lintr::expect_lint(good_box_usage_2, NULL, linter)
 })
 
+test_that("box_usage_linter skips allowed package alias attachment", {
+  skip("TODO")
+  linter <- box_usage_linter()
+
+  good_box_usage_2 <- "box::use(
+    shiny[NS],
+    pkg_alias = glue,
+    fs[path_file],
+  )
+
+  box::use(
+    path/to/module1,
+    path/to/module2[a, b, c],
+    path/to/module3[...]
+  )
+
+  name <- 'Fred'
+  pkg_alias$glue('My name is {name}.')
+
+  path_file('dir/file.zip')
+
+  ns <- NS()
+  "
+
+  lintr::expect_lint(good_box_usage_2, NULL, linter)
+})
+
 test_that("box_usage_linter skips allowed package[...] attachment", {
   linter <- box_usage_linter()
 
   good_box_usage_3 <- "box::use(
     glue[...]
   )
-  
+
   box::use(
     path/to/module1,
     path/to/module2[a, b, c],
@@ -71,7 +123,7 @@ test_that("box_usage_linter skips allowed base packages functions", {
   good_box_usage_4 <- "box::use(
     dplyr[`%>%`, filter, pull],
   )
-  
+
   box::use(
     path/to/module1,
     path/to/module2[a, b, c],
@@ -96,7 +148,7 @@ test_that("box_usage_linter blocks package functions not box-imported", {
   bad_box_usage_1 <- "box::use(
     dplyr[`%>%`, select],
   )
-  
+
   box::use(
     path/to/module1,
     path/to/module2[a, b, c],
@@ -122,7 +174,7 @@ test_that("box_usage_linter blocks package functions exported by package", {
     glue,
     fs[path_file],
   )
-  
+
   box::use(
     path/to/module1,
     path/to/module2[a, b, c],
@@ -146,7 +198,7 @@ test_that("box_usage_linter blocks package functions not in global namespace", {
   bad_box_usage_3 <- "box::use(
     glue[...]
   )
-  
+
   box::use(
     path/to/module1,
     path/to/module2[a, b, c],

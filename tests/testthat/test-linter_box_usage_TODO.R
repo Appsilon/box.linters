@@ -1,30 +1,8 @@
-test_that("handle aliased package", {
-  "box::use(
-    alias = stringr,
-  )
-  
-  alias$str_sub()
-  "
-
-  expect_true(TRUE)
-})
-
-test_that("handle aliased attached functions from packages", {
-  "box::use(
-    stringr[alias = str_sub],
-  )
-  
-  alias()
-  "
-
-  expect_true(TRUE)
-})
-
 test_that("handle dplyr pipeline objects", {
   "box::use(
     dplyr[`%>%`, select, filter]
   )
-  
+
   mtcars %>%
     select(mpg, cyl) %>%
     filter(mpg <= 10)
@@ -37,10 +15,10 @@ test_that("handle curried functions", {
   "
   some_function <- function(x) {
     function(y) {
-      
+
     }
   }
-  
+
   this_fun <- some_function(1)
   this_fun(2)
   "
@@ -108,12 +86,12 @@ test_that("will not lint in function with ... signature", {
 
 test_that("handle adding members to an existing R6 class", {
   "
-  SomeClass <- R6('SomeClass', 
+  SomeClass <- R6('SomeClass',
     public = list()
   )
-  
+
   SomeClass$set('public', 'x', 10)
-  
+
   s <- SomeClass$new()
   s$x
   "
@@ -124,7 +102,7 @@ test_that("handle adding members to an existing R6 class", {
 test_that("handle cloned R6 objects", {
   "
   s <- SomeClass$new()
-  
+
   t <- s$clone()
   t$x
   "
@@ -137,7 +115,7 @@ test_that("handle attached box module", {
   box::use(
     path/to/module
   )
-  
+
   module$some_function()
   module$some_data
   "
@@ -151,7 +129,7 @@ test_that("handle attached box module functions", {
     path/to/module[some_function]
   )
 
-  some_function()  
+  some_function()
   "
 
   expect_true(TRUE)
@@ -162,7 +140,7 @@ test_that("handle attached box module data objects", {
   box::use(
     path/to/module[some_data]
   )
-  
+
   some_data
   "
 
@@ -174,7 +152,7 @@ test_that("handle three-dots box module", {
   box::use(
     path/to/module[...]
   )
-  
+
   some_function()
   "
 
@@ -185,7 +163,7 @@ test_that("handle attached R6 class from box module", {
   "box::use(
     path/to/moduel[some_class]
   )
-  
+
   new_object <- some_class$new()
   new_object$some_method()
   new_object$some_property
@@ -199,7 +177,7 @@ test_that("handle aliased attached box module", {
   box::use(
     alias = path/to/module
   )
-  
+
   alias$some_function()
   alias$some_data
   "
@@ -213,7 +191,7 @@ test_that("handle aliased functions from box module", {
     path/to/module[alias = some_function]
   )
 
-  alias()  
+  alias()
   "
 
   expect_true(TRUE)
@@ -223,7 +201,7 @@ test_that("handle aliased R6 class from box module", {
   "box::use(
     path/to/moduel[alias = some_class]
   )
-  
+
   new_object <- alias$new()
   new_object$some_method()
   new_object$some_property
@@ -235,12 +213,12 @@ test_that("handle aliased R6 class from box module", {
 test_that("not locally used exported functions and data objects in box modules should not lint", {
   "box::use(
   )
-  
+
   #' @export
   exported_function <- function() {
-  
+
   }
-  
+
   #' @export
   exported_data <- ''
   "
@@ -251,14 +229,14 @@ test_that("not locally used exported functions and data objects in box modules s
 test_that("all local private functions in box module should be used", {
   "box::use(
   )
-  
+
   #' @export
   public_function <- function() {
     private_function()
   }
-  
+
   private_function <- function() {
-  
+
   }
   "
 
@@ -268,12 +246,12 @@ test_that("all local private functions in box module should be used", {
 test_that("all local private data objects in box module should be used", {
   "box::use(
   )
-  
+
   #' @export
   public_function <- function() {
     private_data
   }
-  
+
   private_data <- 'something'
   "
 
