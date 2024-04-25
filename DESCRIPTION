@@ -16,7 +16,7 @@ RoxygenNote: 7.3.1
 Depends:
   R (>= 2.10)
 Imports:
-  lintr,
+  lintr (>= 3.0.0),
   xml2
 Suggests:
   covr,
