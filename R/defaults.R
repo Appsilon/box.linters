@@ -1,3 +1,4 @@
+# nolint start: line_length_linter
 #' Rhino default linters
 #'
 #' See the [Explanation: Rhino style guide](https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html)
@@ -9,6 +10,7 @@
 #' names(linters)
 #'
 #' @export
+# nolint end
 rhino_default_linters <- lintr::modify_defaults(
   defaults = lintr::default_linters,
   line_length_linter = lintr::line_length_linter(100),
