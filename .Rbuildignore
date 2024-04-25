@@ -9,3 +9,4 @@
 ^vignettes$
 ^docs$
 ^box\.linters\.Rproj$
+^codecov\.yml$
