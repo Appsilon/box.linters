@@ -1,3 +1,109 @@
+
+test_that("handle attached box module", {
+  "
+  box::use(
+    path/to/module
+  )
+
+  module$some_function()
+  module$some_data
+  "
+
+  expect_true(TRUE)
+})
+
+test_that("handle attached box module functions", {
+  "
+  box::use(
+    path/to/module[some_function]
+  )
+
+  some_function()
+  "
+
+  expect_true(TRUE)
+})
+
+test_that("handle attached box module data objects", {
+  "
+  box::use(
+    path/to/module[some_data]
+  )
+
+  some_data
+  "
+
+  expect_true(TRUE)
+})
+
+test_that("handle three-dots box module", {
+  "
+  box::use(
+    path/to/module[...]
+  )
+
+  some_function()
+  "
+
+  expect_true(TRUE)
+})
+
+test_that("handle attached R6 class from box module", {
+  "box::use(
+    path/to/moduel[some_class]
+  )
+
+  new_object <- some_class$new()
+  new_object$some_method()
+  new_object$some_property
+  "
+
+  expect_true(TRUE)
+})
+
+test_that("handle aliased attached box module", {
+  "
+  box::use(
+    alias = path/to/module
+  )
+
+  alias$some_function()
+  alias$some_data
+  "
+
+  expect_true(TRUE)
+})
+
+test_that("handle aliased functions from box module", {
+  "
+  box::use(
+    path/to/module[alias = some_function]
+  )
+
+  alias()
+  "
+
+  expect_true(TRUE)
+})
+
+test_that("handle aliased R6 class from box module", {
+  "box::use(
+    path/to/moduel[alias = some_class]
+  )
+
+  new_object <- alias$new()
+  new_object$some_method()
+  new_object$some_property
+  "
+
+  expect_true(TRUE)
+})
+
+
+
+
+
+
 test_that("handle dplyr pipeline objects", {
   "box::use(
     dplyr[`%>%`, select, filter]
@@ -110,105 +216,6 @@ test_that("handle cloned R6 objects", {
   expect_true(TRUE)
 })
 
-test_that("handle attached box module", {
-  "
-  box::use(
-    path/to/module
-  )
-
-  module$some_function()
-  module$some_data
-  "
-
-  expect_true(TRUE)
-})
-
-test_that("handle attached box module functions", {
-  "
-  box::use(
-    path/to/module[some_function]
-  )
-
-  some_function()
-  "
-
-  expect_true(TRUE)
-})
-
-test_that("handle attached box module data objects", {
-  "
-  box::use(
-    path/to/module[some_data]
-  )
-
-  some_data
-  "
-
-  expect_true(TRUE)
-})
-
-test_that("handle three-dots box module", {
-  "
-  box::use(
-    path/to/module[...]
-  )
-
-  some_function()
-  "
-
-  expect_true(TRUE)
-})
-
-test_that("handle attached R6 class from box module", {
-  "box::use(
-    path/to/moduel[some_class]
-  )
-
-  new_object <- some_class$new()
-  new_object$some_method()
-  new_object$some_property
-  "
-
-  expect_true(TRUE)
-})
-
-test_that("handle aliased attached box module", {
-  "
-  box::use(
-    alias = path/to/module
-  )
-
-  alias$some_function()
-  alias$some_data
-  "
-
-  expect_true(TRUE)
-})
-
-test_that("handle aliased functions from box module", {
-  "
-  box::use(
-    path/to/module[alias = some_function]
-  )
-
-  alias()
-  "
-
-  expect_true(TRUE)
-})
-
-test_that("handle aliased R6 class from box module", {
-  "box::use(
-    path/to/moduel[alias = some_class]
-  )
-
-  new_object <- alias$new()
-  new_object$some_method()
-  new_object$some_property
-  "
-
-  expect_true(TRUE)
-})
 
 test_that("not locally used exported functions and data objects in box modules should not lint", {
   "box::use(

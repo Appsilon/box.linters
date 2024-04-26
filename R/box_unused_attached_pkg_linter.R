@@ -16,7 +16,11 @@ box_unused_attached_pkg_linter <- function() {
       package_text <- lintr::get_r_string(attached_package)
       aliased_package_text <- attached_packages$aliases[package_text]
 
-      func_list <- paste(aliased_package_text, attached_packages$nested[[aliased_package_text]], sep = "$")
+      func_list <- paste(
+        aliased_package_text,
+        attached_packages$nested[[aliased_package_text]],
+        sep = "$"
+      )
 
       functions_used <- length(intersect(func_list, function_calls$text))
 
