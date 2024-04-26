@@ -165,6 +165,31 @@ test_that("box_usage_linter blocks package functions not box-imported", {
   lintr::expect_lint(bad_box_usage_1, list(message = lint_message_1), linter)
 })
 
+test_that("box_usage_linter blocks package alias functions not box-imported", {
+  linter <- box_usage_linter()
+  lint_message_1 <- rex::rex("Function not imported nor defined.")
+
+  # filter not imported
+  bad_box_usage_1 <- "box::use(
+    dplyr[`%>%`, select],
+  )
+
+  box::use(
+    path/to/module1,
+    path/to/module2[a, b, c],
+    path/to/module3[...]
+  )
+
+  mtcars %>%
+    select(mpg, cyl) %>%
+    fun_alias(
+      m = mean(mpg)
+    )
+  "
+
+  lintr::expect_lint(bad_box_usage_1, list(message = lint_message_1), linter)
+})
+
 test_that("box_usage_linter blocks package functions exported by package", {
   linter <- box_usage_linter()
   lint_message_2 <- rex::rex("package$function does not exist.")
