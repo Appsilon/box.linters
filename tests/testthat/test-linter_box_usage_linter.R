@@ -3,6 +3,7 @@ test_that("box_usage_linter skips allowed package[function] attachment.", {
 
   good_box_usage_1 <- "box::use(
     dplyr[`%>%`, select, filter],
+    stringr[str_pad],
   )
 
   box::use(
@@ -20,12 +21,11 @@ test_that("box_usage_linter skips allowed package[function] attachment.", {
 })
 
 test_that("box_usage_linter skips allowed package[function] alias attachment.", {
-  skip("TO DO")
   linter <- box_usage_linter()
 
   good_box_usage_1 <- "box::use(
     dplyr[`%>%`, fun_alias = select, filter],
-    stringr[str_pad],
+    stringr[gun_alias = str_pad],
   )
 
   box::use(
@@ -38,7 +38,7 @@ test_that("box_usage_linter skips allowed package[function] alias attachment.", 
     fun_alias(mpg, cyl) %>%
     filter(mpg <= 10)
 
-  str_pad()
+  gun_alias()
   "
 
   lintr::expect_lint(good_box_usage_1, NULL, linter)
@@ -142,7 +142,7 @@ test_that("box_usage_linter skips allowed base packages functions", {
 
 test_that("box_usage_linter blocks package functions not box-imported", {
   linter <- box_usage_linter()
-  lint_message_1 <- rex::rex("Function not imported.")
+  lint_message_1 <- rex::rex("Function not imported nor defined.")
 
   # filter not imported
   bad_box_usage_1 <- "box::use(
@@ -192,7 +192,7 @@ test_that("box_usage_linter blocks package functions exported by package", {
 
 test_that("box_usage_linter blocks package functions not in global namespace", {
   linter <- box_usage_linter()
-  lint_message_1 <- rex::rex("Function not imported.")
+  lint_message_1 <- rex::rex("Function not imported nor defined.")
 
   # xyz function does not exist
   bad_box_usage_3 <- "box::use(

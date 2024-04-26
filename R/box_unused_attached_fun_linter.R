@@ -14,8 +14,9 @@ box_unused_attached_fun_linter <- function() {
     lapply(attached_functions$xml, function(fun_import) {
       fun_import_text <- xml2::xml_text(fun_import)
       fun_import_text <- gsub("[`'\"]", "", fun_import_text)
+      aliased_fun_import_text <- attached_functions$text[fun_import_text]
 
-      if (!fun_import_text %in% function_calls$text) {
+      if (!aliased_fun_import_text %in% function_calls$text) {
         lintr::xml_nodes_to_lints(
           fun_import,
           source_expression = source_expression,

@@ -37,7 +37,7 @@ box_usage_linter <- function() {
             lintr::xml_nodes_to_lints(
               fun_call,
               source_expression = source_expression,
-              lint_message = "Function not imported.",
+              lint_message = "Function not imported nor defined.",
               type = "warning"
             )
           }
