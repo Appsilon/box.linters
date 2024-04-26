@@ -4,10 +4,10 @@ get_box_module_exports <- function(declaration, alias = "", caller = globalenv()
   } else if (is.character(declaration)) {
     declaration <- rlang::parse_expr(declaration)
   }
-  parse_spec <- get0("parse_spec", envir = loadNamespace("box"))
-  find_mod <- get0("find_mod.box$mod_spec", envir = loadNamespace("box"))
-  load_mod <- get0("load_mod.box$mod_info", envir = loadNamespace("box"))
-  namespace_info <- get0("namespace_info", envir = loadNamespace("box"))
+  parse_spec <- get0("parse_spec", envir = base::loadNamespace("box"))
+  find_mod <- get0("find_mod.box$mod_spec", envir = base::loadNamespace("box"))
+  load_mod <- get0("load_mod.box$mod_info", envir = base::loadNamespace("box"))
+  namespace_info <- get0("namespace_info", envir = base::loadNamespace("box"))
 
   if (any(sapply(list(parse_spec, find_mod, load_mod, namespace_info), is.null))) {
     stop("box.linters couldn't load box functions")

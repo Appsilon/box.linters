@@ -18,6 +18,7 @@ Depends:
 Imports:
   glue,
   lintr (>= 3.0.0),
+  rlang,
   xml2
 Suggests:
   covr,
