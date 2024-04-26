@@ -14,8 +14,9 @@ box_unused_attached_pkg_linter <- function() {
 
     unused_package <- lapply(attached_packages$xml, function(attached_package) {
       package_text <- lintr::get_r_string(attached_package)
+      aliased_package_text <- attached_packages$aliases[package_text]
 
-      func_list <- paste(package_text, attached_packages$nested[[package_text]], sep = "$")
+      func_list <- paste(aliased_package_text, attached_packages$nested[[aliased_package_text]], sep = "$")
 
       functions_used <- length(intersect(func_list, function_calls$text))
 
@@ -31,9 +32,7 @@ box_unused_attached_pkg_linter <- function() {
 
     unused_three_dots <- lapply(attached_three_dots$xml, function(attached_package) {
       package_text <- lintr::get_r_string(attached_package)
-
       func_list <- attached_three_dots$nested[[package_text]]
-
       functions_used <- length(intersect(func_list, function_calls$text))
 
       if (functions_used == 0) {

@@ -116,6 +116,39 @@ get_attached_packages <- function(xml) {
   attached_packages <- extract_xml_and_text(xml, xpath_package_import)
   nested_list <- get_packages_exports(attached_packages$text)
 
+  whole_package_imports <- "
+  /child::*[
+    preceding-sibling::OP-LEFT-PAREN and
+    following-sibling::OP-RIGHT-PAREN and
+    not(
+      child::expr[
+        following-sibling::OP-LEFT-BRACKET
+      ] or
+      child::expr[
+        child::OP-SLASH
+      ]
+    )
+  ]
+"
+  xpath_whole_packages <- paste(box_base_path(), whole_package_imports)
+  xml_whole_packages <- xml2::xml_find_all(xml, xpath_whole_packages)
+
+  aliased_whole_packages <- paste(xml2::xml_text(xml_whole_packages), collapse = "")
+  pkgs <- strsplit(gsub("`", "", aliased_whole_packages), ",")[[1]]
+  output <- do.call(rbind, strsplit(pkgs, "="))
+
+  aliases_list <- list()
+  if (!all(output == "")) {
+    if (ncol(output) == 1) {
+      output <- cbind(output, output)
+    }
+    aliases_list <- output[, 1]
+    names(aliases_list) <- output[, 2]
+
+    attached_packages$text <- aliases_list[attached_packages$text]
+    names(nested_list) <- aliases_list[names(nested_list)]
+  }
+
   flat_list <- unlist(
     lapply(names(nested_list), function(pkg) {
       paste(
@@ -129,6 +162,7 @@ get_attached_packages <- function(xml) {
   list(
     xml = attached_packages$xml_nodes,
     nested = nested_list,
+    aliases = aliases_list,
     text = flat_list
   )
 }

@@ -71,7 +71,6 @@ test_that("box_usage_linter skips allowed package attachment", {
 })
 
 test_that("box_usage_linter skips allowed package alias attachment", {
-  skip("TODO")
   linter <- box_usage_linter()
 
   good_box_usage_2 <- "box::use(
@@ -165,7 +164,7 @@ test_that("box_usage_linter blocks package functions not box-imported", {
   lintr::expect_lint(bad_box_usage_1, list(message = lint_message_1), linter)
 })
 
-test_that("box_usage_linter blocks package alias functions not box-imported", {
+test_that("box_usage_linter blocks package aliased functions not attached", {
   linter <- box_usage_linter()
   lint_message_1 <- rex::rex("Function not imported nor defined.")
 
@@ -182,12 +181,39 @@ test_that("box_usage_linter blocks package alias functions not box-imported", {
 
   mtcars %>%
     select(mpg, cyl) %>%
-    fun_alias(
+    bad_alias(
       m = mean(mpg)
     )
   "
 
   lintr::expect_lint(bad_box_usage_1, list(message = lint_message_1), linter)
+})
+
+test_that("box_usage_linter blocks package aliased not attached", {
+  linter <- box_usage_linter()
+  lint_message <- rex::rex("package$function does not exist.")
+
+  good_box_usage_2 <- "box::use(
+    shiny[NS],
+    pkg_alias = glue,
+    fs[path_file],
+  )
+
+  box::use(
+    path/to/module1,
+    path/to/module2[a, b, c],
+    path/to/module3[...]
+  )
+
+  name <- 'Fred'
+  bad_alias$glue('My name is {name}.')
+
+  path_file('dir/file.zip')
+
+  ns <- NS()
+  "
+
+  lintr::expect_lint(good_box_usage_2, list(message = lint_message), linter)
 })
 
 test_that("box_usage_linter blocks package functions exported by package", {
