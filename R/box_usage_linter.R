@@ -16,8 +16,9 @@ box_usage_linter <- function() {
     all_known_fun <- c(all_attached_fun, fun_assignments$text)
 
     attached_packages <- get_attached_packages(xml)
-    function_calls <- get_function_calls(xml)
+    attached_modules <- get_attached_modules(xml)
     base_pkgs <- get_base_packages()
+    function_calls <- get_function_calls(xml)
 
     lapply(function_calls$xml_nodes, function(fun_call) {
       fun_call_text <- xml2::xml_text(fun_call)
