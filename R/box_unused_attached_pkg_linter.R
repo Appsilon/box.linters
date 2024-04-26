@@ -9,7 +9,7 @@ box_unused_attached_pkg_linter <- function() {
     xml <- source_expression$full_xml_parsed_content
 
     attached_packages <- get_attached_packages(xml)
-    attached_three_dots <- get_attached_three_dots(xml)
+    attached_three_dots <- get_attached_pkg_three_dots(xml)
     function_calls <- get_function_calls(xml)
 
     unused_package <- lapply(attached_packages$xml, function(attached_package) {

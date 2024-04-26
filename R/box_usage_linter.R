@@ -8,8 +8,8 @@ box_usage_linter <- function() {
 
     xml <- source_expression$full_xml_parsed_content
 
-    attached_functions <- get_attached_functions(xml)
-    attached_three_dots <- get_attached_three_dots(xml)
+    attached_functions <- get_attached_pkg_functions(xml)
+    attached_three_dots <- get_attached_pkg_three_dots(xml)
     all_attached_fun <- c(attached_functions$text, attached_three_dots$text)
 
     fun_assignments <- get_declared_functions(xml)
@@ -45,19 +45,6 @@ box_usage_linter <- function() {
       }
     })
   })
-}
-
-get_packages_exports <- function(pkg_list) {
-  exported_funs <- lapply(pkg_list, function(pkg) {
-    tryCatch(
-      getNamespaceExports(pkg),
-      error = function(e) character()
-    )
-  })
-
-  names(exported_funs) <- pkg_list
-
-  exported_funs
 }
 
 get_base_packages <- function() {
