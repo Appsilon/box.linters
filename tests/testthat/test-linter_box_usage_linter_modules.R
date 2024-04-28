@@ -67,15 +67,16 @@ test_that("box_usage_linter skips allowed module alias attachment", {
 test_that("box_usage_linter skips allowed module[...] attachment", {
   linter <- box_usage_linter()
 
-  # good_box_usage_3 <- "box::use(
-  #   glue[...]
-  # )
-  #
-  # name <- 'Fred'
-  # glue_sql('My name is {name}.')
-  # "
-  #
-  # lintr::expect_lint(good_box_usage_3, NULL, linter)
+  good_box_usage_3 <- "box::use(
+    path/to/module_a[...],
+    path/to/module_b,
+    path/to/module_c[...]
+  )
+
+  a_fun_a()
+  c_fun_a()
+  "
+  lintr::expect_lint(good_box_usage_3, NULL, linter)
 })
 
 test_that("box_usage_linter blocks package functions exported by module", {

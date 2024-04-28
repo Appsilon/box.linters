@@ -8,12 +8,15 @@ box_usage_linter <- function() {
 
     xml <- source_expression$full_xml_parsed_content
 
-    attached_functions <- get_attached_pkg_functions(xml)
-    attached_three_dots <- get_attached_pkg_three_dots(xml)
-    all_attached_fun <- c(attached_functions$text, attached_three_dots$text)
+    attached_pkg_functions <- get_attached_pkg_functions(xml)
+    attached_pkg_three_dots <- get_attached_pkg_three_dots(xml)
+    all_attached_pkg_fun <- c(attached_pkg_functions$text, attached_pkg_three_dots$text)
+
+    attached_mod_three_dots <- get_attached_mod_three_dots(xml)
+    all_attached_mod_fun <- c(attached_mod_three_dots$text)
 
     fun_assignments <- get_declared_functions(xml)
-    all_known_fun <- c(all_attached_fun, fun_assignments$text)
+    all_known_fun <- c(all_attached_pkg_fun, all_attached_mod_fun, fun_assignments$text)
 
     attached_packages <- get_attached_packages(xml)
     attached_modules <- get_attached_modules(xml)

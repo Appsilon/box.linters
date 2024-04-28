@@ -65,7 +65,6 @@ get_attached_modules <- function(xml) {
     names(nested_list) <- aliases_list[names(nested_list)]
   }
 
-  # flat_list <- list()
   flat_list <- unlist(
     lapply(names(nested_list), function(pkg) {
       paste(
@@ -85,7 +84,25 @@ get_attached_modules <- function(xml) {
 }
 
 get_attached_mod_three_dots <- function(xml) {
+  box_module_three_dots <- "
+  /child::expr[
+    expr/expr/SYMBOL[text() = '...']
+  ]
+  "
 
+  xpath_module_three_dots <- paste(box_module_base_path(), box_module_three_dots)
+  attached_three_dots <- extract_xml_and_text(xml, xpath_module_three_dots)
+  attached_three_dots$text <- sub("\\[\\.\\.\\.\\]", "", attached_three_dots$text)
+  nested_list <- get_module_exports(attached_three_dots$text)
+  # normalize module names
+  names(nested_list) <- basename(names(nested_list))
+  flat_list <- unlist(nested_list, use.names = FALSE)
+
+  list(
+    xml = attached_three_dots$xml_nodes,
+    nested = nested_list,
+    text = flat_list
+  )
 }
 
 get_attached_mod_functions <- function(xml) {
