@@ -28,6 +28,7 @@ get_attached_modules <- function(xml) {
 
   xpath_module_import <- paste(box_module_base_path(), box_module_import)
   attached_modules <- extract_xml_and_text(xml, xpath_module_import)
+  attached_modules$text <- basename(attached_modules$text)
   # nested_list <- get_module_exports(attached_modules$text)
   nested_list <- list()
 
