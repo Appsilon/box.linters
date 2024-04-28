@@ -6,12 +6,6 @@ test_that("box_usage_linter skips allowed package[function] attachment.", {
     stringr[str_pad],
   )
 
-  box::use(
-    path/to/module1,
-    path/to/module2[a, b, c],
-    path/to/module3[...]
-  )
-
   mtcars %>%
     select(mpg, cyl) %>%
     filter(mpg <= 10)
@@ -26,12 +20,6 @@ test_that("box_usage_linter skips allowed package[function] alias attachment.", 
   good_box_usage_1 <- "box::use(
     dplyr[`%>%`, fun_alias = select, filter],
     stringr[gun_alias = str_pad],
-  )
-
-  box::use(
-    path/to/module1,
-    path/to/module2[a, b, c],
-    path/to/module3[...]
   )
 
   mtcars %>%
@@ -51,12 +39,6 @@ test_that("box_usage_linter skips allowed package attachment", {
     shiny[NS],
     glue,
     fs[path_file],
-  )
-
-  box::use(
-    path/to/module1,
-    path/to/module2[a, b, c],
-    path/to/module3[...]
   )
 
   name <- 'Fred'
@@ -79,12 +61,6 @@ test_that("box_usage_linter skips allowed package alias attachment", {
     fs[path_file],
   )
 
-  box::use(
-    path/to/module1,
-    path/to/module2[a, b, c],
-    path/to/module3[...]
-  )
-
   name <- 'Fred'
   pkg_alias$glue('My name is {name}.')
 
@@ -103,12 +79,6 @@ test_that("box_usage_linter skips allowed package[...] attachment", {
     glue[...]
   )
 
-  box::use(
-    path/to/module1,
-    path/to/module2[a, b, c],
-    path/to/module3[...]
-  )
-
   name <- 'Fred'
   glue_sql('My name is {name}.')
   "
@@ -121,12 +91,6 @@ test_that("box_usage_linter skips allowed base packages functions", {
 
   good_box_usage_4 <- "box::use(
     dplyr[`%>%`, filter, pull],
-  )
-
-  box::use(
-    path/to/module1,
-    path/to/module2[a, b, c],
-    path/to/module3[...]
   )
 
   mpg <- mtcars %>%
@@ -148,12 +112,6 @@ test_that("box_usage_linter blocks package functions not box-imported", {
     dplyr[`%>%`, select],
   )
 
-  box::use(
-    path/to/module1,
-    path/to/module2[a, b, c],
-    path/to/module3[...]
-  )
-
   mtcars %>%
     select(mpg, cyl) %>%
     mutate(
@@ -173,12 +131,6 @@ test_that("box_usage_linter blocks package aliased functions not attached", {
     dplyr[`%>%`, select],
   )
 
-  box::use(
-    path/to/module1,
-    path/to/module2[a, b, c],
-    path/to/module3[...]
-  )
-
   mtcars %>%
     select(mpg, cyl) %>%
     bad_alias(
@@ -191,18 +143,12 @@ test_that("box_usage_linter blocks package aliased functions not attached", {
 
 test_that("box_usage_linter blocks package aliased not attached", {
   linter <- box_usage_linter()
-  lint_message <- rex::rex("package$function does not exist.")
+  lint_message <- rex::rex("<package/module>$function does not exist.")
 
   good_box_usage_2 <- "box::use(
     shiny[NS],
     pkg_alias = glue,
     fs[path_file],
-  )
-
-  box::use(
-    path/to/module1,
-    path/to/module2[a, b, c],
-    path/to/module3[...]
   )
 
   name <- 'Fred'
@@ -218,18 +164,12 @@ test_that("box_usage_linter blocks package aliased not attached", {
 
 test_that("box_usage_linter blocks package functions exported by package", {
   linter <- box_usage_linter()
-  lint_message_2 <- rex::rex("package$function does not exist.")
+  lint_message_2 <- rex::rex("<package/module>$function does not exist.")
 
   # xyz is not exported by glue
   bad_box_usage_2 <- "box::use(
     glue,
     fs[path_file],
-  )
-
-  box::use(
-    path/to/module1,
-    path/to/module2[a, b, c],
-    path/to/module3[...]
   )
 
   name <- 'Fred'
@@ -248,12 +188,6 @@ test_that("box_usage_linter blocks package functions not in global namespace", {
   # xyz function does not exist
   bad_box_usage_3 <- "box::use(
     glue[...]
-  )
-
-  box::use(
-    path/to/module1,
-    path/to/module2[a, b, c],
-    path/to/module3[...]
   )
 
   name <- 'Fred'
