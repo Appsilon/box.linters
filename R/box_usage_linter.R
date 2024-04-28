@@ -17,6 +17,7 @@ box_usage_linter <- function() {
 
     attached_packages <- get_attached_packages(xml)
     attached_modules <- get_attached_modules(xml)
+    all_attached_box_mods <- c(attached_packages$text, attached_modules$text)
     base_pkgs <- get_base_packages()
     function_calls <- get_function_calls(xml)
 
@@ -25,11 +26,11 @@ box_usage_linter <- function() {
 
       if (!fun_call_text %in% base_pkgs$text) {
         if (grepl(".+\\$.+", fun_call_text)) {
-          if (!fun_call_text %in% attached_packages$text) {
+          if (!fun_call_text %in% all_attached_box_mods) {
             lintr::xml_nodes_to_lints(
               fun_call,
               source_expression = source_expression,
-              lint_message = "package$function does not exist.",
+              lint_message = "<package/module>$function does not exist.",
               type = "warning"
             )
           }

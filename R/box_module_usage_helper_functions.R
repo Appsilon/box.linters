@@ -11,7 +11,9 @@ get_module_exports <- function(mod_list) {
   exported_funs <- lapply(mod_list, function(mod) {
     tryCatch(
       get_box_module_exports(mod),
-      error = function(e) print(e)
+      error = function(e) {
+        stop(e)
+      }
     )
   })
 
@@ -28,9 +30,10 @@ get_attached_modules <- function(xml) {
 
   xpath_module_import <- paste(box_module_base_path(), box_module_import)
   attached_modules <- extract_xml_and_text(xml, xpath_module_import)
+  nested_list <- get_module_exports(attached_modules$text)
+  # normalize module names
   attached_modules$text <- basename(attached_modules$text)
-  # nested_list <- get_module_exports(attached_modules$text)
-  nested_list <- list()
+  names(nested_list) <- basename(names(nested_list))
 
   whole_module_imports <- "
   /child::*[
@@ -55,23 +58,23 @@ get_attached_modules <- function(xml) {
     if (ncol(output) == 1) {
       output <- cbind(output, output)
     }
-    aliases_list <- output[, 1]
-    names(aliases_list) <- output[, 2]
+    aliases_list <- basename(output[, 1])
+    names(aliases_list) <- basename(output[, 2])
 
-    # attached_modules$text <- aliases_list[attached_modules$text]
-    # names(nested_list) <- aliases_list[names(nested_list)]
+    attached_modules$text <- aliases_list[attached_modules$text]
+    names(nested_list) <- aliases_list[names(nested_list)]
   }
 
-  flat_list <- list()
-  # flat_list <- unlist(
-  #   lapply(names(nested_list), function(pkg) {
-  #     paste(
-  #       pkg,
-  #       nested_list[[pkg]],
-  #       sep = "$"
-  #     )
-  #   })
-  # )
+  # flat_list <- list()
+  flat_list <- unlist(
+    lapply(names(nested_list), function(pkg) {
+      paste(
+        pkg,
+        nested_list[[pkg]],
+        sep = "$"
+      )
+    })
+  )
 
   list(
     xml = attached_modules$xml_nodes,
