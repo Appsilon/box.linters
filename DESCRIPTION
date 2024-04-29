@@ -1,0 +1,27 @@
+Package: box.linters
+Title: Linters for klmr/box Modules
+Version: 0.0.0.9000
+Authors@R:
+  c(
+    person("Rodrigo", "Basa", role = c("aut", "cre"), email = "opensource+rodrigo@appsilon.com"),
+    person("Jakub", "Nowicki", role = "aut", email = "kuba@appsilon.com"),
+    person("Appsilon Sp. z o.o.", role = "cph", email = "opensource@appsilon.com")
+  )
+Description: Static code analysis of box modules.
+URL: https://appsilon.github.io/box.linters/, https://github.com/Appsilon/box.linters
+License: LGPL-3
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+Depends:
+  R (>= 2.10)
+Suggests:
+  covr,
+  lintr,
+  rcmdcheck,
+  rex,
+  spelling,
+  testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Config/testthat/parallel: true
+Language: en-US
