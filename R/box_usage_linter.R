@@ -12,6 +12,7 @@ box_usage_linter <- function() {
     attached_pkg_three_dots <- get_attached_pkg_three_dots(xml)
     all_attached_pkg_fun <- c(attached_pkg_functions$text, attached_pkg_three_dots$text)
 
+    attached_mod_functions <- get_attached_mod_functions(xml)
     attached_mod_three_dots <- get_attached_mod_three_dots(xml)
     all_attached_mod_fun <- c(attached_mod_three_dots$text)
 

@@ -93,8 +93,8 @@ get_attached_mod_three_dots <- function(xml) {
   xpath_module_three_dots <- paste(box_module_base_path(), box_module_three_dots)
   attached_three_dots <- extract_xml_and_text(xml, xpath_module_three_dots)
   attached_three_dots$text <- sub("\\[\\.\\.\\.\\]", "", attached_three_dots$text)
+
   nested_list <- get_module_exports(attached_three_dots$text)
-  # normalize module names
   names(nested_list) <- basename(names(nested_list))
   flat_list <- unlist(nested_list, use.names = FALSE)
 
@@ -106,5 +106,33 @@ get_attached_mod_three_dots <- function(xml) {
 }
 
 get_attached_mod_functions <- function(xml) {
+  xpath_module_functions <- "
+/child::expr[
+  child::expr[
+    child::OP-LEFT-BRACKET
+  ]
+]"
 
+  xpath_module_functions <- paste(box_module_base_path(), xpath_module_functions)
+  xml_module_functions <- xml2::xml_find_all(xml, xpath_module_functions)
+
+  xpath_just_functions <- "
+  /expr/expr[
+    preceding-sibling::OP-LEFT-BRACKET and
+    following-sibling::OP-RIGHT-BRACKET
+  ]
+  /SYMBOL[
+    not(
+      text() = '...'
+    )
+  ]
+"
+
+  xpath_attached_functions <- paste(xpath_module_functions, xpath_just_functions)
+  attached_functions <- extract_xml_and_text(xml, xpath_attached_functions)
+
+  list(
+    xml = attached_functions$xml_nodes,
+    text = attached_functions$text
+  )
 }
