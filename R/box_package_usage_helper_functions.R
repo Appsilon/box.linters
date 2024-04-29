@@ -7,6 +7,10 @@ box_package_base_path <- function() {
   "
 }
 
+#' Get functions exported by packages
+#'
+#' @param pkg_list A vector of packages
+#' @return A list of (`package_name` = list(`of_functions`))
 get_packages_exports <- function(pkg_list) {
   exported_funs <- lapply(pkg_list, function(pkg) {
     tryCatch(
@@ -20,6 +24,11 @@ get_packages_exports <- function(pkg_list) {
   exported_funs
 }
 
+#' Get all packages imported whole
+#'
+#' @param xml An XML node list
+#' @return `xml` list of `xml_nodes`, `nested` list of `package: functions`, `aliases` a named list
+#' of `package` = `alias`, `text` list of all `package$function` names.
 get_attached_packages <- function(xml) {
   box_package_import <- "
   /child::expr[
@@ -79,6 +88,11 @@ get_attached_packages <- function(xml) {
   )
 }
 
+#' Get all functions exported from packages by ...
+#'
+#' @param xml An XML node list
+#' @return `xml` listo of `xml_nodes`, `nested` list of `package: function`, `text` a named list of
+#' `function` = `alias`.
 get_attached_pkg_three_dots <- function(xml) {
   box_package_three_dots <- "
   /child::expr[
@@ -102,6 +116,10 @@ get_attached_pkg_three_dots <- function(xml) {
   )
 }
 
+#' Get imported functions from packages
+#'
+#' @param xml An XML node list
+#' @return `xml` list of xml nodes, `text` a list of function names.
 get_attached_pkg_functions <- function(xml) {
   xpath_package_functions <- "
   /child::expr[
