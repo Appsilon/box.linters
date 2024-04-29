@@ -62,7 +62,7 @@ test_that("box_usage_linter skips allowed module[...] attachment", {
   good_box_usage_3 <- "box::use(
     path/to/module_a[...],
     path/to/module_b,
-    path/to/module_c[...]
+    path/to/module_c[...],
   )
 
   a_fun_a()

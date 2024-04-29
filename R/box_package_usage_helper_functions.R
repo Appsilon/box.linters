@@ -91,8 +91,8 @@ get_attached_packages <- function(xml) {
 #' Get all functions exported from packages by ...
 #'
 #' @param xml An XML node list
-#' @return `xml` listo of `xml_nodes`, `nested` list of `package: function`, `text` a named list of
-#' `function` = `alias`.
+#' @return `xml` list of `xml_nodes`, `nested` list of `package: function`, `text` a list of
+#' function names.
 get_attached_pkg_three_dots <- function(xml) {
   box_package_three_dots <- "
   /child::expr[
