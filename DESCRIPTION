@@ -21,6 +21,7 @@ Imports:
   rlang,
   xml2
 Suggests:
+  box,
   covr,
   dplyr,
   fs,
