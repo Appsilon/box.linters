@@ -17,19 +17,6 @@ extract_xml_and_text <- function(xml, xpath) {
 #' Get locally declared/defined functions
 #'
 #' @param An XML node list.
-#'
-#' @examples
-#' fun_a <- function() {
-#'
-#' }
-#'
-#' fun_b <- function(x, y) {
-#'
-#' }
-#'
-#' obj_a <- c(1, 3)
-#'
-#' # returns fun_a and fun_b
 #' @return A list of `xml_nodes` and `text`.
 get_declared_functions <- function(xml) {
   xpath_function_assignment <- "
@@ -51,10 +38,6 @@ get_declared_functions <- function(xml) {
 #' Get functions called in current source file
 #'
 #' @param An XML node list
-#' @examples
-#' fun_a()
-#' fun_b(1, 3)
-#' obj_b <- obj_a
 #' @return A list of `xml_nodes` and `text`.
 get_function_calls <- function(xml) {
   xpath_box_function_calls <- "
