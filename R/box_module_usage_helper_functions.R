@@ -1,12 +1,3 @@
-box_module_base_path <- function() {
-  "//SYMBOL_PACKAGE[(text() = 'box' and following-sibling::SYMBOL_FUNCTION_CALL[text() = 'use'])]
-  /parent::expr
-  /parent::expr[
-    ./expr/OP-SLASH
-  ]
-  "
-}
-
 #' Get functions exported by modules
 #'
 #' @param mod_list A vector of packages
