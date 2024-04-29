@@ -3,35 +3,27 @@ options(box.path = file.path(getwd(), "mod"))
 test_that("box_usage_linter skips allowed module[function] attachment.", {
   linter <- box_usage_linter()
 
-  # good_box_usage_1 <- "box::use(
-  #   dplyr[`%>%`, select, filter],
-  #   stringr[str_pad],
-  # )
-  #
-  # mtcars %>%
-  #   select(mpg, cyl) %>%
-  #   filter(mpg <= 10)
-  # "
-  #
-  # lintr::expect_lint(good_box_usage_1, NULL, linter)
+  good_box_usage <- "box::use(
+    path/to/module_a[a_fun_a, a_fun_b],
+    path/to/module_b[...],
+    path/to/module_c[c_fun_b, c_obj_a]
+  )
+"
+
+  lintr::expect_lint(good_box_usage, NULL, linter)
 })
 
 test_that("box_usage_linter skips allowed module[function] alias attachment.", {
   linter <- box_usage_linter()
 
-  # good_box_usage_1 <- "box::use(
-  #   dplyr[`%>%`, fun_alias = select, filter],
-  #   stringr[gun_alias = str_pad],
-  # )
-  #
-  # mtcars %>%
-  #   fun_alias(mpg, cyl) %>%
-  #   filter(mpg <= 10)
-  #
-  # gun_alias()
-  # "
-  #
-  # lintr::expect_lint(good_box_usage_1, NULL, linter)
+  good_box_usage <- "box::use(
+    path/to/module_a[a_fun_a, fun_alias = a_fun_b],
+    path/to/module_b[...],
+    path/to/module_c[gun_alias = c_fun_b, c_obj_a]
+  )
+"
+
+  lintr::expect_lint(good_box_usage, NULL, linter)
 })
 
 test_that("box_usage_linter skips allowed module attachment", {

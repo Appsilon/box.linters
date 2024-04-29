@@ -109,7 +109,12 @@ get_attached_mod_functions <- function(xml) {
   xpath_module_functions <- "
 /child::expr[
   child::expr[
-    child::OP-LEFT-BRACKET
+    child::OP-LEFT-BRACKET and
+    not(
+      child::expr/SYMBOL[
+        text() = '...'
+      ]
+    )
   ]
 ]"
 
@@ -121,16 +126,35 @@ get_attached_mod_functions <- function(xml) {
     preceding-sibling::OP-LEFT-BRACKET and
     following-sibling::OP-RIGHT-BRACKET
   ]
-  /SYMBOL[
-    not(
-      text() = '...'
-    )
-  ]
+  /SYMBOL
 "
 
   xpath_attached_functions <- paste(xpath_module_functions, xpath_just_functions)
   attached_functions <- extract_xml_and_text(xml, xpath_attached_functions)
 
+  aliases <- lapply(xml_module_functions, function(xml_node) {
+    xpath_each_function <- "
+  ./expr/*[
+    preceding-sibling::OP-LEFT-BRACKET and
+    following-sibling::OP-RIGHT-BRACKET
+  ]
+"
+
+    package_function_call <- xml2::xml_find_all(xml_node, xpath_each_function)
+    aliased_functions <- paste(xml2::xml_text(package_function_call), collapse = "")
+
+    functions <- strsplit(gsub("`", "", aliased_functions), ",")[[1]]
+
+    output <- do.call(rbind, strsplit(functions, "="))
+    if (ncol(output) == 1) {
+      output <- cbind(output, output)
+    }
+    list_output <- output[, 1]
+    names(list_output) <- output[, 2]
+    list_output
+  })
+
+  attached_functions$text <- unlist(aliases)[attached_functions$text]
   list(
     xml = attached_functions$xml_nodes,
     text = attached_functions$text
