@@ -131,6 +131,15 @@ get_attached_pkg_functions <- function(xml) {
     )
   ]
 "
+
+  xpath_just_functions <- "
+  /expr[
+    preceding-sibling::OP-LEFT-BRACKET and
+    following-sibling::OP-RIGHT-BRACKET
+  ]
+  /SYMBOL
+"
+
   xpath_attached_functions <- paste(xpath_package_functions, xpath_just_functions)
   attached_functions <- extract_xml_and_text(xml, xpath_attached_functions)
 
@@ -138,12 +147,7 @@ get_attached_pkg_functions <- function(xml) {
     xpath_each_function <- "
   ./*[
     preceding-sibling::OP-LEFT-BRACKET and
-    following-sibling::OP-RIGHT-BRACKET and
-    not(
-    self::expr/SYMBOL[
-        text() = '...'
-      ]
-    )
+    following-sibling::OP-RIGHT-BRACKET
   ]
 "
     package_function_call <- xml2::xml_find_all(xml_node, xpath_each_function)
@@ -166,4 +170,3 @@ get_attached_pkg_functions <- function(xml) {
     text = attached_functions$text
   )
 }
-
