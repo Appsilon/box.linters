@@ -118,6 +118,7 @@ get_attached_pkg_functions <- function(xml) {
   ]
 "
   xpath_package_functions <- paste(box_package_base_path(), xpath_package_functions)
+  xml_package_functions <- xml2::xml_find_all(xml, xpath_package_functions)
 
   xpath_just_functions <- "
   /expr[
@@ -133,8 +134,8 @@ get_attached_pkg_functions <- function(xml) {
   xpath_attached_functions <- paste(xpath_package_functions, xpath_just_functions)
   attached_functions <- extract_xml_and_text(xml, xpath_attached_functions)
 
-  xml_package_functions <- xml2::xml_find_all(xml, xpath_package_functions)
-  xpath_just_functions <- "
+  aliases <- lapply(xml_package_functions, function(xml_node) {
+    xpath_each_function <- "
   ./*[
     preceding-sibling::OP-LEFT-BRACKET and
     following-sibling::OP-RIGHT-BRACKET and
@@ -145,9 +146,7 @@ get_attached_pkg_functions <- function(xml) {
     )
   ]
 "
-
-  aliases <- lapply(xml_package_functions, function(xml_node) {
-    package_function_call <- xml2::xml_find_all(xml_node, xpath_just_functions)
+    package_function_call <- xml2::xml_find_all(xml_node, xpath_each_function)
     aliased_functions <- paste(xml2::xml_text(package_function_call), collapse = "")
 
     functions <- strsplit(gsub("`", "", aliased_functions), ",")[[1]]
