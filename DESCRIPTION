@@ -3,7 +3,7 @@ Title: Linters for klmr/box Modules
 Version: 0.0.0.9004
 Authors@R:
   c(
-    person("Rodrigo", "Basa", role = c("aut", "cre"), email = "rodrigo@appsilon.com"),
+    person("Rodrigo", "Basa", role = c("aut", "cre"), email = "opensource+rodrigo@appsilon.com"),
     person("Jakub", "Nowicki", role = "aut", email = "kuba@appsilon.com"),
     person("Appsilon Sp. z o.o.", role = "cph", email = "opensource@appsilon.com")
   )
