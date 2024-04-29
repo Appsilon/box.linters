@@ -59,8 +59,6 @@ check_attached_pkg_funs <- function(xml, xpath) {
     "
 
   not_exported <- lapply(pkg_imports, function(pkg_import) {
-    xml2::xml_find_all(pkg_import, xpath_just_functions)
-
     packages <- extract_xml_and_text(pkg_import, xpath_pkg_names)
     exported_functions <- unlist(get_packages_exports(packages$text))
     attached_functions <- extract_xml_and_text(pkg_import, xpath_just_functions)
