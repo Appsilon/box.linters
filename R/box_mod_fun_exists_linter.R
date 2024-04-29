@@ -38,8 +38,6 @@ box_mod_fun_exists_linter <- function() {
 check_attached_mod_funs <- function(xml, xpath) {
   mod_imports <- xml2::xml_find_all(xml, xpath)
 
-  mod_import_names <- xml2::xml_text(mod_imports)
-
   xpath_just_functions <- "
   expr/expr[
     preceding-sibling::OP-LEFT-BRACKET and
