@@ -10,3 +10,4 @@
 ^docs$
 ^box\.linters\.Rproj$
 ^codecov\.yml$
+^renovate\.json$
