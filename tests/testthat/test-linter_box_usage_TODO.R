@@ -1,5 +1,3 @@
-# box modules imported objects check unused
-
 test_that("handle attached R6 class from box module", {
   "box::use(
     path/to/module
