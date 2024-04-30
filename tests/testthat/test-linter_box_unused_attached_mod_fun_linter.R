@@ -50,7 +50,6 @@ test_that("box_unused_attached_fun_linter blocks box-attached functions unused."
   linter <- box_unused_attached_pkg_fun_linter()
   lint_message_1 <- rex::rex("Imported function unused.")
 
-  # filter is unused
   bad_box_usage_1 <- "box::use(
     fs[dir_ls, path_file],
     shiny[...],

@@ -46,6 +46,51 @@ test_that("get_declared_objects returns correct list of object definitions", {
 })
 
 test_that("get_object_calls returns correct list of object calls", {
-  # TODO
-  expect_true(TRUE)
+  object_calls <- "
+    obj <- a + b + c
+  "
+
+  xml_object_calls <- code_to_xml_expr(object_calls)
+  result <- get_object_calls(xml_object_calls)
+  expected_result <- c("a", "b", "c")
+
+  expect_equal(result$text, expected_result)
+})
+
+test_that("get_object_calls returns correct list of object calls with equal assignment", {
+  object_calls <- "
+    obj = a + b + c
+  "
+
+  xml_object_calls <- code_to_xml_expr(object_calls)
+  result <- get_object_calls(xml_object_calls)
+  expected_result <- c("a", "b", "c")
+
+  expect_equal(result$text, expected_result)
+})
+
+test_that("get_object_calls returns objects passed to functions", {
+  object_calls <- "
+    obj_a <- 5
+    some_function(obj_b)
+  "
+
+  xml_object_calls <- code_to_xml_expr(object_calls)
+  result <- get_object_calls(xml_object_calls)
+  expected_result <- c("obj_b")
+
+  expect_equal(result$text, expected_result)
+})
+
+test_that("get_object_calls returns objects passed to functions with named params", {
+  object_calls <- "
+    obj_a <- 5
+    some_function(param = obj_b)
+  "
+
+  xml_object_calls <- code_to_xml_expr(object_calls)
+  result <- get_object_calls(xml_object_calls)
+  expected_result <- c("obj_b")
+
+  expect_equal(result$text, expected_result)
 })

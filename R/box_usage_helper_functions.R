@@ -66,6 +66,43 @@ get_function_calls <- function(xml) {
   )
 }
 
+#' Get objects called in current source file
+#'
+#' @param xml An XML node list
+#' @return a list of `xml_nodes` and `text`.
+get_object_calls <- function(xml) {
+  xpath_all_lines <- "/exprlist/*"
+  xml_all_lines <- xml2::xml_find_all(xml, xpath_all_lines)
+
+  xpath_box_use <- "
+  //expr[
+    SYMBOL_PACKAGE[
+      (text() = 'box' and following-sibling::SYMBOL_FUNCTION_CALL[text() = 'use'])
+    ]
+  ]
+  /parent::expr
+  "
+
+  xml_box_use <- xml2::xml_find_all(xml, xpath_box_use)
+  xml_no_box_use <- xml_all_lines[!xml_all_lines %in% xml_box_use]
+
+  xpath_all_object_calls <- "
+  .//expr[
+    not(
+      following-sibling::LEFT_ASSIGN or
+      following-sibling::EQ_ASSIGN
+    )
+  ]
+  /SYMBOL"
+  xml_object_calls <- xml2::xml_find_all(xml_no_box_use, xpath_all_object_calls)
+  text <- xml2::xml_text(xml_object_calls, trim = TRUE)
+
+  list(
+    xml_nodes = xml_object_calls,
+    text = text
+  )
+}
+
 internal_r6_refs <- function(func_list) {
   r6_refs <- "self|private\\$.+"
   grepl(r6_refs, func_list)
