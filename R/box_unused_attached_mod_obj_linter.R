@@ -1,6 +1,6 @@
 #' `box` library unused attached module object linter
 #' @export
-box_unused_attached_mod_obj_linter <- function() {
+box_unused_att_mod_obj_linter <- function() {
   lintr::Linter(function(source_expression) {
     if (!lintr::is_lint_level(source_expression, "file")) {
       return(list())
