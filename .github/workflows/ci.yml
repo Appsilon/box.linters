@@ -68,7 +68,9 @@ jobs:
           quit(status = warnings_found)
 
       - name: Test coverage
-        if: matrix.config.os == 'ubuntu-22.04' && matrix.config.r == 'release'
+        if: false && matrix.config.os == 'ubuntu-22.04' && matrix.config.r == 'release'
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         shell: Rscript {0}
         run: covr::codecov()
 
