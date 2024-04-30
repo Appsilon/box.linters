@@ -21,6 +21,7 @@ rhino_default_linters <- lintr::modify_defaults(
   box_trailing_commas_linter = box_trailing_commas_linter(),
   box_universal_import_linter = box_universal_import_linter(),
   box_unused_attached_fun_linter = box_unused_attached_fun_linter(),
+  box_unused_attached_mod_linter = box_unused_attached_mod_linter(),
   box_unused_attached_pkg_linter = box_unused_attached_pkg_linter(),
   box_usage_linter = box_usage_linter(),
   r6_usage_linter = r6_usage_linter(),
