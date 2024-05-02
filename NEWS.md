@@ -1,6 +1,8 @@
 # box.linters development version
 
 * Linting on `box::use(local_module)` patterns
+  * All box-attached modules with or without aliases should be used
+  * All box-attached module functions with or without aliases should be used
   * Catches non-existing `module[function]` or `module[data_object]` imports
   * Catches non-existing `module$function()` or `module$data_object` calls
   * Catches functions that are not box-imported
