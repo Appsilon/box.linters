@@ -119,6 +119,19 @@ test_that("box_usage_linter skips allowed functions passed as function arguments
   lintr::expect_lint(code, NULL, linter)
 })
 
+
+test_that("box_usage_linter skips allowed referencing data objects in lists", {
+  linter <- box_usage_linter()
+
+  code <- "
+  data <- list(element = \"AAA\")
+
+  data$element
+  "
+
+  lintr::expect_lint(code, NULL, linter)
+})
+
 test_that("box_usage_linter skips allowed data objects as lists passed as function arguments", {
   linter <- box_usage_linter()
 
@@ -128,7 +141,24 @@ test_that("box_usage_linter skips allowed data objects as lists passed as functi
   }
 
   data <- list(element = \"AAA\")
+
+  some_function(data)
   "
+
+  lintr::expect_lint(code, NULL, linter)
+})
+
+test_that("box_usage_linter skips allowed referencing functions in lists", {
+  linter <- box_usage_linter()
+
+  code <- "
+  some_list <- list(
+    func = function(i) {
+      i + 1
+    }
+  )
+
+  some_list$func(4)"
 
   lintr::expect_lint(code, NULL, linter)
 })
