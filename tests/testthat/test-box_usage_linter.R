@@ -89,3 +89,18 @@ test_that("box_usage_linter blocks package functions not in global namespace", {
 
   lintr::expect_lint(bad_box_usage_3, list(message = lint_message_1), linter)
 })
+
+test_that("box_usage_linter skips data object names used in function signatures", {
+  linter <- box_usage_linter()
+
+  code <- "
+  some_function <- function(x, y) {
+    x
+    sum(x, y)
+  }
+
+  result <- some_function(4, 3)
+  "
+
+  lintr::expect_lint(code, NULL, linter)
+})
