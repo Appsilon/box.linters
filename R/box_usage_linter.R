@@ -27,7 +27,8 @@ box_usage_linter <- function() {
     attached_modules <- get_attached_modules(xml)
     all_attached_pkg_mod_aliases <- c(attached_packages$aliases, attached_modules$aliases)
     all_attached_box_mods <- c(attached_packages$text, attached_modules$text)
-    all_attached_pkg_mod_fun_flat <- c(unlist(attached_packages$nested), unlist(attached_modules$nested))
+    all_attached_pkg_mod_fun_flat <- c(unlist(attached_packages$nested),
+                                       unlist(attached_modules$nested))
     base_pkgs <- get_base_packages()
     function_calls <- get_function_calls(xml)
 
