@@ -105,7 +105,7 @@ test_that("box_usage_linter skips data object names used in function signatures"
   lintr::expect_lint(code, NULL, linter)
 })
 
-test_that("box_usage_linter skips allowed functions used in function signatures", {
+test_that("box_usage_linter skips allowed functions passed as function arguments", {
   linter <- box_usage_linter()
 
   code <- "
@@ -119,7 +119,7 @@ test_that("box_usage_linter skips allowed functions used in function signatures"
   lintr::expect_lint(code, NULL, linter)
 })
 
-test_that("box_usage_linter skips allowed data objects as lists in function signatures", {
+test_that("box_usage_linter skips allowed data objects as lists passed as function arguments", {
   linter <- box_usage_linter()
 
   code <- "
@@ -129,6 +129,25 @@ test_that("box_usage_linter skips allowed data objects as lists in function sign
 
   data <- list(element = \"AAA\")
   "
+
+  lintr::expect_lint(code, NULL, linter)
+})
+
+test_that("box_usage_linter skips allowed functions in lists passed as function parameters", {
+  linter <- box_usage_linter()
+
+  code <- "
+  some_function <- function(x, y) {
+    x$func(y)
+  }
+
+  some_list <- list(
+    func = function(i) {
+      i + 1
+    }
+  )
+
+  some_function(some_list, 4)"
 
   lintr::expect_lint(code, NULL, linter)
 })
