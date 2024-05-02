@@ -151,3 +151,23 @@ test_that("box_usage_linter skips allowed functions in lists passed as function 
 
   lintr::expect_lint(code, NULL, linter)
 })
+
+test_that("box_usage_linter skips allowed three-dots in function signature", {
+  linter <- box_usage_linter()
+
+  code <- "
+  # ... passed through
+  some_function <- function(x, y, ...) {
+    sum(x, y, ...)
+  }
+
+  some_function(1, 2)
+
+  # ... not passed through
+  another_function <- function(x, ...) {
+    mean(x)
+  }
+  "
+
+  lintr::expect_lint(code, NULL, linter)
+})
