@@ -104,3 +104,17 @@ test_that("box_usage_linter skips data object names used in function signatures"
 
   lintr::expect_lint(code, NULL, linter)
 })
+
+test_that("box_usage_linter skips functions used in function signatures", {
+  linter <- box_usage_linter()
+
+  code <- "
+  some_function <- function(x, y, func = NULL) {
+    func(x, y)
+  }
+
+  some_function(2, 3, sum)
+  "
+
+  lintr::expect_lint(code, NULL, linter)
+})

@@ -94,3 +94,21 @@ test_that("get_object_calls returns objects passed to functions with named param
 
   expect_equal(result$text, expected_result)
 })
+
+test_that("get_function_signature_objs returns object names from all function signatures", {
+  function_definitions <- "
+    some_function <- function(x, y) {
+      x + y
+    }
+
+    another_function <- function(a, b) {
+      a * b
+    }
+  "
+
+  xml_function_definitions <- code_to_xml_expr(function_definitions)
+  result <- get_function_signature_objs(xml_function_definitions)
+  expected_result <- c("x", "y", "a", "b")
+
+  expect_equal(result$text, expected_result)
+})
