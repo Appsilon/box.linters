@@ -1,5 +1,6 @@
 # box.linters development version
 
+* Rationalize file names
 * Linting on `box::use(local_module)` patterns
   * All box-attached modules with or without aliases should be used
   * All box-attached module functions with or without aliases should be used
