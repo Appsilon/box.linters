@@ -17,11 +17,13 @@ box_usage_linter <- function() {
     all_attached_mod_fun <- c(attached_mod_three_dots$text, attached_mod_functions$text)
 
     fun_assignments <- get_declared_functions(xml)
+    obj_assignments <- get_declared_objects(xml)
     fun_sig_objects <- get_function_signature_objs(xml)
     all_known_fun <- c(all_attached_pkg_fun,
                        all_attached_mod_fun,
                        fun_assignments$text,
-                       fun_sig_objects$text)
+                       fun_sig_objects$text,
+                       obj_assignments$text)
 
     attached_packages <- get_attached_packages(xml)
     attached_modules <- get_attached_modules(xml)
