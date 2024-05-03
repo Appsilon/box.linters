@@ -1,6 +1,6 @@
-#' Unused declared function linter
+#' Unused declared function and objects linter
 #' @export
-unused_declared_func_linter <- function() {
+unused_declared_object_linter <- function() {
   lintr::Linter(function(source_expression) {
     if (!lintr::is_lint_level(source_expression, "file")) {
       return(list())
@@ -23,7 +23,7 @@ unused_declared_func_linter <- function() {
         lintr::xml_nodes_to_lints(
           fun_assign,
           source_expression = source_expression,
-          lint_message = "Declared function unused.",
+          lint_message = "Declared function/object unused.",
           type = "warning"
         )
       }

@@ -6,8 +6,8 @@ code_to_xml_expr <- function(text_code) {
   )
 }
 
-test_that("unused_declared_func_linter skips used declared functions", {
-  linter <- unused_declared_func_linter()
+test_that("unused_declared_object_linter skips used declared functions", {
+  linter <- unused_declared_object_linter()
 
   good_box_usage_1 <- "sample_fun <- function(x, y) {
     x + y
@@ -31,9 +31,9 @@ test_that("unused_declared_func_linter skips used declared functions", {
   lintr::expect_lint(good_box_usage_3, NULL, linter)
 })
 
-test_that("unused_declared_func_linter blocks unused declared functions", {
-  linter <- unused_declared_func_linter()
-  lint_message <- rex::rex("Declared function unused.")
+test_that("unused_declared_object_linter blocks unused declared functions", {
+  linter <- unused_declared_object_linter()
+  lint_message <- rex::rex("Declared function/object unused.")
 
   bad_box_usage_1 <- "sample_fun <- function(x, y) {
     x + y
@@ -85,8 +85,8 @@ test_that("get_exported_objects returns correct list of exported objects", {
   expect_equal(result$text, expected_result)
 })
 
-test_that("unused_declared_func_linter skips exported functions", {
-  linter <- unused_declared_func_linter()
+test_that("unused_declared_object_linter skips exported functions", {
+  linter <- unused_declared_object_linter()
 
   code <- "
   #' @export
@@ -107,9 +107,9 @@ test_that("unused_declared_func_linter skips exported functions", {
   lintr::expect_lint(code, NULL, linter)
 })
 
-test_that("unused_declared_func_linter blocks not locally used private functions", {
-  linter <- unused_declared_func_linter()
-  lint_message <- rex::rex("Declared function unused.")
+test_that("unused_declared_object_linter blocks not locally used private functions", {
+  linter <- unused_declared_object_linter()
+  lint_message <- rex::rex("Declared function/object unused.")
 
   code <- "
   #' @export
@@ -134,8 +134,8 @@ test_that("unused_declared_func_linter blocks not locally used private functions
 
 
 
-test_that("unused_declared_func_linter skips exported data objects", {
-  linter <- unused_declared_func_linter()
+test_that("unused_declared_object_linter skips exported data objects", {
+  linter <- unused_declared_object_linter()
 
   code <- "
   #' @export
@@ -164,9 +164,9 @@ test_that("unused_declared_func_linter skips exported data objects", {
   lintr::expect_lint(code, NULL, linter)
 })
 
-test_that("unused_declared_func_linter not locally used private data objects", {
-  linter <- unused_declared_func_linter()
-  lint_message <- rex::rex("Declared function unused.")
+test_that("unused_declared_object_linter not locally used private data objects", {
+  linter <- unused_declared_object_linter()
+  lint_message <- rex::rex("Declared function/object unused.")
 
   code <- "
   #' @export
