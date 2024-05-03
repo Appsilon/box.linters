@@ -1,5 +1,6 @@
 # box.linters development version
 
+* Handle functional programming, cloned functions, curried functions
 * Very basic handling of objects inside function definitions
   * Data objects inside function definitions should not lint
   * Functions passed as arguments and used inside function definitions should not lint
