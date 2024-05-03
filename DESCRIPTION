@@ -1,6 +1,6 @@
 Package: box.linters
 Title: Linters for klmr/box Modules
-Version: 0.0.0.9009
+Version: 0.0.0.9010
 Authors@R:
   c(
     person("Rodrigo", "Basa", role = c("aut", "cre"), email = "opensource+rodrigo@appsilon.com"),
