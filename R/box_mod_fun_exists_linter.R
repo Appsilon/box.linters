@@ -1,5 +1,27 @@
-#' `box` library attached function exists in module linter
+# nolint start: line_length_linter
+#' `box` library attached function exists in called module linter
+#'
+#' Checks that functions being attached exist and are exported by the local module being called.
+#' See the [Explanation: Rhino style guide](https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html)
+#' to learn about the details.
+#' @return A custom linter function for use with `r-lib/lintr`
+#'
+#' @examples
+#' \dontrun{
+#' # will produce lint
+#' lintr::lint(
+#'   text = "box::use(path/to/module_a[function_not_exists],)",
+#'   linter = box_mod_fun_exists_linter()
+#' )
+#'
+#' # okay
+#' lintr::lint(
+#'   text = "box::use(path/to/module_a[function_exists],)",
+#'   linter = box_mod_fun_exists_linter()
+#' )
+#' }
 #' @export
+# nolint end
 box_mod_fun_exists_linter <- function() {
   box_module_functions <- "
   /child::expr[
@@ -35,6 +57,10 @@ box_mod_fun_exists_linter <- function() {
   })
 }
 
+#' Check if functions being attached exist and are being exported by the local module
+#'
+#' @return An XML node list
+#' @keywords internal
 check_attached_mod_funs <- function(xml, xpath) {
   mod_imports <- xml2::xml_find_all(xml, xpath)
 
