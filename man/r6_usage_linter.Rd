@@ -6,6 +6,10 @@
 \usage{
 r6_usage_linter()
 }
+\value{
+A custom linter function for use with \code{r-lib/lintr}.
+}
 \description{
-R6 class usage linter
+Checks method and attribute calls within an R6 class. Covers public, private, and active objects.
+All internal calls should exist. All private methods and attributes should be used.
 }

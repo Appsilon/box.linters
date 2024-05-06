@@ -1,4 +1,63 @@
 #' R6 class usage linter
+#'
+#' Checks method and attribute calls within an R6 class. Covers public, private, and active objects.
+#' All internal calls should exist. All private methods and attributes should be used.
+#' @return A custom linter function for use with `r-lib/lintr`.
+#'
+#' @examples
+#' # will produce lints
+#' box::use(
+#'   R6[R6Class],
+#' )
+#'
+#' badClass <- R6Class('badClass',
+#'   public = list(
+#'     initialize = function() {
+#'       private$not_exists()
+#'     }
+#'   ),
+#'   private = list(
+#'     unused_attribute = 'private data',
+#'     unused_method = function() {
+#'       self$attribute_not_exists
+#'       self$function_not_exists()
+#'     }
+#'   )
+#' )
+#'
+#' lintr::lint(
+#'   text = badClass,
+#'   linters = r6_usage_linter()
+#' )
+#'
+#' # okay
+#' box::use(
+#'   R6[R6Class],
+#' )
+#'
+#' goodClass <- R6Class('goodClass',
+#'   public = list(
+#'     public_attr,
+#'     initialize = function() {
+#'       private$private_func()
+#'     },
+#'     some_function = function () {
+#'       private$private_attr
+#'     }
+#'   ),
+#'   private = list(
+#'     private_attr = 'private data',
+#'     private_func = function() {
+#'       self$public_attr
+#'     }
+#'   )
+#' )
+#'
+#' lintr::lint(
+#'   text = badClass,
+#'   linters = r6_usage_linter()
+#' )
+#' "
 #' @export
 r6_usage_linter <- function() {
   lintr::Linter(function(source_expression) {
@@ -71,6 +130,11 @@ r6_usage_linter <- function() {
   })
 }
 
+#' XPath to get internal components of an R6 class
+#'
+#' @param mode Type of internal component (`public`, `active`, or `private`).
+#' @return An XPath query
+#' @keywords internal
 make_r6_components_xpath <- function(mode = c("public", "active", "private")) {
   glue::glue("
     //SYMBOL_SUB[text() = '{mode}']
@@ -80,6 +144,11 @@ make_r6_components_xpath <- function(mode = c("public", "active", "private")) {
   ")
 }
 
+#' XPath to get internal function or data object calls inside an R6 class
+#'
+#' @param mode Type of internal call (`self` or `private`).
+#' @return An XPath query
+#' @keywords internal
 make_r6_internal_calls_xpath <- function(mode = c("self", "private")) {
   glue::glue("
     //expr[
@@ -93,6 +162,12 @@ make_r6_internal_calls_xpath <- function(mode = c("self", "private")) {
   ")
 }
 
+#' Get declared/defined R6 class components
+#'
+#' @param xml XML representation of R source code.
+#' @param mode Type of internal component (`public`, `active`, `private`).
+#' @return List of XML nodes and corresponding text string values of the nodes
+#' @keywords internal
 get_r6_components <- function(xml, mode = c("public", "active", "private")) {
   xpath <- make_r6_components_xpath(mode)
   components <- xml2::xml_find_all(xml, xpath)
