@@ -16,3 +16,4 @@ of \code{package} = \code{alias}, \code{text} list of all \verb{package$function
 \description{
 Get all packages imported whole
 }
+\keyword{internal}

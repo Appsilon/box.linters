@@ -15,3 +15,4 @@ a list of \code{xml_nodes} and \code{text}.
 \description{
 Get objects called in current source file
 }
+\keyword{internal}

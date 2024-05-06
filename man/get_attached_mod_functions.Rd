@@ -15,3 +15,4 @@ get_attached_mod_functions(xml)
 \description{
 Get imported functions from modules
 }
+\keyword{internal}

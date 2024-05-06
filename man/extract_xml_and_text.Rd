@@ -17,3 +17,4 @@ A list of \code{xml_nodes} and \code{text}.
 \description{
 Extracts XML nodes and text strings matched by XML search
 }
+\keyword{internal}

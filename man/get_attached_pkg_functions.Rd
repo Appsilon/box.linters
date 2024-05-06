@@ -15,3 +15,4 @@ get_attached_pkg_functions(xml)
 \description{
 Get imported functions from packages
 }
+\keyword{internal}

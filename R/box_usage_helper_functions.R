@@ -3,6 +3,7 @@
 #' @param xml An XML node list.
 #' @param xpath An XPath to search xml nodes.
 #' @return A list of `xml_nodes` and `text`.
+#' @keywords internal
 extract_xml_and_text <- function(xml, xpath) {
   xml_nodes <- xml2::xml_find_all(xml, xpath)
   text <- lintr::get_r_string(xml_nodes)
@@ -18,6 +19,7 @@ extract_xml_and_text <- function(xml, xpath) {
 #'
 #' @param xml An XML node list.
 #' @return A list of `xml_nodes` and `text`.
+#' @keywords internal
 get_declared_functions <- function(xml) {
   xpath_function_assignment <- "
   //expr[
@@ -39,6 +41,7 @@ get_declared_functions <- function(xml) {
 #'
 #' @param xml An XML node list
 #' @return A list of `xml_nodes` and `text`.
+#' @keywords internal
 get_function_calls <- function(xml) {
   xpath_box_function_calls <- "
   //expr[
@@ -70,6 +73,7 @@ get_function_calls <- function(xml) {
 #'
 #' @param xml An XML node list
 #' @return a list of `xml_nodes` and `text`.
+#' @keywords internal
 get_object_calls <- function(xml) {
   xpath_all_lines <- "/exprlist/*"
   xml_all_lines <- xml2::xml_find_all(xml, xpath_all_lines)

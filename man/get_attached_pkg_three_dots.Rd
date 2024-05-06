@@ -16,3 +16,4 @@ function names.
 \description{
 Get all functions exported from packages by ...
 }
+\keyword{internal}
