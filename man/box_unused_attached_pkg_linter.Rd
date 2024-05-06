@@ -6,6 +6,68 @@
 \usage{
 box_unused_attached_pkg_linter()
 }
+\value{
+A custom linter function for use with \code{r-lib/lintr}.
+}
 \description{
-\code{box} library unused attached package linter
+Checks that all attached packages are used within the source file. This also covers packages
+attached using the \code{...}.
+}
+\examples{
+# will produce lints
+code <- "
+box::use(
+  stringr
+)
+"
+
+lintr::lint(text = code, linters = box_unused_attached_pkg_linter())
+
+code <- "
+box::use(
+  alias = stringr
+)
+"
+
+lintr::lint(text = code, linters = box_unused_attached_pkg_linter())
+
+code <- "
+box::use(
+  path/to/stringr[...]
+)
+"
+
+lintr::lint(text = code, linters = box_unused_attached_pkg_linter())
+
+# okay
+code <- "
+box::use(
+  stringr
+)
+
+stringr$str_pad()
+"
+
+lintr::lint(text = code, linters = box_unused_attached_pkg_linter())
+
+code <- "
+box::use(
+  alias = stringr
+)
+
+alias$str_pad()
+"
+
+lintr::lint(text = code, linters = box_unused_attached_pkg_linter())
+
+code <- "
+box::use(
+  stringr[...]
+)
+
+str_pad()
+"
+
+lintr::lint(text = code, linters = box_unused_attached_pkg_linter())
+
 }
