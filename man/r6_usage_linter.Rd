@@ -15,6 +15,7 @@ All internal calls should exist. All private methods and attributes should be us
 }
 \examples{
 # will produce lints
+code = "
 box::use(
   R6[R6Class],
 )
@@ -33,13 +34,15 @@ badClass <- R6Class('badClass',
     }
   )
 )
+"
 
 lintr::lint(
-  text = badClass,
+  text = code,
   linters = r6_usage_linter()
 )
 
 # okay
+code = "
 box::use(
   R6[R6Class],
 )
@@ -61,9 +64,10 @@ goodClass <- R6Class('goodClass',
     }
   )
 )
+"
 
 lintr::lint(
-  text = badClass,
+  text = code,
   linters = r6_usage_linter()
 )
 

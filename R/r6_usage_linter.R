@@ -6,6 +6,7 @@
 #'
 #' @examples
 #' # will produce lints
+#' code = "
 #' box::use(
 #'   R6[R6Class],
 #' )
@@ -24,13 +25,15 @@
 #'     }
 #'   )
 #' )
+#' "
 #'
 #' lintr::lint(
-#'   text = badClass,
+#'   text = code,
 #'   linters = r6_usage_linter()
 #' )
 #'
 #' # okay
+#' code = "
 #' box::use(
 #'   R6[R6Class],
 #' )
@@ -52,9 +55,10 @@
 #'     }
 #'   )
 #' )
+#' "
 #'
 #' lintr::lint(
-#'   text = badClass,
+#'   text = code,
 #'   linters = r6_usage_linter()
 #' )
 #'
