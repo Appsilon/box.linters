@@ -2,7 +2,7 @@
 % Please edit documentation in R/box_mod_fun_exists_linter.R
 \name{box_mod_fun_exists_linter}
 \alias{box_mod_fun_exists_linter}
-\title{\code{box} library attached function exists in called module linter}
+\title{\code{box} library attached function exists and exported by called module linter}
 \usage{
 box_mod_fun_exists_linter()
 }

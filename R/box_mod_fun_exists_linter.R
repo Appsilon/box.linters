@@ -1,5 +1,5 @@
 # nolint start: line_length_linter
-#' `box` library attached function exists in called module linter
+#' `box` library attached function exists and exported by called module linter
 #'
 #' Checks that functions being attached exist and are exported by the local module being called.
 #' See the [Explanation: Rhino style guide](https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html)
