@@ -6,6 +6,49 @@
 \usage{
 box_unused_att_pkg_fun_linter()
 }
+\value{
+A custom linter function for use with \code{r-lib/lintr}.
+}
 \description{
-\code{box} library unused attached package function linter
+Checks that all attached package functions are used within the source file.
+}
+\examples{
+# will produce lints
+code <- "
+box::use(
+  stringr[str_pad],
+)
+"
+
+lintr::lint(text = code, linters = box_unused_att_pkg_fun_linter())
+
+code <- "
+box::use(
+  stringr[alias_func = str_pad],
+)
+"
+
+lintr::lint(text = code, linters = box_unused_att_pkg_fun_linter())
+
+# okay
+code <- "
+box::use(
+  stringr[str_pad],
+)
+
+str_pad()
+"
+
+lintr::lint(text = code, linters = box_unused_att_pkg_fun_linter())
+
+code <- "
+box::use(
+  stringr[alias_func = str_pad],
+)
+
+alias_func()
+"
+
+lintr::lint(text = code, linters = box_unused_att_pkg_fun_linter())
+
 }
