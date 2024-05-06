@@ -12,4 +12,7 @@ An XML node list
 \description{
 Check if functions being attached exist and are being exported by the local module
 }
+\seealso{
+\code{\link[=get_module_exports]{get_module_exports()}}
+}
 \keyword{internal}

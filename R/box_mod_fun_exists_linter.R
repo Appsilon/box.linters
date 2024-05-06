@@ -60,6 +60,8 @@ box_mod_fun_exists_linter <- function() {
 #' Check if functions being attached exist and are being exported by the local module
 #'
 #' @return An XML node list
+#'
+#' @seealso [get_module_exports()]
 #' @keywords internal
 check_attached_mod_funs <- function(xml, xpath) {
   mod_imports <- xml2::xml_find_all(xml, xpath)
