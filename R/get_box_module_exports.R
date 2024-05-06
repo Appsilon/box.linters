@@ -1,3 +1,17 @@
+#' Get a list of functions and data objects exported by a local `box` module
+#'
+#' An implementation for `box` modules to provide similar functionality as `getNamespaceExports()`
+#' for libraries/packages.
+#'
+#' @param declaration The mod or package call expression. See `box:::parse_spec()` source
+#' code for more details.
+#' @param alias Mod or package-level alias as a character string. See `box:::parse_spec()` source
+#' code for more details. Default is fine for `box.linters` use.
+#' @param caller The environment from which \code{box::use} was invoked.
+#' Default is fine for `box.linters` use.
+#' @return A list of exported functions and data objects.
+#' @seealso [getNamespaceExports()]
+#' @keywords internal
 get_box_module_exports <- function(declaration, alias = "", caller = globalenv()) {
   if (is.call(declaration)) {
     declaration
