@@ -57,7 +57,7 @@
 #'   text = badClass,
 #'   linters = r6_usage_linter()
 #' )
-#' "
+#'
 #' @export
 r6_usage_linter <- function() {
   lintr::Linter(function(source_expression) {
