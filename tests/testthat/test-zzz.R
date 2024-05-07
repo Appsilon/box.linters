@@ -17,6 +17,20 @@ str_trim()"
   lintr::expect_lint(good_code, NULL, linters)
 })
 
+test_that("rhino_default_linters allows customization of lintr default linters", {
+  linters <- lintr::linters_with_defaults(
+    defaults = rhino_default_linters,
+    line_length_linter = lintr::line_length_linter(102)
+  )
+
+long_code <- as.character(glue::glue(
+  '"12345678901234567890123456789012345678901234567890',
+  '12345678901234567890123456789012345678901234567890"'
+))
+
+  lintr::expect_lint(long_code, NULL, linters)
+})
+
 test_that("rhino_default_linters blocks improper use of box", {
   linters <- lintr::linters_with_defaults(defaults = rhino_default_linters)
 
