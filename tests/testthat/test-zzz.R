@@ -17,6 +17,20 @@ str_trim()"
   lintr::expect_lint(good_code, NULL, linters)
 })
 
+test_that("rhino_default_linters allows customization of lintr default linters", {
+  linters <- lintr::linters_with_defaults(
+    defaults = rhino_default_linters,
+    line_length_linter = lintr::line_length_linter(102)
+  )
+
+  long_code <- as.character(glue::glue(
+    '"12345678901234567890123456789012345678901234567890',
+    '12345678901234567890123456789012345678901234567890"'
+  ))
+
+  lintr::expect_lint(long_code, NULL, linters)
+})
+
 test_that("rhino_default_linters blocks improper use of box", {
   linters <- lintr::linters_with_defaults(defaults = rhino_default_linters)
 
@@ -40,7 +54,7 @@ str_trim()"
   ), linters)
 })
 
-test_that("rhino_default_linters skips violation of lintr default linters", {
+test_that("rhino_default_linters blocks violation of lintr default linters", {
   linters <- lintr::linters_with_defaults(defaults = rhino_default_linters)
 
   bad_code_1 <- "
@@ -65,7 +79,7 @@ str_trim()"
   lintr::expect_lint(bad_code_1, list(message = lint_message_1), linters)
 
   lint_message_2 <- rex::rex(
-    "Lines should not be more than 100 characters. This line is 102 characters"
+    "Lines should not be more than 80 characters. This line is 102 characters"
   )
   lintr::expect_lint(bad_code_2, list(message = lint_message_2), linters)
 })
