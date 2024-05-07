@@ -1,4 +1,44 @@
-#' Unused declared function and objects linter
+#' Unused declared function and data objects linter
+#'
+#' Checks that all defined/declared functions and data objects are used within the source file.
+#' Functions and data objects that are marked with \code{@export} are ignored.
+#'
+#' @return A custom linter function for use with `r-lib/lintr`.
+#'
+#' @examples
+#' # will produce lint
+#' code <- "
+#' #' @export
+#' public_function <- function() {
+#'
+#' }
+#'
+#' private_function <- function() {
+#'
+#' }
+#'
+#' local_data <- \"A\"
+#' "
+#'
+#' lintr::lint(text = code, linters = unused_declared_object_linter())
+#'
+#' # okay
+#' code <- "
+#' #' @export
+#' public_function <- function() {
+#'   some_variable <- local_data
+#'   private_function()
+#' }
+#'
+#' private_function <- function() {
+#'
+#' }
+#'
+#' local_data <- \"A\"
+#' "
+#'
+#' lintr::lint(text = code, linters = unused_declared_object_linter())
+#'
 #' @export
 unused_declared_object_linter <- function() {
   lintr::Linter(function(source_expression) {
