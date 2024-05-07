@@ -25,5 +25,5 @@ mtcars |>
   select(mpg, cyl) |>
   filter(mpg <= 10)"
 
-lintr::expect_lint(code, NULL, linters)
+  lintr::expect_lint(code, NULL, linters)
 })
