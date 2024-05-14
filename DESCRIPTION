@@ -1,6 +1,6 @@
 Package: box.linters
 Title: Linters for klmr/box Modules
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R:
   c(
     person("Rodrigo", "Basa", role = c("aut", "cre"), email = "opensource+rodrigo@appsilon.com"),
@@ -15,9 +15,12 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
 Depends:
   R (>= 2.10)
+Imports:
+  glue,
+  lintr (>= 3.0.0),
+  xml2
 Suggests:
   covr,
-  lintr,
   rcmdcheck,
   rex,
   spelling,
