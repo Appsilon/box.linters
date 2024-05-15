@@ -1,5 +1,6 @@
 # box.linters development version
 
+* Test for dplyr column names
 * Rationalize file names
 * Linting on `box::use(local_module)` patterns
   * All box-attached modules with or without aliases should be used
