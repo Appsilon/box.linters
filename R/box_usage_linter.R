@@ -8,27 +8,33 @@ box_usage_linter <- function() {
 
     xml <- source_expression$full_xml_parsed_content
 
-    attached_functions <- get_attached_functions(xml)
-    attached_three_dots <- get_attached_three_dots(xml)
-    all_attached_fun <- c(attached_functions$text, attached_three_dots$text)
+    attached_pkg_functions <- get_attached_pkg_functions(xml)
+    attached_pkg_three_dots <- get_attached_pkg_three_dots(xml)
+    all_attached_pkg_fun <- c(attached_pkg_functions$text, attached_pkg_three_dots$text)
+
+    attached_mod_functions <- get_attached_mod_functions(xml)
+    attached_mod_three_dots <- get_attached_mod_three_dots(xml)
+    all_attached_mod_fun <- c(attached_mod_three_dots$text, attached_mod_functions$text)
 
     fun_assignments <- get_declared_functions(xml)
-    all_known_fun <- c(all_attached_fun, fun_assignments$text)
+    all_known_fun <- c(all_attached_pkg_fun, all_attached_mod_fun, fun_assignments$text)
 
     attached_packages <- get_attached_packages(xml)
-    function_calls <- get_function_calls(xml)
+    attached_modules <- get_attached_modules(xml)
+    all_attached_box_mods <- c(attached_packages$text, attached_modules$text)
     base_pkgs <- get_base_packages()
+    function_calls <- get_function_calls(xml)
 
     lapply(function_calls$xml_nodes, function(fun_call) {
       fun_call_text <- xml2::xml_text(fun_call)
 
       if (!fun_call_text %in% base_pkgs$text) {
         if (grepl(".+\\$.+", fun_call_text)) {
-          if (!fun_call_text %in% attached_packages$text) {
+          if (!fun_call_text %in% all_attached_box_mods) {
             lintr::xml_nodes_to_lints(
               fun_call,
               source_expression = source_expression,
-              lint_message = "package$function does not exist.",
+              lint_message = "<package/module>$function does not exist.",
               type = "warning"
             )
           }
@@ -45,19 +51,6 @@ box_usage_linter <- function() {
       }
     })
   })
-}
-
-get_packages_exports <- function(pkg_list) {
-  exported_funs <- lapply(pkg_list, function(pkg) {
-    tryCatch(
-      getNamespaceExports(pkg),
-      error = function(e) character()
-    )
-  })
-
-  names(exported_funs) <- pkg_list
-
-  exported_funs
 }
 
 get_base_packages <- function() {

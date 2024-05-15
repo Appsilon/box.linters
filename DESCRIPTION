@@ -1,6 +1,6 @@
 Package: box.linters
 Title: Linters for klmr/box Modules
-Version: 0.0.0.9003
+Version: 0.0.0.9004
 Authors@R:
   c(
     person("Rodrigo", "Basa", role = c("aut", "cre"), email = "opensource+rodrigo@appsilon.com"),
@@ -18,8 +18,10 @@ Depends:
 Imports:
   glue,
   lintr (>= 3.0.0),
+  rlang,
   xml2
 Suggests:
+  box,
   covr,
   dplyr,
   fs,
@@ -29,7 +31,8 @@ Suggests:
   shiny,
   spelling,
   stringr,
-  testthat (>= 3.0.0)
+  testthat (>= 3.0.0),
+  xmlparsedata
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Language: en-US

@@ -8,7 +8,7 @@ box_unused_attached_fun_linter <- function() {
 
     xml <- source_expression$full_xml_parsed_content
 
-    attached_functions <- get_attached_functions(xml)
+    attached_functions <- get_attached_pkg_functions(xml)
     function_calls <- get_function_calls(xml)
 
     lapply(attached_functions$xml, function(fun_import) {

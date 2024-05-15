@@ -1,0 +1,51 @@
+code_to_xml_expr <- function(text_code) {
+  xml2::read_xml(
+    xmlparsedata::xml_parse_data(
+      parse(text = text_code, keep.source = TRUE)
+    )
+  )
+}
+
+test_that("get_declared_functions returns correct list of function definitions", {
+  function_definitions <- "
+fun_a <- function() {
+
+}
+
+fun_b <- function(x, y) {
+
+}
+
+obj_a <- c(1, 2, 3)
+"
+
+  xml_function_definitions <- code_to_xml_expr(function_definitions)
+  result <- get_declared_functions(xml_function_definitions)
+  expected_result <- c("fun_a", "fun_b")
+
+  expect_equal(result$text, expected_result)
+})
+
+test_that("get_function_calls returns correct list of function calls", {
+  function_calls <- "
+fun_a()
+fun_b(1, 2)
+obj_a <- obj_b
+"
+
+  xml_function_calls <- code_to_xml_expr(function_calls)
+  result <- get_function_calls(xml_function_calls)
+  expected_result <- c("fun_a", "fun_b")
+
+  expect_equal(result$text, expected_result)
+})
+
+test_that("get_declared_objects returns correct list of object definitions", {
+  # TODO
+  expect_true(TRUE)
+})
+
+test_that("get_object_calls returns correct list of object calls", {
+  # TODO
+  expect_true(TRUE)
+})
