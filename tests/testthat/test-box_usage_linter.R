@@ -201,3 +201,35 @@ test_that("box_usage_linter skips allowed three-dots in function signature", {
 
   lintr::expect_lint(code, NULL, linter)
 })
+
+test_that("box_usage_linter skips allowed cloned functions", {
+  linter <- box_usage_linter()
+
+  code <- "
+  some_function <- function(x) {
+    x
+  }
+
+  this_fun <- some_function
+  this_fun(2)
+  "
+
+  lintr::expect_lint(code, NULL, linter)
+})
+
+test_that("box_usage_linter skips allowed curried functions", {
+  linter <- box_usage_linter()
+
+  code <- "
+  some_function <- function(x) {
+    function(y) {
+      x + y
+    }
+  }
+
+  this_fun <- some_function(1)
+  this_fun(2)
+  "
+
+  lintr::expect_lint(code, NULL, linter)
+})

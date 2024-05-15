@@ -35,6 +35,22 @@ get_declared_functions <- function(xml) {
   extract_xml_and_text(xml, xpath_function_assignment)
 }
 
+#' Get locally declared/defined data objects
+#'
+#' @param xml An XML node list
+#' @return A list of `xml_nodes` and `text`.
+get_declared_objects <- function(xml) {
+  xpath_object_assignment <- "
+  //expr[LEFT_ASSIGN]/expr[1]/SYMBOL[1] |
+  //equal_assign/expr[1]/SYMBOL[1] |
+  //expr_or_assign_or_help/expr[1]/SYMBOL[1] |
+  //expr[expr[1][SYMBOL_FUNCTION_CALL/text()='assign']]/expr[2]/* |
+  //expr[expr[1][SYMBOL_FUNCTION_CALL/text()='setMethod']]/expr[2]/*
+  "
+
+  extract_xml_and_text(xml, xpath_object_assignment)
+}
+
 #' Get functions called in current source file
 #'
 #' @param xml An XML node list

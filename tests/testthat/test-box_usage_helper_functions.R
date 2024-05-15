@@ -112,3 +112,22 @@ test_that("get_function_signature_objs returns object names from all function si
 
   expect_equal(result$text, expected_result)
 })
+
+test_that("get_declared_objects returns object names declared", {
+  object_definitions <- "
+    some_function <- function() {
+      2
+    }
+
+    some_object <- 3
+    another_object = 4
+
+    assign(\"assigned_object\", 5)
+  "
+
+  xml_object_definitions <- code_to_xml_expr(object_definitions)
+  result <- get_declared_objects(xml_object_definitions)
+  expected_results <- c("some_function", "some_object", "another_object", "assigned_object")
+
+  expect_equal(result$text, expected_results)
+})
