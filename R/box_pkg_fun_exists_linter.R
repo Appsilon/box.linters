@@ -1,15 +1,6 @@
 #' `box` library attached function exists in package linter
 #' @export
 box_pkg_fun_exists_linter <- function() {
-  box_base_path <- "
-  //SYMBOL_PACKAGE[
-    text() = 'box' and
-    following-sibling::SYMBOL_FUNCTION_CALL[text() = 'use']
-  ]
-  /parent::expr
-  /parent::expr
-  "
-
   box_package_functions <- "
   /child::expr[
     expr/SYMBOL and
@@ -25,7 +16,7 @@ box_pkg_fun_exists_linter <- function() {
   ]
   "
 
-  xpath_package_functions <- paste(box_base_path, box_package_functions)
+  xpath_package_functions <- paste(box_package_base_path(), box_package_functions)
 
   lintr::Linter(function(source_expression) {
     if (!lintr::is_lint_level(source_expression, "file")) {
@@ -68,8 +59,6 @@ check_attached_pkg_funs <- function(xml, xpath) {
     "
 
   not_exported <- lapply(pkg_imports, function(pkg_import) {
-    xml2::xml_find_all(pkg_import, xpath_just_functions)
-
     packages <- extract_xml_and_text(pkg_import, xpath_pkg_names)
     exported_functions <- unlist(get_packages_exports(packages$text))
     attached_functions <- extract_xml_and_text(pkg_import, xpath_just_functions)

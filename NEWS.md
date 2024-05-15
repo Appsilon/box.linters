@@ -1,6 +1,7 @@
 # box.linters development version
 
 * Linting on `box::use(local_module)` patterns
+  * Catches non-existing `module[function]` or `module[data_object]` imports
   * Catches non-existing `module$function()` or `module$data_object` calls
   * Catches functions that are not box-imported
 * Linting on `box::use(package)` patterns

@@ -1,4 +1,5 @@
-# ADD objects check
+# unused module import box_unused_attached_fun_linter
+# unused module function import box_unused_attached_pkg_linter
 
 
 test_that("handle attached R6 class from box module", {
@@ -31,7 +32,7 @@ test_that("handle aliased R6 class from box module", {
 
 
 
-
+# ADD objects check # maybe not
 test_that("handle dplyr pipeline objects", {
   "box::use(
     dplyr[`%>%`, select, filter]
