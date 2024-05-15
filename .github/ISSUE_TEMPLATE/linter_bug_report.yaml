@@ -1,0 +1,43 @@
+name: 🐞 Linter Bug Report
+description: Report a linting problem you encountered
+labels: ['status: bug']
+title: ['[LINT_BUG]']
+body:
+  - type: markdown
+    attributes:
+      value: >
+        Thank you for taking the time to complete this bug report!
+  - type: textarea
+    attributes:
+      label: box.linters version
+      description: Result of `packageVersion("box.linters")`
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Sample source code to lint
+      description: A snippet of R source code where lint issues are found
+    validation:
+      required: true
+  - type: textarea
+    attributes:
+      label: Lint command used
+      value: >
+      lintr::lint(
+        code,
+        linters = lintr::linters_with_defaults(defaults = box.linters::rhino_default_linters)
+      )
+    validation:
+      required: true
+  - type: textarea
+    attributes:
+      label: Lint result
+      description: If there was unexpected lint, what was the lint message and at what line?
+    validation:
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected result
+      description: What should have happened?
+    validation:
+      required: true
