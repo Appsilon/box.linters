@@ -6,6 +6,7 @@
   * List data objects passed into functions should not lint
   * Functions in lists should not lint. _Same `x$y()` pattern as `package$function()`_
   * ... in function signature should not lint.
+* Test for dplyr column names
 * Rationalize file names
 * Linting on `box::use(local_module)` patterns
   * All box-attached modules with or without aliases should be used
