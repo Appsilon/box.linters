@@ -13,7 +13,6 @@
 # nolint end
 rhino_default_linters <- lintr::modify_defaults(
   defaults = lintr::default_linters,
-  line_length_linter = lintr::line_length_linter(100),
   box_alphabetical_calls_linter = box_alphabetical_calls_linter(),
   box_func_import_count_linter = box_func_import_count_linter(),
   box_pkg_fun_exists_linter = box_pkg_fun_exists_linter(),
