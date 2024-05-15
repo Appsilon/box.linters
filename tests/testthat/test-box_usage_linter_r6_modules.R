@@ -7,11 +7,11 @@ test_that("box_usage_linter skips allowed R6 object instantiation", {
     R6[R6Class],
   )
 
-  SomeClass <- R6Class(\"SomeClass\",     # nolint
+  some_class <- R6Class(\"SomeClass\",
     public = list()
   )
 
-  s <- SomeClass$new()
+  s <- some_class$new()
   "
 
   lintr::expect_lint(code, NULL, linter)
@@ -21,10 +21,10 @@ test_that("box_usage_linter skips allowed box-imported R6 object instantiation",
   linter <- box_usage_linter()
 
   code <- "box::use(
-    path/to/module_r6[SomeClass]
+    path/to/module_r6[some_class]
   )
 
-  s <- SomeClass$new()
+  s <- some_class$new()
   "
 
   lintr::expect_lint(code, NULL, linter)
@@ -37,7 +37,7 @@ test_that("box_usage_linter skips allowed whole-module-imported R6 object instan
     path/to/module_r6
   )
 
-  s <- module_r6$SomeClass$new()
+  s <- module_r6$some_class$new()
   "
 
   lintr::expect_lint(code, NULL, linter)
@@ -50,12 +50,12 @@ test_that("box_usage_linter skips allowed dynamically added data members to R6 c
     R6[R6Class],
   )
 
-  SomeClass <- R6Class(\"SomeClass\",     # nolint
+  some_class <- R6Class(\"SomeClass\",
     public = list()
   )
 
-  SomeClass$set(\"public\", \"x\", 10)
-  s <- SomeClass$new()
+  some_class$set(\"public\", \"x\", 10)
+  s <- some_class$new()
   s$x
   "
 
@@ -68,11 +68,11 @@ test_that(
     linter <- box_usage_linter()
 
     code <- "box::use(
-      path/to/module_r6[SomeClass]
+      path/to/module_r6[some_class]
     )
 
-    SomeClass$set(\"public\", \"x\", 10)
-    s <- SomeClass$new()
+    some_class$set(\"public\", \"x\", 10)
+    s <- some_class$new()
     s$x
     "
 
@@ -89,8 +89,8 @@ test_that(
       path/to/module_r6
     )
 
-    module_r6$SomeClass$set(\"public\", \"x\", 10)
-    s <- module_r6$SomeClass$new()
+    module_r6$some_class$set(\"public\", \"x\", 10)
+    s <- module_r6$some_class$new()
     s$x
     "
 
@@ -105,14 +105,14 @@ test_that("box_usage_linter skips allowed dynamically added methods to R6 class"
     R6[R6Class],
   )
 
-  SomeClass <- R6Class(\"SomeClass\",     # nolint
+  some_class <- R6Class(\"SomeClass\",
     public = list()
   )
 
-  SomeClass$set(\"public\", \"x\", function() {
+  some_class$set(\"public\", \"x\", function() {
     \"X\"
   })
-  s <- SomeClass$new()
+  s <- some_class$new()
   s$x()
   "
 
@@ -123,13 +123,13 @@ test_that("box_usage_linter skips allowed dynamically added methods to box-impor
   linter <- box_usage_linter()
 
   code <- "box::use(
-    path/to/module_r6[SomeClass]
+    path/to/module_r6[some_class]
   )
 
-  SomeClass$set(\"public\", \"x\", function() {
+  some_class$set(\"public\", \"x\", function() {
     \"X\"
   })
-  s <- SomeClass$new()
+  s <- some_class$new()
   s$x()
   "
 
@@ -145,10 +145,10 @@ test_that(
       path/to/module_r6
     )
 
-    module_r6$SomeClass$set(\"public\", \"x\", function() {
+    module_r6$some_class$set(\"public\", \"x\", function() {
       \"X\"
     })
-    s <- module_r6$SomeClass$new()
+    s <- module_r6$some_class$new()
     s$x()
     "
 
@@ -163,7 +163,7 @@ test_that("box_usage_linter skips allowed R6 object cloning", {
     R6[R6Class],
   )
 
-  SomeClass <- R6Class(\"SomeClass\",     # nolint
+  some_class <- R6Class(\"SomeClass\",
     public = list(
       method = function() {
         \"do something\"
@@ -171,7 +171,7 @@ test_that("box_usage_linter skips allowed R6 object cloning", {
     )
   )
 
-  s <- SomeClass$new()
+  s <- some_class$new()
   t <- s$clone()
   t$method()
   "
@@ -183,10 +183,10 @@ test_that("box_usage_linter skips allowed box-imported R6 object cloning", {
   linter <- box_usage_linter()
 
   code <- "box::use(
-    path/to/module_r6[SomeClass]
+    path/to/module_r6[some_class]
   )
 
-  s <- SomeClass$new()
+  s <- some_class$new()
   t <- s$clone()
   t$method()
   "
@@ -201,7 +201,7 @@ test_that("box_usage_linter skips allowed whole-module-imported R6 object clonin
     path/to/module_r6
   )
 
-  s <- module_r6$SomeClass$new()
+  s <- module_r6$some_class$new()
   t <- s$clone()
   t$method()
   "
@@ -213,7 +213,7 @@ test_that("box_usage_linter skips allowed box-imported aliased R6 object instant
   linter <- box_usage_linter()
 
   code <- "box::use(
-    path/to/module_r6[class_alias = SomeClass]
+    path/to/module_r6[class_alias = some_class]
   )
 
   s <- class_alias$new()
@@ -230,7 +230,7 @@ test_that("box_usage_linter skips allowed whole-module-imported aliased R6 objec
     mod_alias = path/to/module_r6
   )
 
-  s <- mod_alias$SomeClass$new()
+  s <- mod_alias$some_class$new()
   s$method()
   "
 

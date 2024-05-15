@@ -3,7 +3,7 @@ box::use(
 )
 
 #' @export
-SomeClass <- R6Class("SomeClass",    # nolint
+some_class <- R6Class("SomeClass",
   public = list(
     char_attribute = "char",
     method = function() {
