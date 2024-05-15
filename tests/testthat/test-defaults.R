@@ -5,10 +5,14 @@ test_that("rhino_default_linters skips properly styled code", {
 box::use(
   dplyr,
   stringr[
-    mutate,
-    select
+    str_pad,
+    str_trim
   ],
-)"
+)
+
+dplyr$select()
+str_pad()
+str_trim()"
 
   lintr::expect_lint(good_code, NULL, linters)
 })
@@ -20,10 +24,14 @@ test_that("rhino_default_linters blocks improper use of box", {
 box::use(
   dplyr,
   stringr[
-    select,
-    mutate
+    str_trim,
+    str_pad
   ],
-)"
+)
+
+dplyr$select()
+str_pad()
+str_trim()"
 
   lint_message <- rex::rex("Module and function imports must be sorted alphabetically.")
   lintr::expect_lint(bad_code, list(
@@ -39,10 +47,14 @@ test_that("rhino_default_linters skips violation of lintr default linters", {
 box::use(
 dplyr,
 stringr[
-  mutate,
-  select
+  str_pad,
+  str_trim
 ],
-)"
+)
+
+dplyr$select()
+str_pad()
+str_trim()"
 
   bad_code_2 <- as.character(glue::glue(
     '"12345678901234567890123456789012345678901234567890',
