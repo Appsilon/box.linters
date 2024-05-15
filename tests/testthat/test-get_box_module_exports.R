@@ -1,7 +1,6 @@
 options(box.path = file.path(getwd(), "mod"))
 
 test_that("get_box_module_exports returns correct list of exported functions", {
-  print(getOption("box.path"))
   module <- "path/to/module_a"
   result <- get_box_module_exports(module)
   expected_output <- c("a_fun_a", "a_fun_b")
