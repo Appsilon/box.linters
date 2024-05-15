@@ -103,6 +103,18 @@ get_object_calls <- function(xml) {
   )
 }
 
+#' Get objects names in function signatures from all functions in current source file
+#'
+#' @description
+#' This is a brute-force extraction of `SYMBOL_FORMALS` and is not scope-aware.
+#'
+#' @param xml An XML node list
+#' @return a list of `xml_nodes` and `text`.
+get_function_signature_objs <- function(xml) {
+  xpath_all_func_sig_objs <- "//SYMBOL_FORMALS"
+  extract_xml_and_text(xml, xpath_all_func_sig_objs)
+}
+
 internal_r6_refs <- function(func_list) {
   r6_refs <- "self|private\\$.+"
   grepl(r6_refs, func_list)

@@ -1,5 +1,11 @@
 # box.linters development version
 
+* Very basic handling of objects inside function definitions
+  * Data objects inside function definitions should not lint
+  * Functions passed as arguments and used inside function definitions should not lint
+  * List data objects passed into functions should not lint
+  * Functions in lists should not lint. _Same `x$y()` pattern as `package$function()`_
+  * ... in function signature should not lint.
 * Test for dplyr column names
 * Rationalize file names
 * Linting on `box::use(local_module)` patterns

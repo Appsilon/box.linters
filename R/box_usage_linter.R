@@ -17,11 +17,18 @@ box_usage_linter <- function() {
     all_attached_mod_fun <- c(attached_mod_three_dots$text, attached_mod_functions$text)
 
     fun_assignments <- get_declared_functions(xml)
-    all_known_fun <- c(all_attached_pkg_fun, all_attached_mod_fun, fun_assignments$text)
+    fun_sig_objects <- get_function_signature_objs(xml)
+    all_known_fun <- c(all_attached_pkg_fun,
+                       all_attached_mod_fun,
+                       fun_assignments$text,
+                       fun_sig_objects$text)
 
     attached_packages <- get_attached_packages(xml)
     attached_modules <- get_attached_modules(xml)
+    all_attached_pkg_mod_aliases <- c(attached_packages$aliases, attached_modules$aliases)
     all_attached_box_mods <- c(attached_packages$text, attached_modules$text)
+    all_attached_pkg_mod_fun_flat <- c(unlist(attached_packages$nested),
+                                       unlist(attached_modules$nested))
     base_pkgs <- get_base_packages()
     function_calls <- get_function_calls(xml)
 
@@ -31,12 +38,18 @@ box_usage_linter <- function() {
       if (!fun_call_text %in% base_pkgs$text) {
         if (grepl(".+\\$.+", fun_call_text)) {
           if (!fun_call_text %in% all_attached_box_mods) {
-            lintr::xml_nodes_to_lints(
-              fun_call,
-              source_expression = source_expression,
-              lint_message = "<package/module>$function does not exist.",
-              type = "warning"
-            )
+            split_call_names <- strsplit(fun_call_text, "\\$")[[1]]
+            pkg_mod_name_called <- split_call_names[1]
+            function_name_called <- split_call_names[2]
+            if (pkg_mod_name_called %in% all_attached_pkg_mod_aliases ||
+                  function_name_called %in% all_attached_pkg_mod_fun_flat) {
+              lintr::xml_nodes_to_lints(
+                fun_call,
+                source_expression = source_expression,
+                lint_message = "<package/module>$function does not exist.",
+                type = "warning"
+              )
+            }
           }
         } else {
           if (!fun_call_text %in% all_known_fun) {
