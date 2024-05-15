@@ -1,0 +1,58 @@
+#' `box` library unused attached module linter
+#' @export
+box_unused_attached_mod_linter <- function() {
+  lintr::Linter(function(source_expression) {
+    if (!lintr::is_lint_level(source_expression, "file")) {
+      return(list())
+    }
+
+    xml <- source_expression$full_xml_parsed_content
+
+    attached_modules <- get_attached_modules(xml)
+    attached_three_dots <- get_attached_mod_three_dots(xml)
+    function_calls <- get_function_calls(xml)
+
+    unused_module <- lapply(attached_modules$xml, function(attached_module) {
+      module_text <- basename(lintr::get_r_string(attached_module))
+      aliased_module_text <- attached_modules$aliases[module_text]
+
+      func_list <- paste(
+        aliased_module_text,
+        attached_modules$nested[[aliased_module_text]],
+        sep = "$"
+      )
+
+      functions_used <- length(intersect(func_list, function_calls$text))
+
+      if (functions_used == 0) {
+        lintr::xml_nodes_to_lints(
+          attached_module,
+          source_expression = source_expression,
+          lint_message = "Attached module unused.",
+          type = "warning"
+        )
+      }
+    })
+
+    unused_three_dots <- lapply(attached_three_dots$xml, function(attached_module) {
+      module_text <- basename(lintr::get_r_string(attached_module))
+      module_text <- sub("\\[\\.\\.\\.\\]", "", module_text)
+      func_list <- attached_three_dots$nested[[module_text]]
+      functions_used <- length(intersect(func_list, function_calls$text))
+
+      if (functions_used == 0) {
+        lintr::xml_nodes_to_lints(
+          attached_module,
+          source_expression = source_expression,
+          lint_message = "Three-dots attached module unused.",
+          type = "warning"
+        )
+      }
+    })
+
+    c(
+      unused_module,
+      unused_three_dots
+    )
+  })
+}

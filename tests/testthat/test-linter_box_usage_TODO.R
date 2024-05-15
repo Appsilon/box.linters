@@ -1,6 +1,15 @@
-# unused module import box_unused_attached_fun_linter
-# unused module function import box_unused_attached_pkg_linter
+test_that("handle attached R6 class from box module", {
+  "box::use(
+    path/to/module
+  )
 
+  new_object <- module$some_class$new()
+  new_object$some_method()
+  new_object$some_property
+  "
+
+  expect_true(TRUE)
+})
 
 test_that("handle attached R6 class from box module", {
   "box::use(
@@ -145,6 +154,7 @@ test_that("handle cloned R6 objects", {
   expect_true(TRUE)
 })
 
+# ======== box local module
 
 test_that("not locally used exported functions and data objects in box modules should not lint", {
   "box::use(

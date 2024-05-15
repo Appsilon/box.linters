@@ -1,5 +1,5 @@
 test_that("box_unused_attached_fun_linter skips used box-attached functions.", {
-  linter <- box_unused_attached_fun_linter()
+  linter <- box_unused_att_pkg_fun_linter()
 
   good_box_usage <- "box::use(
     fs[dir_ls, path_file],
@@ -23,7 +23,7 @@ test_that("box_unused_attached_fun_linter skips used box-attached functions.", {
 })
 
 test_that("box_unused_attached_fun_linter skips used box-attached aliased functions.", {
-  linter <- box_unused_attached_fun_linter()
+  linter <- box_unused_att_pkg_fun_linter()
 
   good_box_usage <- "box::use(
     fs[fun_alias = dir_ls, path_file],
@@ -47,10 +47,9 @@ test_that("box_unused_attached_fun_linter skips used box-attached aliased functi
 })
 
 test_that("box_unused_attached_fun_linter blocks box-attached functions unused.", {
-  linter <- box_unused_attached_fun_linter()
+  linter <- box_unused_att_pkg_fun_linter()
   lint_message_1 <- rex::rex("Imported function unused.")
 
-  # filter is unused
   bad_box_usage_1 <- "box::use(
     fs[dir_ls, path_file],
     shiny[...],
@@ -72,7 +71,7 @@ test_that("box_unused_attached_fun_linter blocks box-attached functions unused."
 })
 
 test_that("box_unused_attached_fun_linter blocks box-attached aliased functions unused.", {
-  linter <- box_unused_attached_fun_linter()
+  linter <- box_unused_att_pkg_fun_linter()
   lint_message_1 <- rex::rex("Imported function unused.")
 
   # filter is unused
