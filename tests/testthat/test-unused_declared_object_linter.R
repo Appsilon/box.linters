@@ -194,3 +194,11 @@ test_that("unused_declared_object_linter not locally used private data objects",
 
   lintr::expect_lint(code, list(message = lint_message), linter)
 })
+
+test_that("unused_declared_object_linter skips assignment to list elements", {
+  linter <- unused_declared_object_linter()
+
+  path_to_shiny_app <- "shiny/simple/app.R"
+
+  lintr::expect_lint(path_to_shiny_app, NULL, linters = linter)
+})
