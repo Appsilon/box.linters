@@ -83,3 +83,19 @@ str_trim()"
   )
   lintr::expect_lint(bad_code_2, list(message = lint_message_2), linters)
 })
+
+test_that("box_default_linters works as expected", {
+  linters <- lintr::linters_with_defaults(defaults = box_default_linters)
+
+  good_code <- "
+box::use(
+  dplyr,
+  stringr[str_pad, str_trim]
+)
+
+dplyr$select()
+str_pad()
+str_trim()"
+
+  lintr::expect_lint(good_code, NULL, linters)
+})
