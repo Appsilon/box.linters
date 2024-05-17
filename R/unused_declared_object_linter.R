@@ -1,7 +1,12 @@
+# nolint start: line_length_linter
 #' Unused declared function and data objects linter
 #'
 #' Checks that all defined/declared functions and data objects are used within the source file.
 #' Functions and data objects that are marked with \code{@export} are ignored.
+#'
+#' For use in `rhino`, see the
+#' [Explanation: Rhino style guide](https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html)
+#' to learn about the details.
 #'
 #' @return A custom linter function for use with `r-lib/lintr`.
 #'
@@ -40,6 +45,7 @@
 #' lintr::lint(text = code, linters = unused_declared_object_linter())
 #'
 #' @export
+# nolint end
 unused_declared_object_linter <- function() {
   lintr::Linter(function(source_expression) {
     if (!lintr::is_lint_level(source_expression, "file")) {
