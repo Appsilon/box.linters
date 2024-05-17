@@ -15,3 +15,4 @@ A list of (\code{package_name} = list(\code{of_functions}))
 \description{
 Get functions exported by packages
 }
+\keyword{internal}

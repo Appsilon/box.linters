@@ -2,10 +2,49 @@
 % Please edit documentation in R/box_usage_linter.R
 \name{box_usage_linter}
 \alias{box_usage_linter}
-\title{\code{box} library object usage linter}
+\title{\code{box} library-aware object usage linter}
 \usage{
 box_usage_linter()
 }
+\value{
+A custom linter function for use with \code{r-lib/lintr}.
+}
 \description{
-\code{box} library object usage linter
+Checks that all function and data object calls made within a source file are valid.
+There are three ways for functions and data object calls to be come "valid". First is via base
+R packages. Second is via local declaration/definition. The third is via \code{box::use()} attachment.
+}
+\details{
+For use in \code{rhino}, see the
+\href{https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html}{Explanation: Rhino style guide}
+to learn about the details.
+}
+\examples{
+\dontrun{
+box::use(
+  dplyr[`\%>\%`, filter, pull],
+  stringr,
+)
+
+mpg <- mtcars \%>\%
+  filter(mpg <= 10) \%>\%
+  pull(mpg)
+
+mpg <- mtcars \%>\%
+  filter(mpg <= 10) \%>\%
+  select(mpg)             # will lint
+
+trimmed_string <- stringr$str_trim("  some string  ")
+trimmed_string <- stringr$strtrim("  some string  ")     # will lint
+
+existing_function <- function(x, y, z) {
+  mean(c(x, y, z))
+}
+
+existing_function(1, 2, 3)
+non_existing_function(1, 2, 3)     # will lint
+
+average(1, 2, 3)       # will lint
+}
+
 }

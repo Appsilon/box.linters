@@ -6,6 +6,74 @@
 \usage{
 r6_usage_linter()
 }
+\value{
+A custom linter function for use with \code{r-lib/lintr}.
+}
 \description{
-R6 class usage linter
+Checks method and attribute calls within an R6 class. Covers public, private, and active objects.
+All internal calls should exist. All private methods and attributes should be used.
+}
+\details{
+For use in \code{rhino}, see the
+\href{https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html}{Explanation: Rhino style guide}
+to learn about the details.
+}
+\examples{
+# will produce lints
+code = "
+box::use(
+  R6[R6Class],
+)
+
+badClass <- R6Class('badClass',
+  public = list(
+    initialize = function() {
+      private$not_exists()
+    }
+  ),
+  private = list(
+    unused_attribute = 'private data',
+    unused_method = function() {
+      self$attribute_not_exists
+      self$function_not_exists()
+    }
+  )
+)
+"
+
+lintr::lint(
+  text = code,
+  linters = r6_usage_linter()
+)
+
+# okay
+code = "
+box::use(
+  R6[R6Class],
+)
+
+goodClass <- R6Class('goodClass',
+  public = list(
+    public_attr,
+    initialize = function() {
+      private$private_func()
+    },
+    some_function = function () {
+      private$private_attr
+    }
+  ),
+  private = list(
+    private_attr = 'private data',
+    private_func = function() {
+      self$public_attr
+    }
+  )
+)
+"
+
+lintr::lint(
+  text = code,
+  linters = r6_usage_linter()
+)
+
 }

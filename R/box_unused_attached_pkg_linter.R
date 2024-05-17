@@ -1,5 +1,74 @@
+# nolint start: line_length_linter
 #' `box` library unused attached package linter
+#'
+#' Checks that all attached packages are used within the source file. This also covers packages
+#' attached using the `...`.
+#'
+#' For use in `rhino`, see the
+#' [Explanation: Rhino style guide](https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html)
+#' to learn about the details.
+#'
+#' @return A custom linter function for use with `r-lib/lintr`.
+#'
+#' @examples
+#' # will produce lints
+#' code <- "
+#' box::use(
+#'   stringr
+#' )
+#' "
+#'
+#' lintr::lint(text = code, linters = box_unused_attached_pkg_linter())
+#'
+#' code <- "
+#' box::use(
+#'   alias = stringr
+#' )
+#' "
+#'
+#' lintr::lint(text = code, linters = box_unused_attached_pkg_linter())
+#'
+#' code <- "
+#' box::use(
+#'   path/to/stringr[...]
+#' )
+#' "
+#'
+#' lintr::lint(text = code, linters = box_unused_attached_pkg_linter())
+#'
+#' # okay
+#' code <- "
+#' box::use(
+#'   stringr
+#' )
+#'
+#' stringr$str_pad()
+#' "
+#'
+#' lintr::lint(text = code, linters = box_unused_attached_pkg_linter())
+#'
+#' code <- "
+#' box::use(
+#'   alias = stringr
+#' )
+#'
+#' alias$str_pad()
+#' "
+#'
+#' lintr::lint(text = code, linters = box_unused_attached_pkg_linter())
+#'
+#' code <- "
+#' box::use(
+#'   stringr[...]
+#' )
+#'
+#' str_pad()
+#' "
+#'
+#' lintr::lint(text = code, linters = box_unused_attached_pkg_linter())
+#'
 #' @export
+# nolint end
 box_unused_attached_pkg_linter <- function() {
   lintr::Linter(function(source_expression) {
     if (!lintr::is_lint_level(source_expression, "file")) {

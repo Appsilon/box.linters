@@ -4,7 +4,9 @@
 #' Checks that all `box:use` imports have a trailing comma. This applies to
 #' package or module imports between `(` and `)`, and, optionally, function imports between
 #' `[` and `]`. Take note that `lintr::commas_linter()` may come into play.
-#' See the [Explanation: Rhino style guide](https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html)
+#'
+#' For use in `rhino`, see the
+#' [Explanation: Rhino style guide](https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html)
 #' to learn about the details.
 #'
 #' @param check_functions Boolean flag to include function imports between `[` and `]`.

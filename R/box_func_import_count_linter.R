@@ -2,7 +2,9 @@
 #' `box` library function import count linter
 #'
 #' Checks that function imports do not exceed the defined `max`.
-#' See the [Explanation: Rhino style guide](https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html)
+#'
+#' For use in `rhino`, see the
+#' [Explanation: Rhino style guide](https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html)
 #' to learn about the details.
 #'
 #' @param max Maximum function imports allowed between `[` and `]`. Defaults to 8.

@@ -2,6 +2,7 @@
 #'
 #' @param mod_list A vector of packages
 #' @return A list of (`package_name` = list(`of_functions`))
+#' @keywords internal
 get_module_exports <- function(mod_list) {
   exported_funs <- lapply(mod_list, function(mod) {
     tryCatch(
@@ -21,6 +22,7 @@ get_module_exports <- function(mod_list) {
 #' @param xml An XML node list
 #' @return `xml` list of `xml_nodes`, `nested` list of `module: functions`, `aliases` a named list
 #' of `module` = `alias`, `text` list of all `module$function` names.
+#' @keywords internal
 get_attached_modules <- function(xml) {
   box_module_import <- "
   /child::expr[
@@ -88,6 +90,7 @@ get_attached_modules <- function(xml) {
 #' @param xml An XML node list
 #' @return `xml` list of `xml_nodes`, `nested` list of `module: function`, `text` list of function
 #' names.
+#' @keywords internal
 get_attached_mod_three_dots <- function(xml) {
   box_module_three_dots <- "
   /child::expr[
@@ -114,6 +117,7 @@ get_attached_mod_three_dots <- function(xml) {
 #'
 #' @param xml An XML node list
 #' @return `xml` list of xml nodes, `text` a list of function names.
+#' @keywords internal
 get_attached_mod_functions <- function(xml) {
   xpath_module_functions <- "
 /child::expr[

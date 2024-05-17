@@ -6,6 +6,75 @@
 \usage{
 box_unused_attached_mod_linter()
 }
+\value{
+A custom linter function for use with \code{r-lib/lintr}.
+}
 \description{
-\code{box} library unused attached module linter
+Checks that all attached modules are used within the source file. This also covers modules
+attached using the \code{...}.
+}
+\details{
+For use in \code{rhino}, see the
+\href{https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html}{Explanation: Rhino style guide}
+to learn about the details.
+}
+\examples{
+\dontrun{
+# will produce lints
+code <- "
+box::use(
+  path/to/module
+)
+"
+
+lintr::lint(code, linters = box_unused_attached_mod_linter())
+
+code <- "
+box::use(
+  alias = path/to/module
+)
+"
+
+lintr::lint(code, linters = box_unused_attached_mod_linter())
+
+code <- "
+box::use(
+  path/to/module[...]
+)
+"
+
+lintr::lint(code, linters = box_unused_attached_mod_linter())
+
+# okay
+code <- "
+box::use(
+  path/to/module
+)
+
+module$some_function()
+"
+
+lintr::lint(code, linters = box_unused_attached_mod_linter())
+
+code <- "
+box::use(
+  alias = path/to/module
+)
+
+alias$some_function()
+"
+
+lintr::lint(code, linters = box_unused_attached_mod_linter())
+
+code <- "
+box::use(
+  path/to/module[...]     # module exports some_function()
+)
+
+some_function()
+"
+
+lintr::lint(code, linters = box_unused_attached_mod_linter())
+}
+
 }

@@ -15,3 +15,4 @@ A list of \code{xml_nodes} and \code{text}.
 \description{
 Get functions called in current source file
 }
+\keyword{internal}

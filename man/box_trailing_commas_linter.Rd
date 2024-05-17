@@ -17,7 +17,10 @@ A custom linter function for use with \code{r-lib/lintr}
 Checks that all \code{box:use} imports have a trailing comma. This applies to
 package or module imports between \code{(} and \verb{)}, and, optionally, function imports between
 \code{[} and \verb{]}. Take note that \code{lintr::commas_linter()} may come into play.
-See the \href{https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html}{Explanation: Rhino style guide}
+}
+\details{
+For use in \code{rhino}, see the
+\href{https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html}{Explanation: Rhino style guide}
 to learn about the details.
 }
 \examples{

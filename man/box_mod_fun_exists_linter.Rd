@@ -2,10 +2,33 @@
 % Please edit documentation in R/box_mod_fun_exists_linter.R
 \name{box_mod_fun_exists_linter}
 \alias{box_mod_fun_exists_linter}
-\title{\code{box} library attached function exists in module linter}
+\title{\code{box} library attached function exists and exported by called module linter}
 \usage{
 box_mod_fun_exists_linter()
 }
+\value{
+A custom linter function for use with \code{r-lib/lintr}
+}
 \description{
-\code{box} library attached function exists in module linter
+Checks that functions being attached exist and are exported by the local module being called.
+}
+\details{
+For use in \code{rhino}, see the
+\href{https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html}{Explanation: Rhino style guide}
+to learn about the details.
+}
+\examples{
+\dontrun{
+# will produce lint
+lintr::lint(
+  text = "box::use(path/to/module_a[function_not_exists],)",
+  linter = box_mod_fun_exists_linter()
+)
+
+# okay
+lintr::lint(
+  text = "box::use(path/to/module_a[function_exists],)",
+  linter = box_mod_fun_exists_linter()
+)
+}
 }

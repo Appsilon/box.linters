@@ -16,3 +16,4 @@ of \code{module} = \code{alias}, \code{text} list of all \verb{module$function} 
 \description{
 Get all modules imported whole
 }
+\keyword{internal}
