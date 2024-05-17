@@ -15,3 +15,4 @@ A list of \code{xml_nodes} and \code{text}.
 \description{
 Get locally declared/defined data objects
 }
+\keyword{internal}

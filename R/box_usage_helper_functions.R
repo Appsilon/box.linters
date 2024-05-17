@@ -41,6 +41,7 @@ get_declared_functions <- function(xml) {
 #'
 #' @param xml An XML node list
 #' @return A list of `xml_nodes` and `text`.
+#' @keywords internal
 get_declared_objects <- function(xml) {
   xpath_object_assignment <- "
   //expr[LEFT_ASSIGN]/expr[1]/SYMBOL[1 and not(preceding-sibling::OP-DOLLAR)] |
@@ -130,6 +131,7 @@ get_object_calls <- function(xml) {
 #'
 #' @param xml An XML node list
 #' @return a list of `xml_nodes` and `text`.
+#' @keywords internal
 get_function_signature_objs <- function(xml) {
   xpath_all_func_sig_objs <- "//SYMBOL_FORMALS"
   extract_xml_and_text(xml, xpath_all_func_sig_objs)
