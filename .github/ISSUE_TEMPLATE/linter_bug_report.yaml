@@ -1,7 +1,7 @@
 name: 🐞 Linter Bug Report
 description: Report a linting problem you encountered
 labels: ['status: bug']
-title: ['[LINT_BUG]']
+title: '[LINT_BUG]: '
 body:
   - type: markdown
     attributes:
@@ -17,7 +17,7 @@ body:
     attributes:
       label: Sample source code to lint
       description: A snippet of R source code where lint issues are found
-    validation:
+    validations:
       required: true
   - type: textarea
     attributes:
@@ -27,17 +27,17 @@ body:
           code,
           linters = lintr::linters_with_defaults(defaults = box.linters::rhino_default_linters)
         )
-    validation:
+    validations:
       required: true
   - type: textarea
     attributes:
       label: Lint result
       description: If there was unexpected lint, what was the lint message and at what line?
-    validation:
+    validations:
       required: true
   - type: textarea
     attributes:
       label: Expected result
       description: What should have happened?
-    validation:
+    validations:
       required: true
