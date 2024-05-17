@@ -22,11 +22,11 @@ body:
   - type: textarea
     attributes:
       label: Lint command used
-      value: >
-      lintr::lint(
-        code,
-        linters = lintr::linters_with_defaults(defaults = box.linters::rhino_default_linters)
-      )
+      value: |
+        lintr::lint(
+          code,
+          linters = lintr::linters_with_defaults(defaults = box.linters::rhino_default_linters)
+        )
     validation:
       required: true
   - type: textarea
