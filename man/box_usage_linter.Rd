@@ -14,6 +14,11 @@ Checks that all function and data object calls made within a source file are val
 There are three ways for functions and data object calls to be come "valid". First is via base
 R packages. Second is via local declaration/definition. The third is via \code{box::use()} attachment.
 }
+\details{
+For use in \code{rhino}, see the
+\href{https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html}{Explanation: Rhino style guide}
+to learn about the details.
+}
 \examples{
 \dontrun{
 box::use(

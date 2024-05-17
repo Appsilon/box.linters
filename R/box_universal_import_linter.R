@@ -2,7 +2,9 @@
 #' `box` library universal import linter
 #'
 #' Checks that all function imports are explicit. `package[...]` is not used.
-#' See the [Explanation: Rhino style guide](https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html)
+#'
+#' For use in `rhino`, see the
+#' [Explanation: Rhino style guide](https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html)
 #' to learn about the details.
 #'
 #' @return A custom linter function for use with `r-lib/lintr`

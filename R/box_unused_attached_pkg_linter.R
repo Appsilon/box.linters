@@ -3,6 +3,10 @@
 #' Checks that all attached packages are used within the source file. This also covers packages
 #' attached using the `...`.
 #'
+#' For use in `rhino`, see the
+#' [Explanation: Rhino style guide](https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html)
+#' to learn about the details.
+#'
 #' @return A custom linter function for use with `r-lib/lintr`.
 #'
 #' @examples

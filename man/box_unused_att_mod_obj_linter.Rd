@@ -12,6 +12,11 @@ A custom linter function for use with \code{r-lib/lintr}.
 \description{
 Checks that all attached module functions and data objects are used within the source file.
 }
+\details{
+For use in \code{rhino}, see the
+\href{https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html}{Explanation: Rhino style guide}
+to learn about the details.
+}
 \examples{
 \dontrun{
 # will produce lints

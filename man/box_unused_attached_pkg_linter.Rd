@@ -13,6 +13,11 @@ A custom linter function for use with \code{r-lib/lintr}.
 Checks that all attached packages are used within the source file. This also covers packages
 attached using the \code{...}.
 }
+\details{
+For use in \code{rhino}, see the
+\href{https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html}{Explanation: Rhino style guide}
+to learn about the details.
+}
 \examples{
 # will produce lints
 code <- "

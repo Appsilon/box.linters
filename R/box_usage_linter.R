@@ -4,6 +4,10 @@
 #' There are three ways for functions and data object calls to be come "valid". First is via base
 #' R packages. Second is via local declaration/definition. The third is via `box::use()` attachment.
 #'
+#' For use in `rhino`, see the
+#' [Explanation: Rhino style guide](https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html)
+#' to learn about the details.
+#'
 #' @return A custom linter function for use with `r-lib/lintr`.
 #'
 #' @examples

@@ -2,6 +2,11 @@
 #'
 #' Checks method and attribute calls within an R6 class. Covers public, private, and active objects.
 #' All internal calls should exist. All private methods and attributes should be used.
+#'
+#' For use in `rhino`, see the
+#' [Explanation: Rhino style guide](https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html)
+#' to learn about the details.
+#'
 #' @return A custom linter function for use with `r-lib/lintr`.
 #'
 #' @examples

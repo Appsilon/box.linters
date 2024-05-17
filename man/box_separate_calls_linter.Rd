@@ -11,7 +11,10 @@ A custom linter function for use with \code{r-lib/lintr}
 }
 \description{
 Checks that packages and modules are imported in separate \code{box::use()} statements.
-See the \href{https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html}{Explanation: Rhino style guide}
+}
+\details{
+For use in \code{rhino}, see the
+\href{https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html}{Explanation: Rhino style guide}
 to learn about the details.
 }
 \examples{

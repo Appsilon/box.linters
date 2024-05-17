@@ -3,7 +3,9 @@
 #'
 #' Checks that module and function imports are sorted alphabetically. Aliases are
 #' ignored. The sort check is on package/module names and attached function names.
-#' See the [Explanation: Rhino style guide](https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html)
+#'
+#' For use in `rhino`, see the
+#' [Explanation: Rhino style guide](https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html)
 #' to learn about the details.
 #'
 #' @return A custom linter function for use with `r-lib/lintr`.

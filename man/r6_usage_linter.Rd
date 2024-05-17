@@ -13,6 +13,11 @@ A custom linter function for use with \code{r-lib/lintr}.
 Checks method and attribute calls within an R6 class. Covers public, private, and active objects.
 All internal calls should exist. All private methods and attributes should be used.
 }
+\details{
+For use in \code{rhino}, see the
+\href{https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html}{Explanation: Rhino style guide}
+to learn about the details.
+}
 \examples{
 # will produce lints
 code = "
