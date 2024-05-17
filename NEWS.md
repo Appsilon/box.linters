@@ -1,5 +1,6 @@
 # box.linters development version
 
+* Handle box-exported functions and objects
 * Handle functional programming, cloned functions, curried functions
 * R6 class awareness
 * Very basic handling of objects inside function definitions
