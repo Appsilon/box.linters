@@ -4,9 +4,9 @@
 #' Create a minimal lintr config file with `box` modules support as a starting point
 #' for customization
 #'
-#' @param path Path to project root whwre a `.lintr` file should be created.
+#' @param path Path to project root where a `.lintr` file should be created.
 #' If the `.lintr` file already exists, an error will be thrown.
-#' @param type The kind of configurationto create
+#' @param type The kind of configuration to create
 #'
 #' * `basic_box` creates a minimal lintr config based on the `tidyverse` configuration of `lintr`.
 #'   This starts with `lintr::linters_with_defaults()` and is customized for `box` module

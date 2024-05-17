@@ -7,10 +7,10 @@
 use_box_lintr(path = ".", type = c("basic_box", "rhino"))
 }
 \arguments{
-\item{path}{Path to project root whwre a \code{.lintr} file should be created.
+\item{path}{Path to project root where a \code{.lintr} file should be created.
 If the \code{.lintr} file already exists, an error will be thrown.}
 
-\item{type}{The kind of configurationto create
+\item{type}{The kind of configuration to create
 \itemize{
 \item \code{basic_box} creates a minimal lintr config based on the \code{tidyverse} configuration of \code{lintr}.
 This starts with \code{lintr::linters_with_defaults()} and is customized for \code{box} module
