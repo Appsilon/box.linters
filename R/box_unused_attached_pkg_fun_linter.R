@@ -1,3 +1,4 @@
+# nolint start: line_length_linter
 #' `box` library unused attached package function linter
 #'
 #' Checks that all attached package functions are used within the source file.
@@ -48,6 +49,7 @@
 #' lintr::lint(text = code, linters = box_unused_att_pkg_fun_linter())
 #'
 #' @export
+# nolint end
 box_unused_att_pkg_fun_linter <- function() {
   lintr::Linter(function(source_expression) {
     if (!lintr::is_lint_level(source_expression, "file")) {

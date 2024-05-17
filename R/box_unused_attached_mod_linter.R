@@ -1,3 +1,4 @@
+# nolint start: line_length_linter
 #' `box` library unused attached module linter
 #'
 #' Checks that all attached modules are used within the source file. This also covers modules
@@ -69,6 +70,7 @@
 #' }
 #'
 #' @export
+# nolint end
 box_unused_attached_mod_linter <- function() {
   lintr::Linter(function(source_expression) {
     if (!lintr::is_lint_level(source_expression, "file")) {

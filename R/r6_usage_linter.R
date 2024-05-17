@@ -1,3 +1,4 @@
+# nolint start: line_length_linter
 #' R6 class usage linter
 #'
 #' Checks method and attribute calls within an R6 class. Covers public, private, and active objects.
@@ -68,6 +69,7 @@
 #' )
 #'
 #' @export
+# nolint end
 r6_usage_linter <- function() {
   lintr::Linter(function(source_expression) {
     if (!lintr::is_lint_level(source_expression, "expression")) {

@@ -1,3 +1,4 @@
+# nolint start: line_length_linter
 #' `box` library-aware object usage linter
 #'
 #' Checks that all function and data object calls made within a source file are valid.
@@ -39,6 +40,7 @@
 #' }
 #'
 #' @export
+# nolint end
 box_usage_linter <- function() {
   lintr::Linter(function(source_expression) {
     if (!lintr::is_lint_level(source_expression, "file")) {

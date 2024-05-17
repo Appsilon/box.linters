@@ -1,3 +1,4 @@
+# nolint start: line_length_linter
 #' `box` library unused attached module object linter
 #'
 #' Checks that all attached module functions and data objects are used within the source file.
@@ -51,6 +52,7 @@
 #' lintr::lint(text = code, linters = box_unused_att_mod_obj_linter())
 #' }
 #' @export
+# nolint end
 box_unused_att_mod_obj_linter <- function() {
   lintr::Linter(function(source_expression) {
     if (!lintr::is_lint_level(source_expression, "file")) {
