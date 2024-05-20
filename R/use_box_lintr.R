@@ -26,34 +26,38 @@
 #' @export
 # nolint end
 use_box_lintr <- function(path = ".", type = c("basic_box", "rhino")) {
-  lintr_option <- get0("lintr_option", envir = base::loadNamespace("lintr"))
+  lintr_option <- getOption("lintr.linter_file", default = ".lintr")
   config_file <- normalizePath(
     file.path(
       path,
-      lintr_option("linter_file")
+      lintr_option
     ),
     mustWork = FALSE
   )
+  overwrite <- FALSE
   if (file.exists(config_file)) {
-    stop("Found an existing configuration file at '", config_file, "'.", call. = FALSE)
+    cli::cli_alert_warning(
+      glue::glue("Found an existing configuration file at '{config_file}'.")
+    )
+    response <- readline("Would you like to overwrite the existing '.lintr` file? (Yes/No) ")
+    response <- substr(response, 1, 1)
+    if (response == "Y" || response == "y") {
+      overwrite <- TRUE
+    } else {
+      cli::cli_abort(".lintr file creation cancelled!")
+    }
   }
   type <- match.arg(type)
-  the_config <- switch(
+  lintr_file <- switch(
     type,
-    basic_box = list(
-      linters = "linters_with_defaults(
-                  defaults = box.linters::box_default_linters
-                )",
-      encoding = "\"UTF-8\""
-    ),
-    rhino = list(
-      linters = "linters_with_defaults(
-                  defaults = box.linters::rhino_default_linters,
-                  line_length_linter = lintr::line_length_linter(100)
-                )",
-      encoding = "\"UTF-8\""
-    )
+    basic_box = fs::path_package("box.linters", "", "dot.lintr"),
+    rhino = fs::path_package("rhino", "templates", "app_structure", "dot.lintr")
   )
-  write.dcf(the_config, config_file, width = Inf)
+  tryCatch({
+    fs::file_copy(lintr_file, config_file, overwrite = overwrite)
+    cli::cli_alert_success("box.linters .lintr file successfully written!")
+  }, error = function(e) {
+    stop(e)
+  })
   invisible(config_file)
 }

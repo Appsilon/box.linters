@@ -9,8 +9,6 @@ test_that("use_box_lintr works as expected", {
     file.path(normalizePath(tmp, winslash = "/"), ".lintr")
   )
 
-  expect_error(use_box_lintr(path = tmp), "Found an existing configuration")
-
   lints <- lintr::lint_dir(tmp)
   expect_length(lints, 0L)
 })
