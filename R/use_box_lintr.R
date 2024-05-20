@@ -39,7 +39,7 @@ use_box_lintr <- function(path = ".", type = c("basic_box", "rhino")) {
     cli::cli_alert_warning(
       glue::glue("Found an existing configuration file at '{config_file}'.")
     )
-    response <- readline("Would you like to overwrite the existing '.lintr` file? (Yes/No) ")
+    response <- readline("Would you like to overwrite the existing '.lintr` file? (yes/No) ")
     response <- substr(response, 1, 1)
     if (response == "Y" || response == "y") {
       overwrite <- TRUE
