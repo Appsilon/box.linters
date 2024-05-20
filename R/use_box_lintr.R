@@ -48,6 +48,13 @@ use_box_lintr <- function(path = ".", type = c("basic_box", "rhino")) {
     }
   }
   type <- match.arg(type)
+  if (type == "rhino") {
+    if (!requireNamespace("rhino", quietly = TRUE)) {
+      cli::cli_abort(
+        "The `rhino` package cannot be found. Please install with: install.packages(\"rhino\")."
+      )
+    }
+  }
   lintr_file <- switch(
     type,
     basic_box = fs::path_package("box.linters", "", "dot.lintr"),
