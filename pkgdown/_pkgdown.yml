@@ -28,6 +28,7 @@ template:
 url: https://appsilon.github.io/box.linters/
 
 navbar:
+  type: light
   structure:
     left: [home, tutorials, reference, news]
     right: [search, github, twitter, mastodon]
