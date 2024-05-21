@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 ## Rhino (>= 1.8.0)
 
-Projects created with `rhino` version 1.8.0 and later come pre-configured with a `.lintr` file. 
+Projects created with `rhino` version 1.8.0 and later come preconfigured with a `.lintr` file. 
 
 ```{yaml}
 linters:
