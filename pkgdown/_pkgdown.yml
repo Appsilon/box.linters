@@ -7,7 +7,7 @@ template:
   includes:
     in_header: |
       <!-- Google tag (gtag.js) -->
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-8GE9YEGHF6"></script>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-DVX9BJSBX4"></script>
       <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
