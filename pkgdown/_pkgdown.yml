@@ -42,6 +42,10 @@ navbar:
       menu:
         - text: Custom configuration
           href: articles/tutorial/custom-config.html
+        - text: Linting a project
+          href: articles/tutorial/box-default.html
+        - text: Linting a rhino project
+          href: articles/tutorial/rhino-default.html
     github:
       icon: fa-github fa-lg
       href: https://github.com/Appsilon/box.linters

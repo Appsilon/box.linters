@@ -1,0 +1,28 @@
+---
+title: "Running `lintr` with `box.linters` on a `rhino` project"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Running `lintr` with `box.linters` on a `rhino` project}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(box.linters)
+```
+
+```{yaml}
+linters:
+  linters_with_defaults(
+    defaults = box.linters::rhino_default_linters,
+    line_length_linter = lintr::line_length_linter(100)
+  )
+encoding: "UTF-8"
+```
