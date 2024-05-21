@@ -38,14 +38,14 @@ navbar:
       text: "Getting Started"
       href: index.html
     tutorials:
-      text: Tutorials
+      text: How-to Guides
       menu:
         - text: Custom configuration
-          href: articles/tutorial/custom-config.html
+          href: articles/how-to/custom-config.html
         - text: Linting a project
-          href: articles/tutorial/box-default.html
+          href: articles/how-to/box-default.html
         - text: Linting a rhino project
-          href: articles/tutorial/rhino-default.html
+          href: articles/how-to/rhino-default.html
     github:
       icon: fa-github fa-lg
       href: https://github.com/Appsilon/box.linters

@@ -1,8 +1,8 @@
 ---
-title: "Running `lintr` with `box.linters` on a project"
+title: "Running lintr with box.linters on a project"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Running `lintr` with `box.linters` on a project}
+  %\VignetteIndexEntry{Running lintr with box.linters on a project}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
