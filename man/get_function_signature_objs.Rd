@@ -15,3 +15,4 @@ a list of \code{xml_nodes} and \code{text}.
 \description{
 This is a brute-force extraction of \code{SYMBOL_FORMALS} and is not scope-aware.
 }
+\keyword{internal}
