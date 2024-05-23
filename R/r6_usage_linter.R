@@ -46,7 +46,7 @@
 #'
 #' goodClass <- R6Class('goodClass',
 #'   public = list(
-#'     public_attr,
+#'     public_attr = NULL,
 #'     initialize = function() {
 #'       private$private_func()
 #'     },
