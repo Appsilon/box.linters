@@ -4,10 +4,16 @@
     <loc>https://appsilon.github.io/box.linters/404.html</loc>
   </url>
   <url>
-    <loc>https://appsilon.github.io/box.linters/articles/index.html</loc>
+    <loc>https://appsilon.github.io/box.linters/articles/how-to/box-default.html</loc>
   </url>
   <url>
-    <loc>https://appsilon.github.io/box.linters/articles/tutorial/custom-config.html</loc>
+    <loc>https://appsilon.github.io/box.linters/articles/how-to/custom-config.html</loc>
+  </url>
+  <url>
+    <loc>https://appsilon.github.io/box.linters/articles/how-to/rhino-default.html</loc>
+  </url>
+  <url>
+    <loc>https://appsilon.github.io/box.linters/articles/index.html</loc>
   </url>
   <url>
     <loc>https://appsilon.github.io/box.linters/authors.html</loc>
