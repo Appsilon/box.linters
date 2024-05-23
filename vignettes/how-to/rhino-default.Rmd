@@ -16,6 +16,8 @@ knitr::opts_chunk$set(
 
 ## Rhino (>= 1.8.0)
 
+> Rhino 1.8.0 may not yet be available at the time of this release.
+
 Projects created with `rhino` version 1.8.0 and later come preconfigured with a `.lintr` file. 
 
 ```{yaml}
@@ -24,7 +26,6 @@ linters:
     defaults = box.linters::rhino_default_linters,
     line_length_linter = lintr::line_length_linter(100)
   )
-encoding: "UTF-8"
 ```
 
 ## Using `box.linters` with an existing Rhino (< 1.8.0) project

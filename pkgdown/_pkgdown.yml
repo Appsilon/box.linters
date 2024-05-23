@@ -30,22 +30,22 @@ url: https://appsilon.github.io/box.linters/
 navbar:
   type: light
   structure:
-    left: [home, tutorials, reference, news]
+    left: [home, how-to-guides, reference, news]
     right: [search, github, twitter, mastodon]
   components:
     home:
       icon: fa-home
       text: "Getting Started"
       href: index.html
-    tutorials:
+    how-to-guides:
       text: How-to Guides
       menu:
-        - text: Custom configuration
-          href: articles/how-to/custom-config.html
         - text: Linting a project
           href: articles/how-to/box-default.html
         - text: Linting a rhino project
           href: articles/how-to/rhino-default.html
+        - text: Custom configuration
+          href: articles/how-to/custom-config.html
     github:
       icon: fa-github fa-lg
       href: https://github.com/Appsilon/box.linters
