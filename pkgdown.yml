@@ -3,7 +3,7 @@ pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
   custom-config: tutorial/custom-config.html
-last_built: 2024-05-23T03:57Z
+last_built: 2024-05-23T04:02Z
 urls:
   reference: https://appsilon.github.io/box.linters/reference
   article: https://appsilon.github.io/box.linters/articles
