@@ -30,7 +30,7 @@
 #'
 #' code <- "
 #' box::use(
-#'   path/to/stringr[...]
+#'   stringr[...]
 #' )
 #' "
 #'
