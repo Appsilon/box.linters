@@ -38,7 +38,7 @@ lintr::lint(text = code, linters = box_unused_attached_pkg_linter())
 
 code <- "
 box::use(
-  path/to/stringr[...]
+  stringr[...]
 )
 "
 
