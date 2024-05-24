@@ -12,13 +12,13 @@
 #' # will produce lint
 #' lintr::lint(
 #'   text = "box::use(stringr[function_not_exists],)",
-#'   linter = box_mod_fun_exists_linter()
+#'   linter = box_pkg_fun_exists_linter()
 #' )
 #'
 #' # okay
 #' lintr::lint(
 #'   text = "box::use(stringr[str_pad],)",
-#'   linter = box_mod_fun_exists_linter()
+#'   linter = box_pkg_fun_exists_linter()
 #' )
 #' @export
 # nolint end
