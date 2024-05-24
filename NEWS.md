@@ -1,4 +1,4 @@
-# box.linters (development version)
+# box.linters 0.1.0
 
 * Handle box-exported functions and objects
 * Handle functional programming, cloned functions, curried functions
