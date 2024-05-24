@@ -10,7 +10,7 @@
 
 `box.linters` is an R package that provides the [`{lintr}` package](https://github.com/r-lib/lintr/) compatibility with [`{box}` package](https://github.com/klmr/box) modules. In addition to providing code-styling checks for `box::use()` function calls, `box.linters` includes a collection of linter functions to replace [`lintr::object_usage_linter()`](https://lintr.r-lib.org/reference/object_usage_linter.html).
 
-While the primary purpose of `{box.linters}` is for use with the  [`{rhino}`](https://appsilon.github.io/rhino/) package, it's functions and features are available for use with any R code or project that uses the `{box}` package for modular R code.
+While the primary purpose of `{box.linters}` is for use with the  [`{rhino}`](https://appsilon.github.io/rhino/) package, its functions and features are available for use with any R code or project that uses the `{box}` package for modular R code.
 
 ## Motivation
 
