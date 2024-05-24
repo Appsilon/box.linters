@@ -20,7 +20,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">box.linters</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9013</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9014</small>
 
     <a href="https://rhinoverse.dev" class="external-link home"><i class="fa fa-lg fa-chevron-left"></i></a>
 
@@ -112,13 +112,14 @@ to learn about the details.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># will produce lint</span></span></span>
 <span class="r-in"><span><span class="fu">lintr</span><span class="fu">::</span><span class="fu"><a href="https://lintr.r-lib.org/reference/lint.html" class="external-link">lint</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  text <span class="op">=</span> <span class="st">"box::use(stringr[function_not_exists],)"</span>,</span></span>
-<span class="r-in"><span>  linter <span class="op">=</span> <span class="fu"><a href="box_mod_fun_exists_linter.html">box_mod_fun_exists_linter</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  linter <span class="op">=</span> <span class="fu">box_pkg_fun_exists_linter</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ::warning file=&lt;text&gt;,line=1,col=18::file=&lt;text&gt;,line=1,col=18,[box_pkg_fun_exists_linter] Function not exported by package.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># okay</span></span></span>
 <span class="r-in"><span><span class="fu">lintr</span><span class="fu">::</span><span class="fu"><a href="https://lintr.r-lib.org/reference/lint.html" class="external-link">lint</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  text <span class="op">=</span> <span class="st">"box::use(stringr[str_pad],)"</span>,</span></span>
-<span class="r-in"><span>  linter <span class="op">=</span> <span class="fu"><a href="box_mod_fun_exists_linter.html">box_mod_fun_exists_linter</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  linter <span class="op">=</span> <span class="fu">box_pkg_fun_exists_linter</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
