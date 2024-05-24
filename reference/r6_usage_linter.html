@@ -22,7 +22,7 @@ All internal calls should exist. All private methods and attributes should be us
     
     <a class="navbar-brand me-2" href="../index.html">box.linters</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9015</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9016</small>
 
     <a href="https://rhinoverse.dev" class="external-link home"><i class="fa fa-lg fa-chevron-left"></i></a>
 
@@ -150,7 +150,7 @@ to learn about the details.</p>
 <span class="r-in"><span><span class="st"></span></span></span>
 <span class="r-in"><span><span class="st">goodClass &lt;- R6Class('goodClass',</span></span></span>
 <span class="r-in"><span><span class="st">  public = list(</span></span></span>
-<span class="r-in"><span><span class="st">    public_attr,</span></span></span>
+<span class="r-in"><span><span class="st">    public_attr = NULL,</span></span></span>
 <span class="r-in"><span><span class="st">    initialize = function() {</span></span></span>
 <span class="r-in"><span><span class="st">      private$private_func()</span></span></span>
 <span class="r-in"><span><span class="st">    },</span></span></span>
@@ -171,7 +171,6 @@ to learn about the details.</p>
 <span class="r-in"><span>  text <span class="op">=</span> <span class="va">code</span>,</span></span>
 <span class="r-in"><span>  linters <span class="op">=</span> <span class="fu">r6_usage_linter</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ::warning file=&lt;text&gt;,line=19,col=7::file=&lt;text&gt;,line=19,col=7,[r6_usage_linter] Internal object call not found.</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
