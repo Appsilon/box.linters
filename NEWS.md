@@ -1,3 +1,7 @@
+# box.linters (development version)
+
+* [bugfix] `get_attached_modules()` was not properly finding whole modules attached with short `path/module` declarations
+
 # box.linters 0.9.0
 
 * Handle box-exported functions and objects
