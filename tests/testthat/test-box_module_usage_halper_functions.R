@@ -101,6 +101,106 @@ test_that("get_attached_modules does not return aliased functions", {
   expect_setequal(results$nested$module_b, module_b_objects)
 })
 
+withr::with_options(
+  list(
+    box.path = file.path(getwd(), "mod", "path")
+  ),
+  {
+    test_that("get_attached_modules returns correct list of imported whole modules", {
+      whole_imported_modules <- "
+      box::use(
+        to/module_a,
+        to/module_b
+      )
+      "
+
+      xml_whole_imported_modules <- code_to_xml_expr(whole_imported_modules)
+      results <- get_attached_modules(xml_whole_imported_modules)
+      expected_results <- c("module_a", "module_b")
+
+      expect_equal(names(results$nested), expected_results)
+
+      module_a_objects <- c("a_fun_a", "a_fun_b")
+      expect_setequal(results$nested$module_a, module_a_objects)
+
+      module_b_objects <- c("b_fun_a", "b_fun_b", "b_obj_a")
+      expect_setequal(results$nested$module_b, module_b_objects)
+    })
+
+    test_that("get_attached_modules does not return modules imported with '...'", {
+      whole_imported_modules <- "
+      box::use(
+        to/module_a[...],
+        to/module_b
+      )
+      "
+
+      xml_whole_imported_modules <- code_to_xml_expr(whole_imported_modules)
+      results <- get_attached_modules(xml_whole_imported_modules)
+      expected_results <- c("module_b")
+
+      expect_equal(names(results$nested), expected_results)
+
+      module_b_objects <- c("b_fun_a", "b_fun_b", "b_obj_a")
+      expect_setequal(results$nested$module_b, module_b_objects)
+    })
+
+    test_that("get_attached_modules does not return modules imported with functions", {
+      whole_imported_modules <- "
+      box::use(
+        to/module_a[a_fun_a, a_fun_b],
+        to/module_b
+      )
+      "
+
+      xml_whole_imported_modules <- code_to_xml_expr(whole_imported_modules)
+      results <- get_attached_modules(xml_whole_imported_modules)
+      expected_results <- c("module_b")
+
+      expect_equal(names(results$nested), expected_results)
+
+      module_b_objects <- c("b_fun_a", "b_fun_b", "b_obj_a")
+      expect_setequal(results$nested$module_b, module_b_objects)
+    })
+
+    test_that("get_attached_modules returns correct list of aliased imported whole modules", {
+      whole_imported_modules <- "
+      box::use(
+        mod_alias = to/module_a,
+        to/module_b
+      )
+      "
+
+      xml_whole_imported_modules <- code_to_xml_expr(whole_imported_modules)
+      results <- get_attached_modules(xml_whole_imported_modules)
+
+      expected_results <- c("mod_alias", "module_b")
+      expect_equal(names(results$nested), expected_results)
+
+      names(expected_results) <- c("module_a", "module_b")
+      expect_equal(results$aliases, expected_results)
+    })
+
+    test_that("get_attached_modules does not return aliased functions", {
+      whole_imported_modules <- "
+      box::use(
+        to/module_a[fun_alias = a_fun_a, a_fun_b],
+        to/module_b
+      )
+      "
+
+      xml_whole_imported_modules <- code_to_xml_expr(whole_imported_modules)
+      results <- get_attached_modules(xml_whole_imported_modules)
+      expected_results <- c("module_b")
+
+      expect_equal(names(results$nested), expected_results)
+
+      module_b_objects <- c("b_fun_a", "b_fun_b", "b_obj_a")
+      expect_setequal(results$nested$module_b, module_b_objects)
+    })
+  }
+)
+
 test_that("get_attached_modules does not return imported packages", {
   whole_imported_modules <- "
   box::use(
