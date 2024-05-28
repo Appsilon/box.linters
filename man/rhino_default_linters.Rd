@@ -5,7 +5,7 @@
 \alias{rhino_default_linters}
 \title{Rhino default linters}
 \format{
-An object of class \code{list} of length 37.
+An object of class \code{list} of length 38.
 }
 \usage{
 rhino_default_linters

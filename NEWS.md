@@ -1,3 +1,7 @@
+# box.linters (development version)
+
+* Added box_mod_fun_exists_linter() to default linters 
+
 # box.linters 0.9.0
 
 * Handle box-exported functions and objects
