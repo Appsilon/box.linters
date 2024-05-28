@@ -61,6 +61,14 @@ box_unused_att_pkg_fun_linter <- function() {
     attached_functions <- get_attached_pkg_functions(xml)
     function_calls <- get_function_calls(xml)
 
+    # Flatten list function call to list object name
+    function_calls$text <- vapply(
+      strsplit(function_calls$text, "\\$"),
+      `[`,
+      1,
+      FUN.VALUE = character(1)
+    )
+
     lapply(attached_functions$xml, function(fun_import) {
       fun_import_text <- xml2::xml_text(fun_import)
       fun_import_text <- gsub("[`'\"]", "", fun_import_text)

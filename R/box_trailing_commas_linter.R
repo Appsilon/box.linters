@@ -56,7 +56,12 @@ box_trailing_commas_linter <- function(check_functions = FALSE) {
   right_paren_xpath <- paste(
     base_xpath,
     "/following-sibling::OP-RIGHT-PAREN[
-       preceding-sibling::*[1][not(self::OP-COMMA)]
+        preceding-sibling::*[1][
+          not(self::OP-COMMA) and
+          not(self::COMMENT[
+            preceding-sibling::OP-COMMA
+          ])
+        ]
       ]
     "
   )

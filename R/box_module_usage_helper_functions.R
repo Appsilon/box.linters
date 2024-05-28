@@ -26,7 +26,11 @@ get_module_exports <- function(mod_list) {
 get_attached_modules <- function(xml) {
   box_module_import <- "
   /child::expr[
-    child::expr/SYMBOL
+    child::expr/SYMBOL[
+      parent::expr[
+        preceding-sibling::OP-SLASH
+      ]
+    ]
   ]
 "
 

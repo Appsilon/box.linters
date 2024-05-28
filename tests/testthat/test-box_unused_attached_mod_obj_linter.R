@@ -114,3 +114,28 @@ test_that("box_unused_att_mod_obj_linter blocks box-attached aliased objects unu
 
   lintr::expect_lint(bad_box_usage_1, list(message = lint_message_1), linter)
 })
+
+test_that("box_unused_att_mod_obj_linter skips used function in list", {
+  linter <- box_unused_att_mod_obj_linter()
+
+  good_box_usage <- "box::use(
+    path/to/module_d[function_list]
+  )
+
+  function_list$fun_a()
+  "
+
+  lintr::expect_lint(good_box_usage, NULL, linter)
+})
+
+test_that("box_unused_att_mod_obj_linter blocks used function in list", {
+  linter <- box_unused_att_mod_obj_linter()
+  lint_message <- rex::rex("Imported function/object unused.")
+
+  bad_box_usage <- "box::use(
+    path/to/module_d[function_list]
+  )
+  "
+
+  lintr::expect_lint(bad_box_usage, list(message = lint_message), linter)
+})
