@@ -5,7 +5,7 @@
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/box.linters)](https://cran.r-project.org/package=box.linters)
 [![R-CMD-check](https://github.com/Appsilon/box.linters/workflows/CI/badge.svg)](https://github.com/Appsilon/box.linters/actions/workflows/ci.yml)
-![Codecov test coverage](https://codecov.io/gh/Appsilon/box.linters/branch/main/graph/badge.svg)
+[![Codecov test coverage](https://codecov.io/gh/Appsilon/box.linters/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Appsilon/box.linters)
 <!-- badges: end -->
 
 `box.linters` is an R package that provides the [`{lintr}` package](https://github.com/r-lib/lintr/) compatibility with [`{box}` package](https://github.com/klmr/box) modules. In addition to providing code-styling checks for `box::use()` function calls, `box.linters` includes a collection of linter functions to replace [`lintr::object_usage_linter()`](https://lintr.r-lib.org/reference/object_usage_linter.html).
