@@ -1,3 +1,7 @@
+# box.linters (development version)
+
+* [bug fix] box_trailing_commas_linter() now properly handles a #nolint for other linters
+
 # box.linters 0.9.0
 
 * Handle box-exported functions and objects
