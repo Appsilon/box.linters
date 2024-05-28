@@ -1,5 +1,6 @@
 # box.linters (development version)
 
+* [bug fix] box_trailing_commas_linter() now properly handles a #nolint for other linters
 * [bug fix] `box_unused_att_pkg_fun_linter()` had issues with lists of functions. Linter function
   now drops the nested function name and retains the list name (`list_name$function_name()`) when
   performing the check.

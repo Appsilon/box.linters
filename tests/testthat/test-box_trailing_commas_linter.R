@@ -103,3 +103,37 @@ test_that("box_trailing_commas_linter should not lint outside of `box::use()`", 
 
   lintr::expect_lint(should_not_lint, NULL, linter)
 })
+
+test_that("box_trailing_commas_linter should ignore comments", {
+  linter <- box_trailing_commas_linter()
+
+  with_comment <- "box::use(
+    dplyr[...],   # some comment
+  )
+  "
+
+  lintr::expect_lint(with_comment, NULL, linter)
+})
+
+test_that("box_trailing_commas_linter should ignore nolint for other linters", {
+  linter <- box_trailing_commas_linter()
+
+  with_comment <- "box::use(
+    dplyr[...],   # nolint: box_universal_import_linter
+  )
+  "
+
+  lintr::expect_lint(with_comment, NULL, linter)
+})
+
+test_that("box_trailing_commas_linter blocks comment in last entry, no comma", {
+  linter <- box_trailing_commas_linter()
+  paren_lint_msg <- rex::rex("Always have a trailing comma at the end of imports, before a `)`.")
+
+  with_comment <- "box::use(
+    dplyr[...]   # some comment
+  )
+  "
+
+  lintr::expect_lint(with_comment, list(message = paren_lint_msg), linter)
+})

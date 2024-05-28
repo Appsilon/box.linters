@@ -1,7 +1,7 @@
 Appsilon
 CMD
-Customizable
 Codecov
+Customizable
 Github
 Linters
 RStudio
@@ -10,8 +10,8 @@ XPath
 appsilon
 config
 dplyr
-klmr
 linter
 linters
 lintr
+nolint
 preconfigured
