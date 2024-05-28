@@ -20,7 +20,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">box.linters</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.9004</small>
 
     <a href="https://rhinoverse.dev" class="external-link home"><i class="fa fa-lg fa-chevron-left"></i></a>
 
@@ -94,7 +94,7 @@
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>An object of class <code>list</code> of length 32.</p>
+    <p>An object of class <code>list</code> of length 33.</p>
     </div>
 
     <div class="section level2">
@@ -102,22 +102,23 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">linters</span> <span class="op">&lt;-</span> <span class="fu">lintr</span><span class="fu">::</span><span class="fu"><a href="https://lintr.r-lib.org/reference/linters_with_defaults.html" class="external-link">linters_with_defaults</a></span><span class="op">(</span>defaults <span class="op">=</span> <span class="fu">box.linters</span><span class="fu">::</span><span class="va">box_default_linters</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">linters</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "assignment_linter"                  "box_pkg_fun_exists_linter"         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "box_unused_att_mod_obj_linter"      "box_unused_att_pkg_linter"         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "box_unused_attached_mod_linter"     "box_unused_attached_pkg_fun_linter"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "box_usage_linter"                   "brace_linter"                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "commas_linter"                      "commented_code_linter"             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "cyclocomp_linter"                   "equals_na_linter"                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "function_left_parentheses_linter"   "indentation_linter"                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [15] "infix_spaces_linter"                "line_length_linter"                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17] "object_length_linter"               "object_name_linter"                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "paren_body_linter"                  "pipe_continuation_linter"          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [21] "quotes_linter"                      "r6_usage_linter"                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [23] "semicolon_linter"                   "seq_linter"                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [25] "spaces_inside_linter"               "spaces_left_parentheses_linter"    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [27] "T_and_F_symbol_linter"              "trailing_blank_lines_linter"       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [29] "trailing_whitespace_linter"         "unused_declared_object_linter"     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [31] "vector_logic_linter"                "whitespace_linter"                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "assignment_linter"                  "box_mod_fun_exists_linter"         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "box_pkg_fun_exists_linter"          "box_unused_att_mod_obj_linter"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "box_unused_att_pkg_linter"          "box_unused_attached_mod_linter"    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "box_unused_attached_pkg_fun_linter" "box_usage_linter"                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "brace_linter"                       "commas_linter"                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "commented_code_linter"              "cyclocomp_linter"                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "equals_na_linter"                   "function_left_parentheses_linter"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15] "indentation_linter"                 "infix_spaces_linter"               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17] "line_length_linter"                 "object_length_linter"              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "object_name_linter"                 "paren_body_linter"                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [21] "pipe_continuation_linter"           "quotes_linter"                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [23] "r6_usage_linter"                    "semicolon_linter"                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [25] "seq_linter"                         "spaces_inside_linter"              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [27] "spaces_left_parentheses_linter"     "T_and_F_symbol_linter"             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [29] "trailing_blank_lines_linter"        "trailing_whitespace_linter"        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [31] "unused_declared_object_linter"      "vector_logic_linter"               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [33] "whitespace_linter"                 </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
