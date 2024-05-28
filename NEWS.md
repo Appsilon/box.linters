@@ -3,6 +3,7 @@
 * [bug fix] `box_unused_att_pkg_fun_linter()` had issues with lists of functions. Linter function
   now drops the nested function name and retains the list name (`list_name$function_name()`) when
   performing the check.
+* [bug fix] `get_attached_modules()` was not properly finding whole modules attached with short `path/module` declarations
 
 # box.linters 0.9.0
 
