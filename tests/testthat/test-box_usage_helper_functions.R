@@ -37,7 +37,21 @@ obj_a <- obj_b
   result <- get_function_calls(xml_function_calls)
   expected_result <- c("fun_a", "fun_b")
 
-  expect_equal(result$text, expected_result)
+  expect_setequal(result$text, expected_result)
+})
+
+test_that("get_function_calls returns correct list of function calls", {
+  function_calls <- "
+container$fun_a()
+another$fun_b(1, 2)
+obj_a <- obj_b
+"
+
+  xml_function_calls <- code_to_xml_expr(function_calls)
+  result <- get_function_calls(xml_function_calls)
+  expected_result <- c("container$fun_a", "another$fun_b")
+
+  expect_setequal(result$text, expected_result)
 })
 
 test_that("get_declared_objects returns correct list of object definitions", {
@@ -67,6 +81,19 @@ test_that("get_object_calls returns correct list of object calls with equal assi
   expected_result <- c("a", "b", "c")
 
   expect_equal(result$text, expected_result)
+})
+
+test_that("get_object_calls returns list objects", {
+  object_list_calls <- "
+    sum(container$object)
+    mean(another$object)
+  "
+
+  xml_object_calls <- code_to_xml_expr(object_list_calls)
+  result <- get_object_calls(xml_object_calls)
+  expected_result <- c("container$object", "another$object", "container", "another")
+
+  expect_setequal(result$text, expected_result)
 })
 
 test_that("get_object_calls returns objects passed to functions", {
