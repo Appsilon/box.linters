@@ -125,7 +125,7 @@ test_that("box_unused_att_pkg_fun_linter skips function used in glue string temp
 
   good_box_usage <- "box::use(
     glue[glue],
-    stringr[str_trim]
+    stringr[str_trim],
   )
 
   string_with_spaces <- \"   String with white spaces\t\"
@@ -141,7 +141,7 @@ test_that("box_unused_att_pkg_fun_linter skips literal braces in glue string tem
 
   bad_box_usage <- "box::use(
     glue[glue],
-    stringr[str_trim]
+    stringr[str_trim],
   )
 
   string_with_spaces <- \"   String with white spaces\t\"
@@ -157,7 +157,7 @@ test_that("box_unused_att_pkg_fun_linter blocks unused functions in glue string 
 
   bad_box_usage <- "box::use(
     glue[glue],
-    stringr[str_trim]
+    stringr[str_trim],
   )
 
   string_with_spaces <- \"   String with white spaces\t\"
