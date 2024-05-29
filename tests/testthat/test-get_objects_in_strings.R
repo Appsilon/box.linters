@@ -116,3 +116,15 @@ test_that("get_objects_in_strings handles multiple string constants in code", {
 
   expect_setequal(results, should_find)
 })
+
+test_that("get_objects_in_strings handles multiple string constants in code", {
+  code <- "
+    string_1 <- \"No parseable object here.\"
+    string_2 <- \"Some text {value_b} here.\"
+  "
+  xml_code <- code_to_xml_expr(code)
+  results <- get_objects_in_strings(xml_code)
+  should_find <- c("value_b")
+
+  expect_setequal(results, should_find)
+})
