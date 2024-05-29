@@ -109,12 +109,13 @@ get_object_calls <- function(xml) {
 
   xpath_all_object_calls <- "
   .//expr[
+    ./SYMBOL and
     not(
       following-sibling::LEFT_ASSIGN or
       following-sibling::EQ_ASSIGN
     )
   ]
-  /SYMBOL"
+  "
   xml_object_calls <- xml2::xml_find_all(xml_no_box_use, xpath_all_object_calls)
   text <- xml2::xml_text(xml_object_calls, trim = TRUE)
 

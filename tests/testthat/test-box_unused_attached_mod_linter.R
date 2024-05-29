@@ -124,3 +124,148 @@ test_that("box_unused_mod_linter blocks unused three-dots attached packages", {
   lintr::expect_lint(bad_box_usage, list(message = lint_message), linter)
 
 })
+
+
+# Glue compatibility
+
+test_that("box_unused_attached_mod_linter skips objects used in glue string templates", {
+  linter <- box_unused_attached_mod_linter()
+
+  good_box_usage <- "box::use(
+    glue,
+  )
+
+  box::use(
+    path/to/module_b,
+  )
+
+  glue$glue(\"This {module_b$b_obj_a} should be parsed.\")
+  "
+
+  lintr::expect_lint(good_box_usage, NULL, linters = linter)
+})
+
+test_that("box_unused_attached_mod_linter skips functions used in glue string templates", {
+  linter <- box_unused_attached_mod_linter()
+
+  good_box_usage <- "box::use(
+    glue[glue],
+  )
+
+  box::use(
+    path/to/module_b,
+  )
+
+  glue(\"This {module_b$b_fun_a()} should be parsed.\")
+  "
+
+  lintr::expect_lint(good_box_usage, NULL, linters = linter)
+})
+
+test_that("box_unused_attached_mod_linter skips literal braces in glue string templates", {
+  linter <- box_unused_attached_mod_linter()
+  lint_message <- rex::rex("Attached module unused.")
+
+  bad_box_usage <- "box::use(
+    glue[glue],
+  )
+
+  box::use(
+    path/to/module_b,
+  )
+
+  glue(\"This {{module_b$b_obj_a}} should be parsed.\")
+  "
+
+  lintr::expect_lint(bad_box_usage, list(message = lint_message), linters = linter)
+})
+
+test_that("box_unused_attached_mod_linter blocks unused objects in glue string templates", {
+  linter <- box_unused_attached_mod_linter()
+  lint_message <- rex::rex("Attached module unused.")
+
+  bad_box_usage <- "box::use(
+    glue[glue],
+  )
+
+  box::use(
+    path/to/module_b,
+  )
+
+  glue(\"This does not have a parseable object.\")
+  "
+
+  lintr::expect_lint(bad_box_usage, list(message = lint_message), linters = linter)
+})
+
+# Glue compatibility three dots
+
+test_that("box_unused_attached_mod_linter skips objects used in glue string templates", {
+  linter <- box_unused_attached_mod_linter()
+
+  good_box_usage <- "box::use(
+    glue[glue],
+  )
+
+  box::use(
+    path/to/module_b[...],
+  )
+
+  glue(\"This {b_obj_a} should be parsed.\")
+  "
+
+  lintr::expect_lint(good_box_usage, NULL, linters = linter)
+})
+
+test_that("box_unused_attached_mod_linter skips functions used in glue string templates", {
+  linter <- box_unused_attached_mod_linter()
+
+  good_box_usage <- "box::use(
+    glue[glue],
+  )
+
+  box::use(
+    path/to/module_b[...],
+  )
+
+  glue(\"This {b_fun_a()} should be parsed.\")
+  "
+
+  lintr::expect_lint(good_box_usage, NULL, linters = linter)
+})
+
+test_that("box_unused_attached_mod_linter skips literal braces in glue string templates", {
+  linter <- box_unused_attached_mod_linter()
+  lint_message <- rex::rex("Three-dots attached module unused.")
+
+  bad_box_usage <- "box::use(
+    glue[glue],
+  )
+
+  box::use(
+    path/to/module_b[...],
+  )
+
+  glue(\"This {{b_obj_a}} should be parsed.\")
+  "
+
+  lintr::expect_lint(bad_box_usage, list(message = lint_message), linters = linter)
+})
+
+test_that("box_unused_attached_mod_linter blocks unused objects in glue string templates", {
+  linter <- box_unused_attached_mod_linter()
+  lint_message <- rex::rex("Three-dots attached module unused.")
+
+  bad_box_usage <- "box::use(
+    glue[glue],
+  )
+
+  box::use(
+    path/to/module_b[...],
+  )
+
+  glue(\"This does not have a parseable object.\")
+  "
+
+  lintr::expect_lint(bad_box_usage, list(message = lint_message), linters = linter)
+})

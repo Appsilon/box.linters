@@ -116,3 +116,102 @@ test_that("box_unused_pkg_linter blocks unused three-dots attached packages", {
 
   lintr::expect_lint(bad_box_usage, list(message = lint_message), linter)
 })
+
+
+# Glue compatiblity
+
+test_that("box_unused_attached_pkg_linter skips function used in glue string template", {
+  linter <- box_unused_attached_pkg_linter()
+
+  good_box_usage <- "box::use(
+    glue,
+    stringr,
+  )
+
+  string_with_spaces <- \"   String with white spaces\t\"
+  glue$glue(\"This {stringr$str_trim(string_with_spaces)} should be parsed\")
+  "
+
+  lintr::expect_lint(good_box_usage, NULL, linters = linter)
+})
+
+test_that("box_unused_attached_pkg_linter skips literal braces in glue string template", {
+  linter <- box_unused_attached_pkg_linter()
+  lint_message_1 <- rex::rex("Attached package unused.")
+
+  bad_box_usage <- "box::use(
+    glue,
+    stringr,
+  )
+
+  string_with_spaces <- \"   String with white spaces\t\"
+  glue$glue(\"This {{stringr$str_trim(string_with_spaces)}} should be parsed\")
+  "
+
+  lintr::expect_lint(bad_box_usage, list(message = lint_message_1), linters = linter)
+})
+
+test_that("box_unused_attached_pkg_linter blocks unused functions in glue string template", {
+  linter <- box_unused_attached_pkg_linter()
+  lint_message_1 <- rex::rex("Attached package unused.")
+
+  bad_box_usage <- "box::use(
+    glue,
+    stringr,
+  )
+
+  string_with_spaces <- \"   String with white spaces\t\"
+  glue$glue(\"This does not have a pareable object.\")
+  "
+
+  lintr::expect_lint(bad_box_usage, list(message = lint_message_1), linters = linter)
+})
+
+# Glue compatibility three dots
+
+test_that("box_unused_attached_pkg_linter skips function used in glue string template", {
+  linter <- box_unused_attached_pkg_linter()
+
+  good_box_usage <- "box::use(
+    glue[...],
+    stringr[...],
+  )
+
+  string_with_spaces <- \"   String with white spaces\t\"
+  glue(\"This {str_trim(string_with_spaces)} should be parsed\")
+  "
+
+  lintr::expect_lint(good_box_usage, NULL, linters = linter)
+})
+
+test_that("box_unused_attached_pkg_linter skips literal braces in glue string template", {
+  linter <- box_unused_attached_pkg_linter()
+  lint_message_1 <- rex::rex("Three-dots attached package unused.")
+
+  bad_box_usage <- "box::use(
+    glue[...],
+    stringr[...],
+  )
+
+  string_with_spaces <- \"   String with white spaces\t\"
+  glue(\"This {{str_trim(string_with_spaces)}} should be parsed\")
+  "
+
+  lintr::expect_lint(bad_box_usage, list(message = lint_message_1), linters = linter)
+})
+
+test_that("box_unused_attached_pkg_linter blocks unused functions in glue string template", {
+  linter <- box_unused_attached_pkg_linter()
+  lint_message_1 <- rex::rex("Three-dots attached package unused.")
+
+  bad_box_usage <- "box::use(
+    glue[...],
+    stringr[...],
+  )
+
+  string_with_spaces <- \"   String with white spaces\t\"
+  glue(\"This does not have a pareable object.\")
+  "
+
+  lintr::expect_lint(bad_box_usage, list(message = lint_message_1), linters = linter)
+})

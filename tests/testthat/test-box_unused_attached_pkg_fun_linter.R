@@ -119,3 +119,50 @@ test_that("box_unused_att_pkg_fun_linter blocks unused function in list", {
 
   lintr::expect_lint(bad_box_usage, list(message = lint_message), linter)
 })
+
+test_that("box_unused_att_pkg_fun_linter skips function used in glue string template", {
+  linter <- box_unused_att_pkg_fun_linter()
+
+  good_box_usage <- "box::use(
+    glue[glue],
+    stringr[str_trim],
+  )
+
+  string_with_spaces <- \"   String with white spaces\t\"
+  glue(\"This {str_trim(string_with_spaces)} should be parsed\")
+  "
+
+  lintr::expect_lint(good_box_usage, NULL, linters = linter)
+})
+
+test_that("box_unused_att_pkg_fun_linter skips literal braces in glue string template", {
+  linter <- box_unused_att_pkg_fun_linter()
+  lint_message_1 <- rex::rex("Imported function unused.")
+
+  bad_box_usage <- "box::use(
+    glue[glue],
+    stringr[str_trim],
+  )
+
+  string_with_spaces <- \"   String with white spaces\t\"
+  glue(\"This {{str_trim(string_with_spaces)}} should be parsed\")
+  "
+
+  lintr::expect_lint(bad_box_usage, list(message = lint_message_1), linters = linter)
+})
+
+test_that("box_unused_att_pkg_fun_linter blocks unused functions in glue string template", {
+  linter <- box_unused_att_pkg_fun_linter()
+  lint_message_1 <- rex::rex("Imported function unused.")
+
+  bad_box_usage <- "box::use(
+    glue[glue],
+    stringr[str_trim],
+  )
+
+  string_with_spaces <- \"   String with white spaces\t\"
+  glue(\"This does not have a pareable object.\")
+  "
+
+  lintr::expect_lint(bad_box_usage, list(message = lint_message_1), linters = linter)
+})

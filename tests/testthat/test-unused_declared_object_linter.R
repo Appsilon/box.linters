@@ -202,3 +202,65 @@ test_that("unused_declared_object_linter skips assignment to list elements", {
 
   lintr::expect_lint(path_to_shiny_app, NULL, linters = linter)
 })
+
+test_that("unused_declared_object_linter skips valid objects called in glue string templates", {
+  linter <- unused_declared_object_linter()
+
+  code <- "
+    box::use(
+      glue[glue],
+    )
+
+    some_value <- 4
+    glue(\"This {some_value} should be parsed.\")
+  "
+
+  lintr::expect_lint(code, NULL, linters = linter)
+})
+
+test_that("unused_declared_object_linter skips valid objects called in glue string templates", {
+  linter <- unused_declared_object_linter()
+
+  code <- "
+    box::use(
+      glue[glue],
+    )
+
+    some_func <- function() {
+      4
+    }
+    glue(\"This {some_func()} should be parsed.\")
+  "
+
+  lintr::expect_lint(code, NULL, linters = linter)
+})
+
+test_that("unused_declared_object_linter skips literal braces in glue string templates", {
+  linter <- unused_declared_object_linter()
+
+  code <- "
+    box::use(
+      glue[glue],
+    )
+
+    glue(\"This {{literal_braces}} should be parsed.\")
+  "
+
+  lintr::expect_lint(code, NULL, linters = linter)
+})
+
+test_that("unused_declared_object_linter blocks unused objects in glue string templates", {
+  linter <- unused_declared_object_linter()
+  lint_message <- rex::rex("Declared function/object unused.")
+
+  code <- "
+    box::use(
+      glue[glue],
+    )
+
+    some_value <- 4
+    glue(\"This does not have a parseable object.\")
+  "
+
+  lintr::expect_lint(code, list(message = lint_message), linters = linter)
+})

@@ -64,7 +64,8 @@ box_unused_att_mod_obj_linter <- function() {
     attached_functions_objects <- get_attached_mod_functions(xml)
     function_calls <- get_function_calls(xml)
     object_calls <- get_object_calls(xml)
-    all_object_calls_text <- c(function_calls$text, object_calls$text)
+    glue_object_calls <- get_objects_in_strings(xml)
+    all_object_calls_text <- c(function_calls$text, object_calls$text, glue_object_calls)
 
     lapply(attached_functions_objects$xml, function(fun_obj_import) {
       fun_obj_import_text <- xml2::xml_text(fun_obj_import)

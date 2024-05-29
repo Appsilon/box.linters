@@ -80,6 +80,9 @@ box_unused_attached_pkg_linter <- function() {
     attached_packages <- get_attached_packages(xml)
     attached_three_dots <- get_attached_pkg_three_dots(xml)
     function_calls <- get_function_calls(xml)
+    glue_object_calls <- get_objects_in_strings(xml)
+
+    all_calls_text <- c(function_calls$text, glue_object_calls)
 
     unused_package <- lapply(attached_packages$xml, function(attached_package) {
       package_text <- lintr::get_r_string(attached_package)
@@ -91,7 +94,7 @@ box_unused_attached_pkg_linter <- function() {
         sep = "$"
       )
 
-      functions_used <- length(intersect(func_list, function_calls$text))
+      functions_used <- length(intersect(func_list, all_calls_text))
 
       if (functions_used == 0) {
         lintr::xml_nodes_to_lints(
@@ -106,7 +109,7 @@ box_unused_attached_pkg_linter <- function() {
     unused_three_dots <- lapply(attached_three_dots$xml, function(attached_package) {
       package_text <- lintr::get_r_string(attached_package)
       func_list <- attached_three_dots$nested[[package_text]]
-      functions_used <- length(intersect(func_list, function_calls$text))
+      functions_used <- length(intersect(func_list, all_calls_text))
 
       if (functions_used == 0) {
         lintr::xml_nodes_to_lints(
