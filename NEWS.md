@@ -1,5 +1,6 @@
 # box.linters (development version)
 
+* Handle `box` recommended method of testing private methods.
 * Added handler for `glue` string templates.
 * Added box_mod_fun_exists_linter() to default linters 
 * [bug fix] box_trailing_commas_linter() now properly handles a #nolint for other linters

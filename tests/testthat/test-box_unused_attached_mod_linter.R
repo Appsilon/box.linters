@@ -269,3 +269,41 @@ test_that("box_unused_attached_mod_linter blocks unused objects in glue string t
 
   lintr::expect_lint(bad_box_usage, list(message = lint_message), linters = linter)
 })
+
+
+# Box test interfaces, not implementations
+
+test_that("box_unused_attached_mod_linter skips module call as implementation test", {
+  linter <- box_unused_attached_mod_linter()
+
+  code <- "box::use(
+    path/to/module_a,
+  )
+
+  impl = attr(module_a, \"namespace\")
+
+  test_that(\"implementation detail X works\", {
+    expect_true(impl$a_fun_c())
+  })
+  "
+
+  lintr::expect_lint(code, NULL, linter = linter)
+})
+
+test_that("box_unused_attached_mod_linter blocks unused module call as implementation test", {
+  linter <- box_unused_attached_mod_linter()
+  lint_message <- rex::rex("Attached module unused.")
+
+  code <- "box::use(
+    path/to/module_a,
+  )
+
+  impl = attr(module_b, \"namespace\")
+
+  test_that(\"implementation detail X works\", {
+    expect_true(impl$a_fun_c())
+  })
+  "
+
+  lintr::expect_lint(code, list(message = lint_message), linter = linter)
+})

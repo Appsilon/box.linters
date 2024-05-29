@@ -83,6 +83,7 @@ box_unused_attached_mod_linter <- function() {
     attached_three_dots <- get_attached_mod_three_dots(xml)
     function_calls <- get_function_calls(xml)
     glue_object_calls <- get_objects_in_strings(xml)
+    possible_module_calls <- get_object_calls(xml)
 
     all_calls_text <- c(function_calls$text, glue_object_calls)
 
@@ -97,8 +98,9 @@ box_unused_attached_mod_linter <- function() {
       )
 
       functions_used <- length(intersect(func_list, all_calls_text))
+      modules_used <- length(intersect(aliased_module_text, possible_module_calls$text))
 
-      if (functions_used == 0) {
+      if (functions_used == 0 && modules_used == 0) {
         lintr::xml_nodes_to_lints(
           attached_module,
           source_expression = source_expression,
