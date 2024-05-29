@@ -69,12 +69,15 @@ box_unused_att_pkg_fun_linter <- function() {
       FUN.VALUE = character(1)
     )
 
+    glue_object_calls <- get_objects_in_strings(xml)
+    all_calls_text <- c(function_calls$text, glue_object_calls)
+
     lapply(attached_functions$xml, function(fun_import) {
       fun_import_text <- xml2::xml_text(fun_import)
       fun_import_text <- gsub("[`'\"]", "", fun_import_text)
       aliased_fun_import_text <- attached_functions$text[fun_import_text]
 
-      if (!aliased_fun_import_text %in% function_calls$text) {
+      if (!aliased_fun_import_text %in% all_calls_text) {
         lintr::xml_nodes_to_lints(
           fun_import,
           source_expression = source_expression,
