@@ -8,7 +8,6 @@
 #' @return A character vector of object and function names found inside `glue` string templates.
 #' @keywords internal
 get_objects_in_strings <- function(xml) {
-
   xpath_str_consts <- "
     //expr/STR_CONST
   "
