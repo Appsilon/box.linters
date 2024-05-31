@@ -99,6 +99,26 @@ Or, use `box.linters` from within a `{rhino}` project:
 rhino::lint_r()
 ```
 
+## {glue} String Interpolation
+
+`{box.linters}` also looks inside `{glue}` strings. The default opening and closing delimiters are "`{`" and "`}`". `{glue}` provides a way to [customize delimiters](https://glue.tidyverse.org/reference/glue.html). Support for custom `{glue}` delimiters are provided *project-wide* by setting `glue.open` and `glue.close` options in the following manner:
+
+```r
+options(
+  list(
+    glue.open = "<<",
+    glue.close = ">>"
+  )
+)
+```
+
+This is consistent with [`glue::glue()`](https://glue.tidyverse.org/reference/glue.html), doubling the full delimiter escapes it.
+
+Because setting `glue.open` and `glue.close` will be *global* or *project-wide*, it is advised to invoke `glue` in the following manner to avoid confusion:
+
+```r
+glue::glue(..., .open = getOption("glue.open"), .close = getOption("glue.close"))
+```
 
 ## Contribute
 
