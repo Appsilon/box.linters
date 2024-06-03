@@ -13,6 +13,13 @@ get_objects_in_strings <- function(xml) {
   "
 
   all_strings <- extract_xml_and_text(xml, xpath_str_consts)
+
+  glue_open <- getOption("glue.open", default = "\\{")
+  glue_close <- getOption("glue.close", default = "\\}")
+
+  all_strings$text <- gsub(glue_open, "{", all_strings$text)
+  all_strings$text <- gsub(glue_close, "}", all_strings$text)
+
   text_between_braces <- stringr::str_match_all(all_strings$text, "(\\{(?:\\{??[^\\{]*?\\}))")
 
   tryCatch({
@@ -22,7 +29,8 @@ get_objects_in_strings <- function(xml) {
           return(NULL)
         }
 
-        parsed_code <- parse(text = each_text[, 2], keep.source = TRUE)
+        text_to_parse <- each_text[substr(each_text[, 2], 1, 2) != "{{", 2]
+        parsed_code <- parse(text = text_to_parse, keep.source = TRUE)
         xml_parsed_code <- xml2::read_xml(xmlparsedata::xml_parse_data(parsed_code))
         objects_called <- get_object_calls(xml_parsed_code)
         functions_calls <- get_function_calls(xml_parsed_code)
