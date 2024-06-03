@@ -1,4 +1,4 @@
-# box.linters (development version)
+# box.linters 0.9.1
 
 * Handle `box` recommended method of testing private methods.
 * Added handler for `glue` string templates.
