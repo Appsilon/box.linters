@@ -44,7 +44,7 @@
     
     <a class="navbar-brand me-2" href="index.html">box.linters</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.9007</small>
 
     <a href="https://rhinoverse.dev" class="external-link home"><i class="fa fa-lg fa-chevron-left"></i></a>
 
@@ -192,6 +192,22 @@
 <span><span class="co"># in a rhino project:</span></span>
 <span><span class="fu">rhino</span><span class="fu">::</span><span class="fu"><a href="https://appsilon.github.io/rhino/reference/lint_r.html" class="external-link">lint_r</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
+</div>
+<div class="section level2">
+<h2 id="glue-string-interpolation">{glue} String Interpolation<a class="anchor" aria-label="anchor" href="#glue-string-interpolation"></a>
+</h2>
+<p><a href="https://appsilon.github.io/box.linters/">box.linters</a> also looks inside <a href="https://glue.tidyverse.org/" class="external-link">glue</a> strings. The default opening and closing delimiters are “<code>{</code>” and “<code>}</code>”. <a href="https://glue.tidyverse.org/" class="external-link">glue</a> provides a way to <a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">customize delimiters</a>. Support for custom <a href="https://glue.tidyverse.org/" class="external-link">glue</a> delimiters are provided <em>project-wide</em> by setting <code>glue.open</code> and <code>glue.close</code> options in the following manner:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    glue.open <span class="op">=</span> <span class="st">"&lt;&lt;"</span>,</span>
+<span>    glue.close <span class="op">=</span> <span class="st">"&gt;&gt;"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>This is consistent with <a href="https://glue.tidyverse.org/reference/glue.html" class="external-link"><code>glue::glue()</code></a>, doubling the full delimiter escapes it.</p>
+<p>Because setting <code>glue.open</code> and <code>glue.close</code> will be <em>global</em> or <em>project-wide</em>, it is advised to invoke <code>glue</code> in the following manner to avoid confusion:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">glue</span><span class="fu">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">glue</a></span><span class="op">(</span><span class="va">...</span>, .open <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"glue.open"</span><span class="op">)</span>, .close <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"glue.close"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="contribute">Contribute<a class="anchor" aria-label="anchor" href="#contribute"></a>
