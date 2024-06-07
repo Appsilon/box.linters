@@ -16,8 +16,6 @@ knitr::opts_chunk$set(
 
 ## Rhino (>= 1.8.0)
 
-> Rhino 1.8.0 may not yet be available at the time of this release.
-
 Projects created with `rhino` version 1.8.0 and later come preconfigured with a `.lintr` file. 
 
 ```{yaml}
