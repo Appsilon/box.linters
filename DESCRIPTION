@@ -24,6 +24,8 @@ Imports:
   lintr (>= 3.0.0),
   rlang,
   stringr,
+  treesitter,
+  treesitter.r,
   xfun,
   xml2,
   xmlparsedata
