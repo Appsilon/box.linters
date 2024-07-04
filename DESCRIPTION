@@ -1,6 +1,6 @@
 Package: box.linters
 Title: Linters for 'box' Modules
-Version: 0.9.1.9000
+Version: 0.9.1.9001
 Authors@R:
   c(
     person("Ricardo Rodrigo", "Basa", role = c("aut", "cre"), email = "opensource+rodrigo@appsilon.com"),
@@ -24,6 +24,7 @@ Imports:
   lintr (>= 3.0.0),
   rlang,
   stringr,
+  xfun,
   xml2,
   xmlparsedata
 Suggests:
