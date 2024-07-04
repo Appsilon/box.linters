@@ -1,3 +1,19 @@
+ts_query_funcs <- "
+(_
+  (subset
+    function: (identifier) @pkg_name
+    arguments: (arguments
+      argument: (argument
+        value: (identifier) @func_name
+      ) @func_call
+      .
+      (comma)?
+      .
+      (comment)? @comment
+    )
+  ) @full_call
+)"
+
 ts_query_mod <- "
 (call
   function: (namespace_operator

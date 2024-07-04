@@ -18,9 +18,11 @@ style_box_use_text <- function(text) {
 
   ts_pkgs <- ts_find_all(tree_root, ts_query_pkg)
   sorted_pkgs <- sort_mod_pkg_calls(ts_pkgs, "pkg")
+  sorted_pkg_funcs <- process_func_calls(sorted_pkgs)
 
   ts_mods <- ts_find_all(tree_root, ts_query_mod)
   sorted_mods <- sort_mod_pkg_calls(ts_mods, "mod")
+  sorted_mod_funcs <- process_func_calls(sorted_mods)
 }
 
 #' @keywords internal
@@ -83,4 +85,51 @@ sort_mod_pkg_calls <- function(tree_matches, pkg_or_mod = c("mod", "pkg")) {
   names(attached_calls) <- comments
 
   attached_calls[order_attached_names]
+}
+
+#' @keywords internal
+find_func_calls <- function(pkg_mod_call) {
+  pkg_mod_tree <- ts_root(pkg_mod_call)
+  ts_find_all(pkg_mod_tree, ts_query_funcs)
+}
+
+#' @keywords internal
+ts_get_start_end_rows <- function(node, idx) {
+  start_row <- treesitter::point_row(
+    treesitter::node_start_point(
+      node[idx][[1]]
+    )
+  )
+  end_row <- treesitter::point_row(
+    treesitter::node_end_point(
+      node[idx][[1]]
+    )
+  )
+
+  list(
+    "start" = start_row,
+    "end" = end_row
+  )
+}
+
+#' @keywords internal
+is_single_line_func_list <- function(pkg_mod_call) {
+  first_item <- pkg_mod_call[[1]]
+  idx_full_call <- match("full_call", first_item$name)
+  rows <- ts_get_start_end_rows(first_item$node, idx_full_call)
+  rows$start == rows$end
+}
+
+#' @keywords internal
+process_func_calls <- function(pkg_mod_calls) {
+  result <- lapply(pkg_mod_calls, function(call_item) {
+    matches <- find_func_calls(call_item)
+    if (rlang::is_empty(matches[[1]])) {
+      call_item
+    } else {
+      sort_func_calls(matches)
+    }
+  })
+
+  unlist(result)
 }

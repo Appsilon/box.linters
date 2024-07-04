@@ -437,3 +437,57 @@ box::use(
 
   expect_identical(sorted_mods, expected_result)
 })
+
+##### find_func_calls #####
+
+test_that("find_func_calls() returns correct list of attached functions from package", {
+  code_subset <- "stringr[str_trim, str_count, str_pos]"
+
+  matches <- find_func_calls(code_subset)
+  result <- get_nodes_text_by_type(matches, "func_call")
+
+  expected_result <- c("str_trim", "str_count", "str_pos")
+
+  expect_identical(result, expected_result)
+})
+
+test_that("find_func_calls() returns correct list of aliased attached functions from package", {
+  code_subset <- "stringr[str_trim, alias = str_count, str_pos]"
+
+  matches <- find_func_calls(code_subset)
+  result <- get_nodes_text_by_type(matches, "func_call")
+
+  expected_result <- c("str_trim", "alias = str_count", "str_pos")
+
+  expect_identical(result, expected_result)
+})
+
+test_that("find_func_calls() returns correct list of attached functions from module", {
+  code_subset <- "path/to/module[func_c, func_a, func_b]"
+
+  matches <- find_func_calls(code_subset)
+  result <- get_nodes_text_by_type(matches, "func_call")
+
+  expected_result <- c("func_c", "func_a", "func_b")
+
+  expect_identical(result, expected_result)
+})
+
+test_that("find_func_calls() returns correct list of aliased attached functions from module", {
+  code_subset <- "path/to/module[func_c, func_a, alias = func_b]"
+
+  matches <- find_func_calls(code_subset)
+  result <- get_nodes_text_by_type(matches, "func_call")
+
+  expected_result <- c("func_c", "func_a", "alias = func_b")
+
+  expect_identical(result, expected_result)
+})
+
+##### ts_get_start_end_rows #####
+
+##### is_single_line_func_list #####
+
+##### sort_func_calls #####
+
+##### process_func_calls #####
