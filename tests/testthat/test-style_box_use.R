@@ -284,10 +284,6 @@ box::use(
   expect_identical(sorted_pkgs, expected_result)
 })
 
-
-
-
-
 test_that("sort_mod_pkg_calls('mod') returns sorted modules", {
   query <- ts_query_mod
 
