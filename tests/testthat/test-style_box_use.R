@@ -960,3 +960,67 @@ box::use(
 
   expect_identical(result, expected_result)
 })
+
+# rebuild pkg mod lines
+
+test_that("rebuild_pkg_mod_calls() works with packages", {
+  query <- ts_query_pkg
+
+  code <- "box::use(
+  tidyr[
+    pivot_wider,
+    pivot_longer # nolint
+  ],
+  dplyr[...], # nolint
+  stringr[alias = str_pos, str_cat],
+  shiny
+)"
+
+  matches <- ts_find_all(ts_root(code), query)
+  sorted_pkgs <- sort_mod_pkg_calls(matches, "pkg")
+  sorted_pkg_funcs <- process_func_calls(sorted_pkgs)
+  result <- rebuild_pkg_mod_calls(sorted_pkg_funcs)
+
+  expected_result <- "box::use(
+  dplyr[...], # nolint
+  shiny,
+  stringr[str_cat, alias = str_pos, ],
+  tidyr[
+    pivot_longer, # nolint
+    pivot_wider,
+  ],
+)"
+
+  expect_identical(result, expected_result)
+})
+
+test_that("rebuild_pkg_mod_calls() works with modules", {
+  query <- ts_query_mod
+
+  code <- "box::use(
+  path/b/module[
+    func_b,
+    func_a # nolint
+  ],
+  path/a/module_a[...], # nolint
+  path/a/module_c[alias = func_b, func_a],
+  path/a/module_b
+)"
+
+  matches <- ts_find_all(ts_root(code), query)
+  sorted_mods <- sort_mod_pkg_calls(matches, "mod")
+  sorted_mod_funcs <- process_func_calls(sorted_mods)
+  result <- rebuild_pkg_mod_calls(sorted_mod_funcs)
+
+  expected_result <- "box::use(
+  path/a/module_a[...], # nolint
+  path/a/module_b,
+  path/a/module_c[func_a, alias = func_b, ],
+  path/b/module[
+    func_a, # nolint
+    func_b,
+  ],
+)"
+
+  expect_identical(result, expected_result)
+})

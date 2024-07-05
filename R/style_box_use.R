@@ -19,10 +19,12 @@ style_box_use_text <- function(text) {
   ts_pkgs <- ts_find_all(tree_root, ts_query_pkg)
   sorted_pkgs <- sort_mod_pkg_calls(ts_pkgs, "pkg")
   sorted_pkg_funcs <- process_func_calls(sorted_pkgs)
+  box_use_pkgs <- rebuild_pkg_mod_calls(sorted_pkg_funcs)
 
   ts_mods <- ts_find_all(tree_root, ts_query_mod)
   sorted_mods <- sort_mod_pkg_calls(ts_mods, "mod")
   sorted_mod_funcs <- process_func_calls(sorted_mods)
+  box_use_mods <- rebuild_pkg_mod_calls(sorted_mod_funcs)
 }
 
 #' @keywords internal
@@ -202,4 +204,25 @@ process_func_calls <- function(pkg_mod_calls) {
   })
 
   unlist(result)
+}
+
+#' @keywords internal
+rebuild_pkg_mod_calls <- function(pkg_mod_calls, indent_spaces = 2) {
+  names(pkg_mod_calls) <- ifelse(
+    nchar(names(pkg_mod_calls)) > 0,
+    sprintf(" %s", names(pkg_mod_calls)),
+    names(pkg_mod_calls)
+  )
+
+  pkg_mod_calls_comma_line <- sprintf(
+    "%s%s,%s",
+    strrep(' ', indent_spaces),
+    pkg_mod_calls,
+    names(pkg_mod_calls)
+  )
+  flat_pkg_mod_calls <- paste0(pkg_mod_calls_comma_line, collapse = "\n")
+  sprintf(
+    "box::use(\n%s\n)",
+    flat_pkg_mod_calls
+  )
 }
