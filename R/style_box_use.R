@@ -12,19 +12,29 @@ style_box_use_file <- function(filename, run_styler = FALSE) {
 #' Style the box::use() calls of source code text
 #'
 #' @param text Source code in text format
+#' @param indent_spaces Number of spaces per indent level
 #' @export
-style_box_use_text <- function(text) {
+style_box_use_text <- function(text, indent_spaces = 2) {
   tree_root <- ts_root(text)
 
   ts_pkgs <- ts_find_all(tree_root, ts_query_pkg)
   sorted_pkgs <- sort_mod_pkg_calls(ts_pkgs, "pkg")
-  sorted_pkg_funcs <- process_func_calls(sorted_pkgs)
-  box_use_pkgs <- rebuild_pkg_mod_calls(sorted_pkg_funcs)
+  sorted_pkg_funcs <- process_func_calls(sorted_pkgs, indent_spaces)
+  box_use_pkgs <- rebuild_pkg_mod_calls(sorted_pkg_funcs, indent_spaces)
 
   ts_mods <- ts_find_all(tree_root, ts_query_mod)
   sorted_mods <- sort_mod_pkg_calls(ts_mods, "mod")
-  sorted_mod_funcs <- process_func_calls(sorted_mods)
-  box_use_mods <- rebuild_pkg_mod_calls(sorted_mod_funcs)
+  sorted_mod_funcs <- process_func_calls(sorted_mods, indent_spaces)
+  box_use_mods <- rebuild_pkg_mod_calls(sorted_mod_funcs, indent_spaces)
+
+  cat(sprintf("%s\n\n%s", box_use_pkgs, box_use_mods))
+
+  invisible(
+    list(
+      pkgs = box_use_pkgs,
+      mods = box_use_mods
+    )
+  )
 }
 
 #' @keywords internal
@@ -191,7 +201,7 @@ rebuild_func_calls <- function(func_calls, single_line = c(TRUE, FALSE), indent_
 }
 
 #' @keywords internal
-process_func_calls <- function(pkg_mod_calls) {
+process_func_calls <- function(pkg_mod_calls, indent_spaces = 2) {
   result <- lapply(pkg_mod_calls, function(call_item) {
     matches <- find_func_calls(call_item)
     if (rlang::is_empty(matches[[1]])) {
@@ -199,7 +209,7 @@ process_func_calls <- function(pkg_mod_calls) {
     } else {
       sorted_func_calls <- sort_func_calls(matches)
       single_line <- is_single_line_func_list(matches[[1]])
-      rebuild_func_calls(sorted_func_calls, single_line)
+      rebuild_func_calls(sorted_func_calls, single_line, indent_spaces)
     }
   })
 

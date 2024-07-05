@@ -4,10 +4,12 @@
 \alias{style_box_use_text}
 \title{Style the box::use() calls of source code text}
 \usage{
-style_box_use_text(text)
+style_box_use_text(text, indent_spaces = 2)
 }
 \arguments{
 \item{text}{Source code in text format}
+
+\item{indent_spaces}{Number of spaces per indent level}
 }
 \description{
 Style the box::use() calls of source code text

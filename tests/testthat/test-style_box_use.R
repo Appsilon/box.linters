@@ -1020,3 +1020,98 @@ test_that("rebuild_pkg_mod_calls() works with modules", {
 
   expect_identical(result, expected_result)
 })
+
+##### style_box_use_text #####
+
+test_that("style_box_use_text() returns correct format to console", {
+  code <- "box::use(
+  stringr[...], # nolint
+  purrr[
+    map_chr, # nolint
+    map,
+  ],
+  dplyr, alias = shiny,
+  tidyr[wide, zun_alias = long],
+  path/to/module_f
+)
+
+box::use(
+  path/to/module_a,
+  alias = path/to/module_d
+)
+
+box::use(
+  path/to/module_b[func_b, fun_alias = func_a],
+  path/to/module_c[...] # nolint
+)
+"
+
+  expected_output <- rex::rex("box::use(
+  dplyr,
+  purrr[
+    map,
+    map_chr, # nolint
+  ],
+  alias = shiny,
+  stringr[...], # nolint
+  tidyr[zun_alias = long, wide, ],
+)
+
+box::use(
+  path/to/module_a,
+  path/to/module_b[fun_alias = func_a, func_b, ],
+  path/to/module_c[...], # nolint
+  alias = path/to/module_d,
+  path/to/module_f,
+)")
+
+  expect_output(style_box_use_text(code), expected_output)
+})
+
+test_that("style_box_use_text() returns correct format as list", {
+  code <- "box::use(
+  stringr[...], # nolint
+  purrr[
+    map_chr, # nolint
+    map,
+  ],
+  dplyr, alias = shiny,
+  tidyr[wide, zun_alias = long],
+  path/to/module_f
+)
+
+box::use(
+  path/to/module_a,
+  alias = path/to/module_d
+)
+
+box::use(
+  path/to/module_b[func_b, fun_alias = func_a],
+  path/to/module_c[...] # nolint
+)
+"
+
+  result <- style_box_use_text(code)
+
+  expected_output <- list(
+  "pkgs" = "box::use(
+  dplyr,
+  purrr[
+    map,
+    map_chr, # nolint
+  ],
+  alias = shiny,
+  stringr[...], # nolint
+  tidyr[zun_alias = long, wide, ],
+)",
+  "mods" = "box::use(
+  path/to/module_a,
+  path/to/module_b[fun_alias = func_a, func_b, ],
+  path/to/module_c[...], # nolint
+  alias = path/to/module_d,
+  path/to/module_f,
+)"
+  )
+
+  expect_identical(result, expected_output)
+})
