@@ -1,7 +1,9 @@
 ts_query_funcs <- "
 (_
+  lhs: (_)? @mod_path
+  .
   (subset
-    function: (identifier) @pkg_name
+    function: (identifier) @pkg_mod_name
     arguments: (arguments
       argument: (argument
         value: (identifier) @func_name
