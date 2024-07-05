@@ -7,7 +7,7 @@ box::use(
 
   ts_tree <- ts_root(code)
 
-  testthat::expect_true(treesitter::is_node(ts_tree))
+  expect_true(treesitter::is_node(ts_tree))
 })
 
 ##### ts_find_all #####
@@ -440,6 +440,17 @@ box::use(
 
 ##### find_func_calls #####
 
+test_that("find_func_calls() returns correct package name", {
+  code_subset <- "stringr[str_trim, str_count, str_pos]"
+
+  matches <- find_func_calls(code_subset)
+  result <- get_nodes_text_by_type(matches, "pkg_mod_name")
+
+  expected_result <- c("stringr", "stringr", "stringr")
+
+  expect_identical(result, expected_result)
+})
+
 test_that("find_func_calls() returns correct list of attached functions from package", {
   code_subset <- "stringr[str_trim, str_count, str_pos]"
 
@@ -460,6 +471,20 @@ test_that("find_func_calls() returns correct list of aliased attached functions 
   expected_result <- c("str_trim", "alias = str_count", "str_pos")
 
   expect_identical(result, expected_result)
+})
+
+test_that("find_func_calls() returns correct module path", {
+  code_subset <- "path/to/module[func_c, func_a, func_b]"
+
+  matches <- find_func_calls(code_subset)
+  name_result <- get_nodes_text_by_type(matches, "pkg_mod_name")
+  path_result <- get_nodes_text_by_type(matches, "mod_path")
+
+  expected_name_result <- c("module", "module", "module")
+  expect_identical(name_result, expected_name_result)
+
+  expected_path_result <- c("path/to", "path/to", "path/to")
+  expect_identical(path_result, expected_path_result)
 })
 
 test_that("find_func_calls() returns correct list of attached functions from module", {
@@ -486,8 +511,452 @@ test_that("find_func_calls() returns correct list of aliased attached functions 
 
 ##### ts_get_start_end_rows #####
 
+test_that("ts_get_start_end_rows() returns correct start and end rows", {
+  code <- "box::use(
+  stringr,
+  tidyr,
+)"
+
+  ts_tree <- ts_root(code)
+  result <- ts_get_start_end_rows(ts_tree)
+
+  expected_result <- list("start" = 0, "end" = 3)
+  expect_identical(result, expected_result)
+
+  code <- "
+box::use(
+  stringr,
+  tidyr,
+)"
+
+  ts_tree <- ts_root(code)
+  result <- ts_get_start_end_rows(ts_tree)
+
+  expected_result <- list("start" = 1, "end" = 4)
+  expect_identical(result, expected_result)
+
+  code <- "
+box::use(
+  stringr,
+  tidyr,
+  shiny,
+)"
+
+  ts_tree <- ts_root(code)
+  result <- ts_get_start_end_rows(ts_tree)
+
+  expected_result <- list("start" = 1, "end" = 5)
+  expect_identical(result, expected_result)
+})
+
 ##### is_single_line_func_list #####
+
+test_that("is_single_line_func_list() returns TRUE given a single line of function attachments", {
+  code_subset <- "stringr[str_trim, str_count, str_pos]"
+  matches <- find_func_calls(code_subset)
+  result <- is_single_line_func_list(matches[[1]])
+  expect_true(result)
+
+  code_subset <- "path/to/module[func_c, func_a, func_b]"
+  matches <- find_func_calls(code_subset)
+  result <- is_single_line_func_list(matches[[1]])
+  expect_true(result)
+})
+
+test_that("is_single_line_func_list() returns FALSE given a multiple line function attachments", {
+  code_subset <- "stringr[str_trim,
+  str_count, str_pos]"
+  matches <- find_func_calls(code_subset)
+  result <- is_single_line_func_list(matches[[1]])
+  expect_false(result)
+
+  code_subset <- "stringr[
+  str_trim,
+  str_count, str_pos]"
+  matches <- find_func_calls(code_subset)
+  result <- is_single_line_func_list(matches[[1]])
+  expect_false(result)
+
+  code_subset <- "stringr[
+  str_trim,
+  str_count,
+  str_pos,
+]"
+  matches <- find_func_calls(code_subset)
+  result <- is_single_line_func_list(matches[[1]])
+  expect_false(result)
+
+  code_subset <- "path/to/module[func_c,
+  func_a, func_b]"
+  matches <- find_func_calls(code_subset)
+  result <- is_single_line_func_list(matches[[1]])
+  expect_false(result)
+
+  code_subset <- "path/to/module[
+  func_c,
+  func_a, func_b]"
+  matches <- find_func_calls(code_subset)
+  result <- is_single_line_func_list(matches[[1]])
+  expect_false(result)
+
+  code_subset <- "path/to/module[
+  func_c,
+  func_a,
+  func_b
+]"
+  matches <- find_func_calls(code_subset)
+  result <- is_single_line_func_list(matches[[1]])
+  expect_false(result)
+})
+
+##### build_pkg_mod_name #####
+
+test_that("build_pkg_mod_name() returns a package name", {
+  code_subset <- "stringr[str_trim, str_count, str_pos]"
+  matches <- find_func_calls(code_subset)
+  result <- build_pkg_mod_name(matches)
+  expected_result <- "stringr"
+
+  expect_identical(result, expected_result)
+})
+
+test_that("build_pkg_mod_name() returns a module path", {
+  code_subset <- "path/to/module[func_a, func_b]"
+  matches <- find_func_calls(code_subset)
+  result <- build_pkg_mod_name(matches)
+  expected_result <- "path/to/module"
+
+  expect_identical(result, expected_result)
+})
+
+test_that("build_pkg_mod_name() given different path patterns returns a module path", {
+  code_subset <- "path/module[func_a, func_b]"
+  matches <- find_func_calls(code_subset)
+  result <- build_pkg_mod_name(matches)
+  expected_result <- "path/module"
+
+  expect_identical(result, expected_result)
+
+  code_subset <- "path/to/long/module[func_a, func_b]"
+  matches <- find_func_calls(code_subset)
+  result <- build_pkg_mod_name(matches)
+  expected_result <- "path/to/long/module"
+
+  expect_identical(result, expected_result)
+
+  code_subset <- "path/to/long/longer/module[func_a, func_b]"
+  matches <- find_func_calls(code_subset)
+  result <- build_pkg_mod_name(matches)
+  expected_result <- "path/to/long/longer/module"
+
+  expect_identical(result, expected_result)
+
+  code_subset <- "./module[func_a, func_b]"
+  matches <- find_func_calls(code_subset)
+  result <- build_pkg_mod_name(matches)
+  expected_result <- "./module"
+
+  expect_identical(result, expected_result)
+
+  code_subset <- "../module[func_a, func_b]"
+  matches <- find_func_calls(code_subset)
+  result <- build_pkg_mod_name(matches)
+  expected_result <- "../module"
+
+  expect_identical(result, expected_result)
+})
 
 ##### sort_func_calls #####
 
+test_that("sort_func_call() returns a sorted package call", {
+  code_subset <- "stringr[str_trim, str_count, str_pos]"
+  matches <- find_func_calls(code_subset)
+  result <- sort_func_calls(matches)
+  expected_result <- list(
+    "pkg_mod_name" = "stringr",
+    "funcs" = c(
+      "str_count",
+      "str_pos",
+      "str_trim"
+    )
+  )
+  names(expected_result$funcs) <- c("", "", "")
+
+  expect_identical(result, expected_result)
+})
+
+test_that("sort_func_call() given a multiple line call returns a sorted package call", {
+  code_subset <- "stringr[
+  str_trim,
+  str_count,
+  str_pos
+]"
+  matches <- find_func_calls(code_subset)
+  result <- sort_func_calls(matches)
+  expected_result <- list(
+    "pkg_mod_name" = "stringr",
+    "funcs" = c(
+      "str_count",
+      "str_pos",
+      "str_trim"
+    )
+  )
+  names(expected_result$funcs) <- c("", "", "")
+
+  expect_identical(result, expected_result)
+})
+
+test_that("sort_func_call() given function aliases returns a sorted package call", {
+  code_subset <- "stringr[
+  str_trim,
+  str_count,
+  alias = str_pos
+]"
+  matches <- find_func_calls(code_subset)
+  result <- sort_func_calls(matches)
+  expected_result <- list(
+    "pkg_mod_name" = "stringr",
+    "funcs" = c(
+      "str_count",
+      "alias = str_pos",
+      "str_trim"
+    )
+  )
+  names(expected_result$funcs) <- c("", "", "")
+
+  expect_identical(result, expected_result)
+})
+
+test_that("sort_func_call() returns a sorted package call with comments as funcs list names", {
+  code_subset <- "stringr[
+  str_trim,
+  str_count, # nolint
+  str_pos
+]"
+  matches <- find_func_calls(code_subset)
+  result <- sort_func_calls(matches)
+  expected_result <- list(
+    "pkg_mod_name" = "stringr",
+    "funcs" = c(
+      "str_count",
+      "str_pos",
+      "str_trim"
+    )
+  )
+  names(expected_result$funcs) <- c("# nolint", "", "")
+
+  expect_identical(result, expected_result)
+})
+
+test_that("sort_func_call() returns a sorted module call", {
+  code_subset <- "path/to/module_a[func_b, func_a, func_c]"
+  matches <- find_func_calls(code_subset)
+  result <- sort_func_calls(matches)
+  expected_result <- list(
+    "pkg_mod_name" = "path/to/module_a",
+    "funcs" = c(
+      "func_a",
+      "func_b",
+      "func_c"
+    )
+  )
+  names(expected_result$funcs) <- c("", "", "")
+
+  expect_identical(result, expected_result)
+})
+
+test_that("sort_func_call() given a multiple line call returns a sorted module call", {
+  code_subset <- "path/to/module_a[
+  func_b,
+  func_a,
+  func_c
+]"
+  matches <- find_func_calls(code_subset)
+  result <- sort_func_calls(matches)
+  expected_result <- list(
+    "pkg_mod_name" = "path/to/module_a",
+    "funcs" = c(
+      "func_a",
+      "func_b",
+      "func_c"
+    )
+  )
+  names(expected_result$funcs) <- c("", "", "")
+
+  expect_identical(result, expected_result)
+})
+
+test_that("sort_func_call() given function aliases returns a sorted module call", {
+  code_subset <- "path/to/module_a[
+  alias = func_b,
+  func_a,
+  func_c
+]"
+  matches <- find_func_calls(code_subset)
+  result <- sort_func_calls(matches)
+  expected_result <- list(
+    "pkg_mod_name" = "path/to/module_a",
+    "funcs" = c(
+      "func_a",
+      "alias = func_b",
+      "func_c"
+    )
+  )
+  names(expected_result$funcs) <- c("", "", "")
+
+  expect_identical(result, expected_result)
+})
+
+test_that("sort_func_call() returns a sorted module call with comments as func", {
+  code_subset <- "path/to/module_a[
+  func_b, # nolint
+  func_a,
+  func_c
+]"
+  matches <- find_func_calls(code_subset)
+  result <- sort_func_calls(matches)
+  expected_result <- list(
+    "pkg_mod_name" = "path/to/module_a",
+    "funcs" = c(
+      "func_a",
+      "func_b",
+      "func_c"
+    )
+  )
+  names(expected_result$funcs) <- c("", "# nolint", "")
+
+  expect_identical(result, expected_result)
+})
+
+##### rebuild_func_calls #####
+
+test_that("rebuild_func_calls(single_line = TRUE) returns a single line", {
+  single_line <- TRUE
+
+  sorted_func_calls <- list(
+    "pkg_mod_name" = "stringr",
+    "funcs" = c(
+      "str_count",
+      "str_pos",
+      "str_trim"
+    )
+  )
+  names(sorted_func_calls$funcs) <- c("", "", "")
+
+  result <- rebuild_func_calls(sorted_func_calls, single_line)
+  expected_result <- "stringr[str_count, str_pos, str_trim, ]"
+
+  expect_identical(result, expected_result)
+})
+
+test_that("rebuild_func_calls(single_line = FALSE) returns multiple lines", {
+  single_line <- FALSE
+
+  sorted_func_calls <- list(
+    "pkg_mod_name" = "stringr",
+    "funcs" = c(
+      "str_count",
+      "str_pos",
+      "str_trim"
+    )
+  )
+  names(sorted_func_calls$funcs) <- c("", "", "")
+
+  result <- rebuild_func_calls(sorted_func_calls, single_line)
+  expected_result <- "stringr[
+    str_count,
+    str_pos,
+    str_trim,
+  ]"
+
+  expect_identical(result, expected_result)
+})
+
+test_that("rebuild_func_calls(single_line = FALSE) returns multiple line with correct comments", {
+  single_line <- FALSE
+
+  sorted_func_calls <- list(
+    "pkg_mod_name" = "stringr",
+    "funcs" = c(
+      "str_count",
+      "str_pos",
+      "str_trim"
+    )
+  )
+  names(sorted_func_calls$funcs) <- c("", "# nolint", "")
+
+  result <- rebuild_func_calls(sorted_func_calls, single_line)
+  expected_result <- "stringr[
+    str_count,
+    str_pos, # nolint
+    str_trim,
+  ]"
+
+  expect_identical(result, expected_result)
+})
+
 ##### process_func_calls #####
+
+test_that("process_func_calls() works with packages", {
+  query <- ts_query_pkg
+
+  code <- "
+box::use(
+  tidyr[
+    pivot_wider,
+    pivot_longer # nolint
+  ],
+  dplyr[...], # nolint
+  stringr[alias = str_pos, str_cat],
+  shiny
+)"
+
+  matches <- ts_find_all(ts_root(code), query)
+  sorted_pkgs <- sort_mod_pkg_calls(matches, "pkg")
+  result <- process_func_calls(sorted_pkgs)
+
+  expected_result <- c(
+    "dplyr[...]",
+    "shiny",
+    "stringr[str_cat, alias = str_pos, ]",
+    "tidyr[
+    pivot_longer, # nolint
+    pivot_wider,
+  ]"
+  )
+  names(expected_result) <- c("# nolint", "", "", "")  # pkg/mod level comments
+
+  expect_identical(result, expected_result)
+})
+
+test_that("process_func_calls() works with modules", {
+  query <- ts_query_mod
+
+  code <- "
+box::use(
+  path/b/module[
+    func_b,
+    func_a # nolint
+  ],
+  path/a/module_a[...], # nolint
+  path/a/module_c[alias = func_b, func_a],
+  path/a/module_b
+)"
+
+  matches <- ts_find_all(ts_root(code), query)
+  sorted_mods <- sort_mod_pkg_calls(matches, "mod")
+  result <- process_func_calls(sorted_mods)
+
+  expected_result <- c(
+    "path/a/module_a[...]",
+    "path/a/module_b",
+    "path/a/module_c[func_a, alias = func_b, ]",
+    "path/b/module[
+    func_a, # nolint
+    func_b,
+  ]"
+  )
+  names(expected_result) <- c("# nolint", "", "", "") # pkg/mod level comments
+
+  expect_identical(result, expected_result)
+})

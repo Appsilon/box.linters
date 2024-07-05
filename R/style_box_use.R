@@ -47,7 +47,9 @@ get_nodes_text_by_type <- function(
       "func_call",
       "func_name",
       "mod_call",
+      "mod_path",
       "pkg_call",
+      "pkg_mod_name",
       "pkg_name"
     )
 ) {
@@ -94,16 +96,12 @@ find_func_calls <- function(pkg_mod_call) {
 }
 
 #' @keywords internal
-ts_get_start_end_rows <- function(node, idx) {
+ts_get_start_end_rows <- function(node) {
   start_row <- treesitter::point_row(
-    treesitter::node_start_point(
-      node[idx][[1]]
-    )
+    treesitter::node_start_point(node)
   )
   end_row <- treesitter::point_row(
-    treesitter::node_end_point(
-      node[idx][[1]]
-    )
+    treesitter::node_end_point(node)
   )
 
   list(
@@ -116,8 +114,78 @@ ts_get_start_end_rows <- function(node, idx) {
 is_single_line_func_list <- function(pkg_mod_call) {
   first_item <- pkg_mod_call[[1]]
   idx_full_call <- match("full_call", first_item$name)
-  rows <- ts_get_start_end_rows(first_item$node, idx_full_call)
+  node <- first_item$node[[idx_full_call]]
+  rows <- ts_get_start_end_rows(node)
   rows$start == rows$end
+}
+
+#' @keywords internal
+build_pkg_mod_name <- function(call_with_funcs) {
+  unique_mod_path <- unique(
+    get_nodes_text_by_type(call_with_funcs, "mod_path")
+  )
+  unique_pkg_mod_name <- unique(
+    get_nodes_text_by_type(call_with_funcs, "pkg_mod_name")
+  )
+
+  if (length(unique_mod_path) > 1) {
+    stop("multiple mod_paths found in one module call")
+  }
+
+  if (length(unique_pkg_mod_name) > 1) {
+    stop("multiple package or module names found in one call")
+  }
+
+  path_prefix <- ""
+  if (nchar(unique_mod_path) > 0) {
+    path_prefix <- sprintf("%s/", unique_mod_path)
+  }
+
+  sprintf("%s%s", path_prefix, unique_pkg_mod_name)
+}
+
+#' @keywords internal
+sort_func_calls <- function(call_with_funcs) {
+  pkg_mod_name <- build_pkg_mod_name(call_with_funcs)
+  func_names <- get_nodes_text_by_type(call_with_funcs, "func_name")
+  func_calls <- get_nodes_text_by_type(call_with_funcs, "func_call")
+  comments <- get_nodes_text_by_type(call_with_funcs, "comment")
+  names(func_calls) <- comments
+
+  order_func_names <- order(func_names)
+  list(
+    pkg_mod_name = pkg_mod_name,
+    funcs = func_calls[order_func_names]
+  )
+}
+
+#' @keywords internal
+rebuild_func_calls <- function(func_calls, single_line = c(TRUE, FALSE), indent_spaces = 2) {
+  if (single_line) {
+    func_calls_comma <- sprintf("%s, ", func_calls$funcs)
+    flat_func_calls <- paste0(func_calls_comma, collapse = "")
+    sprintf("%s[%s]", func_calls$pkg_mod_name, flat_func_calls)
+  } else {
+    names(func_calls$funcs) <- ifelse(
+      nchar(names(func_calls$funcs)) > 0,
+      sprintf(" %s", names(func_calls$funcs)),
+      names(func_calls$funcs)
+    )
+
+    func_calls_comma_line <- sprintf(
+      "%s%s,%s",
+      strrep(' ', 2 * indent_spaces),
+      func_calls$funcs,
+      names(func_calls$funcs)
+    )
+    flat_func_calls <- paste0(func_calls_comma_line, collapse = "\n")
+    sprintf(
+      "%s[\n%s\n%s]",
+      func_calls$pkg_mod_name,
+      flat_func_calls,
+      strrep(' ', indent_spaces)
+    )
+  }
 }
 
 #' @keywords internal
@@ -127,7 +195,9 @@ process_func_calls <- function(pkg_mod_calls) {
     if (rlang::is_empty(matches[[1]])) {
       call_item
     } else {
-      sort_func_calls(matches)
+      sorted_func_calls <- sort_func_calls(matches)
+      single_line <- is_single_line_func_list(matches[[1]])
+      rebuild_func_calls(sorted_func_calls, single_line)
     }
   })
 
