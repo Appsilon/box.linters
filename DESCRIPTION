@@ -22,10 +22,12 @@ Imports:
   fs,
   glue,
   lintr (>= 3.0.0),
+  purrr,
   rlang,
   stringr,
   treesitter,
   treesitter.r,
+  withr,
   xfun,
   xml2,
   xmlparsedata
@@ -34,6 +36,7 @@ Suggests:
   covr,
   dplyr,
   knitr,
+  prettycode,
   rcmdcheck,
   rmarkdown,
   R6,
@@ -41,8 +44,7 @@ Suggests:
   rhino,
   shiny,
   spelling,
-  testthat (>= 3.0.0),
-  withr,
+  testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Language: en-US

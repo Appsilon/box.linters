@@ -4,13 +4,24 @@
 \alias{style_box_use_file}
 \title{Style the box::use() calls of a source code}
 \usage{
-style_box_use_file(filename, run_styler = FALSE)
+style_box_use_file(filename, indent_spaces = 2)
 }
 \arguments{
-\item{filename}{A file to style.}
+\item{filename}{A file path to style.}
 
-\item{run_styler}{Boolean to run styler::style_file() at the end of \code{box::use()} styling.}
+\item{indent_spaces}{An integer scalar indicating tab width in units of spaces}
 }
 \description{
 Style the box::use() calls of a source code
+}
+\details{
+Refer to \code{\link[=style_box_use_text]{style_box_use_text()}} for styling details.
+}
+\examples{
+code <- "box::use(stringr[str_trim, str_pad], dplyr)"
+file <- tempfile("style", fileext = ".R")
+writeLines(code, file)
+
+style_box_use_file(file)
+
 }

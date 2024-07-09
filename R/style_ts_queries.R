@@ -1,3 +1,11 @@
+ts_query_box_use <- "
+(call
+  function: (namespace_operator
+    lhs: (identifier) @box_pkg (#eq? @box_pkg \"box\")
+    rhs: (identifier) @box_use (#eq? @box_use \"use\")
+  )
+) @box_call"
+
 ts_query_funcs <- "
 (_
   lhs: (_)? @mod_path
@@ -65,4 +73,3 @@ ts_query_pkg <- "
     )
   )
 )"
-

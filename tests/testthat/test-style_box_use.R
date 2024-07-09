@@ -100,7 +100,7 @@ some_function <- function() {
   expect_length(matches[[1]], qty_pkgs)
 })
 
-##### get_nodes_text_by_type() #####
+##### get_nodes_text_by_type #####
 
 test_that("get_nodes_text_by_type() returns correct results in order as found", {
   query <- ts_query_pkg
@@ -1044,6 +1044,10 @@ box::use(
   path/to/module_b[func_b, fun_alias = func_a],
   path/to/module_c[...] # nolint
 )
+
+some_function <- function() {
+  1 + 1
+}
 "
 
   expected_output <- rex::rex("box::use(
@@ -1063,12 +1067,154 @@ box::use(
   path/to/module_c[...], # nolint
   alias = path/to/module_d,
   path/to/module_f,
-)")
+)
+
+some_function <- function() {
+  1 + 1
+}
+")
 
   expect_output(style_box_use_text(code), expected_output)
 })
 
-test_that("style_box_use_text() returns correct format as list", {
+test_that("style_box_use_text() returns retains non-box::use() lines between box::use() calls", {
+  code <- "# some code here A
+box::use(
+  stringr[...], # nolint
+  purrr[
+    map_chr, # nolint
+    map,
+  ],
+  dplyr, alias = shiny,
+  tidyr[wide, zun_alias = long],
+  path/to/module_f
+)
+
+# some code here B
+box::use(
+  path/to/module_a,
+  alias = path/to/module_d
+)
+
+# some code here C
+box::use(
+  path/to/module_b[func_b, fun_alias = func_a],
+  path/to/module_c[...] # nolint
+)
+# some code here D
+
+some_function <- function() {
+  1 + 1
+}
+"
+
+  expected_output <- rex::rex("# some code here A
+# some code here B
+# some code here C
+box::use(
+  dplyr,
+  purrr[
+    map,
+    map_chr, # nolint
+  ],
+  alias = shiny,
+  stringr[...], # nolint
+  tidyr[zun_alias = long, wide, ],
+)
+
+box::use(
+  path/to/module_a,
+  path/to/module_b[fun_alias = func_a, func_b, ],
+  path/to/module_c[...], # nolint
+  alias = path/to/module_d,
+  path/to/module_f,
+)
+
+# some code here D
+
+some_function <- function() {
+  1 + 1
+}
+")
+
+  expect_output(style_box_use_text(code), expected_output)
+})
+
+test_that("style_box_use_text() with only box::use(pkgs) returns correct format to console", {
+  code <- "box::use(
+  stringr[...], # nolint
+  purrr[
+    map_chr, # nolint
+    map,
+  ],
+  dplyr, alias = shiny,
+  tidyr[wide, zun_alias = long]
+)
+
+some_function <- function() {
+  1 + 1
+}
+"
+
+  expected_output <- rex::rex("box::use(
+  dplyr,
+  purrr[
+    map,
+    map_chr, # nolint
+  ],
+  alias = shiny,
+  stringr[...], # nolint
+  tidyr[zun_alias = long, wide, ],
+)
+
+some_function <- function() {
+  1 + 1
+}
+")
+
+  expect_output(style_box_use_text(code), expected_output)
+})
+
+test_that("style_box_use_text() with only box::use(mods) returns correct format to console", {
+  code <- "box::use(
+  path/to/module_f
+)
+
+box::use(
+  path/to/module_a,
+  alias = path/to/module_d
+)
+
+box::use(
+  path/to/module_b[func_b, fun_alias = func_a],
+  path/to/module_c[...] # nolint
+)
+
+some_function <- function() {
+  1 + 1
+}
+"
+
+  expected_output <- rex::rex("box::use(
+  path/to/module_a,
+  path/to/module_b[fun_alias = func_a, func_b, ],
+  path/to/module_c[...], # nolint
+  alias = path/to/module_d,
+  path/to/module_f,
+)
+
+some_function <- function() {
+  1 + 1
+}
+")
+
+  expect_output(style_box_use_text(code), expected_output)
+})
+
+
+##### transform_box_use_text #####
+
+test_that("transform_box_use_text() returns correct format as list", {
   code <- "box::use(
   stringr[...], # nolint
   purrr[
@@ -1091,10 +1237,10 @@ box::use(
 )
 "
 
-  result <- style_box_use_text(code)
+  result <- transform_box_use_text(code)
 
   expected_output <- list(
-  "pkgs" = "box::use(
+    "pkgs" = "box::use(
   dplyr,
   purrr[
     map,
@@ -1104,7 +1250,7 @@ box::use(
   stringr[...], # nolint
   tidyr[zun_alias = long, wide, ],
 )",
-  "mods" = "box::use(
+    "mods" = "box::use(
   path/to/module_a,
   path/to/module_b[fun_alias = func_a, func_b, ],
   path/to/module_c[...], # nolint
@@ -1114,4 +1260,122 @@ box::use(
   )
 
   expect_identical(result, expected_output)
+})
+
+##### style_box_use_file #####
+
+test_that("style_box_use_file() properly styles a file", {
+  to_style <- xfun::read_utf8("to_style/app/app_1.R")
+  expected_styled <- xfun::read_utf8("styled/app/app_1.R")
+  withr::with_tempdir({
+    xfun::write_utf8(to_style, "app_1.R")
+
+    suppressWarnings(style_box_use_file("app_1.R"))
+
+    result_styled <- xfun::read_utf8("app_1.R")
+
+    expect_identical(result_styled, expected_styled)
+  })
+})
+
+test_that("style_box_use_file() throws a warning after modifying a file", {
+  to_style <- xfun::read_utf8("to_style/app/app_1.R")
+  expected_warning <- rex::rex("`app_1.R` was modified. Please review the modifications made.")
+  withr::with_tempdir({
+    xfun::write_utf8(to_style, "app_1.R")
+
+    expect_warning(style_box_use_file("app_1.R"), expected_warning)
+  })
+})
+
+test_that("style_box_use_file() does not modify a properly styled file", {
+  to_style <- xfun::read_utf8("styled/app/app_1.R")
+  expected_styled <- xfun::read_utf8("styled/app/app_1.R")
+  withr::with_tempdir({
+    xfun::write_utf8(to_style, "app_1.R")
+
+    suppressMessages(style_box_use_file("app_1.R"))
+
+    result_styled <- xfun::read_utf8("app_1.R")
+
+    expect_identical(result_styled, expected_styled)
+  })
+})
+
+test_that("style_box_use_file() returns a message if a file is not modified", {
+  to_style <- xfun::read_utf8("styled/app/app_1.R")
+  expected_message <- rex::rex("Nothing to modify in `app_1.R`.")
+  withr::with_tempdir({
+    xfun::write_utf8(to_style, "app_1.R")
+
+    expect_message(style_box_use_file("app_1.R"), expected_message)
+  })
+})
+
+##### style_box_use_dir #####
+
+test_that("style_box_use_dir() properly styles file in a directory", {
+  to_style_path <- normalizePath("to_style")
+  styled_path <- normalizePath("styled")
+
+  withr::with_tempdir({
+    fs::dir_copy(to_style_path, "to_style")
+
+    suppressWarnings(style_box_use_dir("to_style"))
+
+    result_main <- xfun::read_utf8("to_style/main.R")
+    expected_main <- xfun::read_utf8(fs::path(styled_path, "main.R"))
+    expect_identical(result_main, expected_main)
+
+    result_app_app_1 <- xfun::read_utf8("to_style/app/app_1.R")
+    expected_app_app_1 <- xfun::read_utf8(fs::path(styled_path, "app", "app_1.R"))
+    expect_identical(result_app_app_1, expected_app_app_1)
+  })
+})
+
+test_that("style_box_use_dir() does not style files in exclude_dir", {
+  to_style_path <- normalizePath("to_style")
+
+  withr::with_tempdir({
+    fs::dir_copy(to_style_path, "to_style")
+
+    suppressWarnings(style_box_use_dir("to_style"))
+
+    result_packrat_no_style <- xfun::read_utf8("to_style/packrat/no_style.R")
+    expected_packrat_no_style <- xfun::read_utf8(fs::path(to_style_path, "packrat", "no_style.R"))
+    expect_identical(result_packrat_no_style, expected_packrat_no_style)
+
+    result_renv_no_style <- xfun::read_utf8("to_style/renv/no_style.R")
+    expected_renv_no_style <- xfun::read_utf8(fs::path(to_style_path, "renv", "no_style.R"))
+    expect_identical(result_renv_no_style, expected_renv_no_style)
+
+  })
+})
+
+test_that("style_box_use_dir() properly styles file in a directory", {
+  to_style_path <- normalizePath("to_style")
+
+  withr::with_tempdir({
+    fs::dir_copy(to_style_path, "to_style")
+
+    result <- suppressWarnings(style_box_use_dir("to_style"))
+
+    expected_result <- list(
+      "app/app_1.R" = TRUE,
+      "main.R" = TRUE
+    )
+
+    expect_identical(result, expected_result)
+  })
+})
+
+test_that("style_box_use_dir() properly styles file in a directory", {
+  to_style_path <- normalizePath("to_style")
+  expected_warning <- rex::rex("Please review the modifications made.")
+
+  withr::with_tempdir({
+    fs::dir_copy(to_style_path, "to_style")
+
+    expect_warning(style_box_use_dir("to_style"), expected_warning)
+  })
 })

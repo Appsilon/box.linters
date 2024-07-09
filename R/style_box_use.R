@@ -1,39 +1,206 @@
+#' Style the box::use() calls for a directory
+#'
+#' @param path Path to a directory with files to style.
+#' @param recursive A logical value indicating whether or not files in sub-directories
+#' @param exclude_files *Not yet implemented*
+#' @param exclude_dirs A character vector of directories to exclude.
+#' @param indent_spaces An integer scalar indicating tab width in units of spaces
+#'
+#' @details
+#' Refer to [style_box_use_text()] for styling details.
+#'
+#' @examples
+#' \dontrun{
+#' style_box_use_dir("path/to/dir")
+#' }
+#'
+#' @export
+style_box_use_dir <- function(
+  path = ".",
+  recursive = TRUE,
+  exclude_files = NULL,
+  exclude_dirs = c("packrat", "renv"),
+  indent_spaces = 2
+) {
+  changed <- withr::with_dir(
+    path,
+    style_box_use_files(recursive, exclude_files, exclude_dirs, indent_spaces)
+  )
+
+  total_files_looked_at <- length(changed)
+  changed_files <- names(which(unlist(changed)))
+  unchanged_files <- total_files_looked_at - length(changed_files)
+
+  if (length(changed_files) > 0) {
+    cli::cli_warn("Please review the modifications made.")
+
+    cat("Modified the following files:\n")
+    cli::cli_bullets(changed_files)
+  }
+
+  cli::cat_rule()
+  cat("Count\tLegend\n")
+  cat(unchanged_files, "\tFile/s unchanged.\n")
+  cat(length(changed_files), "\tFile/s changed.\n")
+  cli::cat_rule()
+
+  invisible(changed)
+}
+
+#' @keywords internal
+style_box_use_files <- function(recursive, exclude_files, exclude_dirs, indent_spaces) {
+  regex_excluded_dirs <- paste(exclude_dirs, collapse = "|")
+  files <- fs::dir_ls(".", regexp = "\\.[rR]$", recurse = recursive, all = FALSE)
+  files <- files[stringr::str_starts(files, regex_excluded_dirs, negate = TRUE)]
+  purrr::map(files, transform_file, indent_spaces)
+}
+
 #' Style the box::use() calls of a source code
 #'
-#' @param filename A file to style.
-#' @param run_styler Boolean to run styler::style_file() at the end of `box::use()` styling.
+#' @param filename A file path to style.
+#' @param indent_spaces An integer scalar indicating tab width in units of spaces
+#'
+#' @details
+#' Refer to [style_box_use_text()] for styling details.
+#'
+#' @examples
+#' code <- "box::use(stringr[str_trim, str_pad], dplyr)"
+#' file <- tempfile("style", fileext = ".R")
+#' writeLines(code, file)
+#'
+#' style_box_use_file(file)
+#'
 #' @export
-style_box_use_file <- function(filename, run_styler = FALSE) {
-  source_file_lines <- xfun::read_utf8(filename)
+style_box_use_file <- function(filename, indent_spaces = 2) {
+  transformed_file <- transform_file(filename, indent_spaces)
 
-  style_box_use_text(paste(source_file_lines, collapse = "\n"))
+  if (!isFALSE(transformed_file)) {
+    cli::cli_warn("`{filename}` was modified. Please review the modifications made.")
+  } else {
+    cli::cli_inform("Nothing to modify in `{filename}`.")
+  }
+}
+
+#' @keywords internal
+transform_file <- function(filename, indent_spaces) {
+  normal_filename <- normalizePath(filename)
+  source_file_lines <- xfun::read_utf8(normal_filename)
+
+  box_lines <- find_box_lines(paste(source_file_lines, collapse = "\n"))
+  retain_lines <- find_source_lines_to_retain(source_file_lines, box_lines)
+
+  transformed_box_use <- transform_box_use_text(
+    paste(source_file_lines, collapse = "\n"),
+    indent_spaces
+  )
+
+  new_source_lines <- rebuild_source_file(source_file_lines, retain_lines, transformed_box_use)
+
+  was_changed <- !identical(source_file_lines, new_source_lines)
+
+  if (was_changed) {
+    xfun::write_utf8(new_source_lines, filename)
+    TRUE
+  } else {
+    FALSE
+  }
 }
 
 #' Style the box::use() calls of source code text
 #'
+#' Styles `box::use()` calls.
+#' * All packages are called under one `box::use()`.
+#' * All modules are called under one `box::use()`.
+#' * Package and module levels are re-formatted to multiple lines. One package per line.
+#' * Packages and modules are sorted alphabetically, ignoring the aliases.
+#' * Functions attached in a single line retain the single line format.
+#' * Functions attached in multiple lines retain the multiple line format.
+#' * Functions are sorted alphabetically, ignoring the aliases.
+#' * A trailing comma is added to packages, modules, and functions.
+#'
 #' @param text Source code in text format
 #' @param indent_spaces Number of spaces per indent level
+#' @param colored Boolean. For syntax highlighting using {prettycode}
+#' @param style A style from {prettycode}
+#'
+#' @examples
+#' code <- "box::use(stringr[str_trim, str_pad], dplyr)"
+#'
+#' style_box_use_text(code)
+#'
+#' code <- "box::use(stringr[
+#'   str_trim,
+#'   str_pad
+#' ],
+#' shiny[...], # nolint
+#' dplyr[alias = select, mutate], alias = tidyr
+#' path/to/module)
+#' "
+#'
+#' style_box_use_text(code)
+#'
 #' @export
-style_box_use_text <- function(text, indent_spaces = 2) {
+style_box_use_text <- function(
+  text,
+  indent_spaces = 2,
+  colored = getOption("styler.colored_print.vertical", default = FALSE),
+  style = prettycode::default_style()
+) {
+  source_text_lines <- stringr::str_split_1(text, "\n")
+
+  box_lines <- find_box_lines(text)
+  retain_lines <- find_source_lines_to_retain(source_text_lines, box_lines)
+
+  transformed_text <- transform_box_use_text(text, indent_spaces)
+
+  new_source_lines <- rebuild_source_file(source_text_lines, retain_lines, transformed_text)
+
+  was_changed <- !identical(source_text_lines, new_source_lines)
+
+  if (was_changed) {
+    if (colored) {
+      if (!rlang::is_empty(find.package("prettycode", quiet = TRUE))) {
+        new_source_lines <- prettycode::highlight(new_source_lines, style = style)
+      } else {
+        cli::cli_warn(
+          paste(
+            "Could not use `colored = TRUE`, as the package `{{prettycode}}` was not found.",
+            "Please install it if you want colored output."
+          )
+        )
+      }
+    }
+
+    cat(new_source_lines, sep = "\n")
+    cli::cli_inform("Changes were made. Please review the modifications made.")
+  } else {
+    cli::cli_warn("No changes were made to the text.")
+  }
+}
+
+#' @keywords internal
+transform_box_use_text <- function(text, indent_spaces = 2) {
   tree_root <- ts_root(text)
 
+  box_use_pkgs <- character(0)
   ts_pkgs <- ts_find_all(tree_root, ts_query_pkg)
-  sorted_pkgs <- sort_mod_pkg_calls(ts_pkgs, "pkg")
-  sorted_pkg_funcs <- process_func_calls(sorted_pkgs, indent_spaces)
-  box_use_pkgs <- rebuild_pkg_mod_calls(sorted_pkg_funcs, indent_spaces)
+  if (!rlang::is_empty(ts_pkgs[[1]])) {
+    sorted_pkgs <- sort_mod_pkg_calls(ts_pkgs, "pkg")
+    sorted_pkg_funcs <- process_func_calls(sorted_pkgs, indent_spaces)
+    box_use_pkgs <- rebuild_pkg_mod_calls(sorted_pkg_funcs, indent_spaces)
+  }
 
+  box_use_mods <- character(0)
   ts_mods <- ts_find_all(tree_root, ts_query_mod)
-  sorted_mods <- sort_mod_pkg_calls(ts_mods, "mod")
-  sorted_mod_funcs <- process_func_calls(sorted_mods, indent_spaces)
-  box_use_mods <- rebuild_pkg_mod_calls(sorted_mod_funcs, indent_spaces)
+  if (!rlang::is_empty(ts_mods[[1]])) {
+    sorted_mods <- sort_mod_pkg_calls(ts_mods, "mod")
+    sorted_mod_funcs <- process_func_calls(sorted_mods, indent_spaces)
+    box_use_mods <- rebuild_pkg_mod_calls(sorted_mod_funcs, indent_spaces)
+  }
 
-  cat(sprintf("%s\n\n%s", box_use_pkgs, box_use_mods))
-
-  invisible(
-    list(
-      pkgs = box_use_pkgs,
-      mods = box_use_mods
-    )
+  list(
+    pkgs = box_use_pkgs,
+    mods = box_use_mods
   )
 }
 
@@ -52,18 +219,18 @@ ts_find_all <- function(tree, query) {
 
 #' @keywords internal
 get_nodes_text_by_type <- function(
-    items,
-    type = c(
-      "comment",
-      "full_path",
-      "func_call",
-      "func_name",
-      "mod_call",
-      "mod_path",
-      "pkg_call",
-      "pkg_mod_name",
-      "pkg_name"
-    )
+  items,
+  type = c(
+    "comment",
+    "full_path",
+    "func_call",
+    "func_name",
+    "mod_call",
+    "mod_path",
+    "pkg_call",
+    "pkg_mod_name",
+    "pkg_name"
+  )
 ) {
   type <- match.arg(type)
   results <- lapply(items[[1]], function(item) {
@@ -81,15 +248,16 @@ get_nodes_text_by_type <- function(
 #' @keywords internal
 sort_mod_pkg_calls <- function(tree_matches, pkg_or_mod = c("mod", "pkg")) {
   pkg_or_mod <- match.arg(pkg_or_mod)
-  switch (pkg_or_mod,
-          "mod" = {
-            node_names <- "full_path"
-            node_calls <- "mod_call"
-          },
-          "pkg" = {
-            node_names <- "pkg_name"
-            node_calls <- "pkg_call"
-          }
+  switch(
+    pkg_or_mod,
+    "mod" = {
+      node_names <- "full_path"
+      node_calls <- "mod_call"
+    },
+    "pkg" = {
+      node_names <- "pkg_name"
+      node_calls <- "pkg_call"
+    }
   )
 
   attached_names <- get_nodes_text_by_type(tree_matches, node_names)
@@ -186,7 +354,7 @@ rebuild_func_calls <- function(func_calls, single_line = c(TRUE, FALSE), indent_
 
     func_calls_comma_line <- sprintf(
       "%s%s,%s",
-      strrep(' ', 2 * indent_spaces),
+      strrep(" ", 2 * indent_spaces),
       func_calls$funcs,
       names(func_calls$funcs)
     )
@@ -195,7 +363,7 @@ rebuild_func_calls <- function(func_calls, single_line = c(TRUE, FALSE), indent_
       "%s[\n%s\n%s]",
       func_calls$pkg_mod_name,
       flat_func_calls,
-      strrep(' ', indent_spaces)
+      strrep(" ", indent_spaces)
     )
   }
 }
@@ -226,7 +394,7 @@ rebuild_pkg_mod_calls <- function(pkg_mod_calls, indent_spaces = 2) {
 
   pkg_mod_calls_comma_line <- sprintf(
     "%s%s,%s",
-    strrep(' ', indent_spaces),
+    strrep(" ", indent_spaces),
     pkg_mod_calls,
     names(pkg_mod_calls)
   )
@@ -235,4 +403,76 @@ rebuild_pkg_mod_calls <- function(pkg_mod_calls, indent_spaces = 2) {
     "box::use(\n%s\n)",
     flat_pkg_mod_calls
   )
+}
+
+#' @keywords internal
+get_box_lines <- function(ts_box_use) {
+  result <- lapply(ts_box_use[[1]], function(item) {
+    idx <- match("box_call", item$name)
+    node <- item$node[[idx]]
+    rows <- ts_get_start_end_rows(node)
+    seq(rows$start, rows$end)
+  })
+  unlist(result)
+}
+
+#' @keywords internal
+find_box_lines <- function(source_text) {
+  source_tree <- ts_root(source_text)
+  ts_box_use_calls <- ts_find_all(source_tree, ts_query_box_use)
+  box_lines <- get_box_lines(ts_box_use_calls) + 1
+  list(
+    "all" = box_lines,
+    "min" = min(box_lines),
+    "max" = max(box_lines)
+  )
+}
+
+#' @keywords internal
+find_source_lines_to_retain <- function(source_file_lines, box_lines) {
+  source_lines <- seq(1, length(source_file_lines))
+  empty_source_lines <- which(grepl(pattern = "^[:space:]*$", source_file_lines))
+  non_box_lines <- source_lines[!source_lines %in% box_lines$all]
+  end_of_box_calls <- ifelse(
+    empty_source_lines[empty_source_lines > box_lines$max][1] == box_lines$max + 1,
+    box_lines$max + 1,
+    box_lines$max
+  )
+  lines_before_box <- non_box_lines[
+    !non_box_lines %in% empty_source_lines &
+      non_box_lines < box_lines$max
+  ]
+  lines_after_box <- non_box_lines[non_box_lines > end_of_box_calls]
+
+  list(
+    "before" = lines_before_box,
+    "after" = lines_after_box
+  )
+}
+
+#' @keywords internal
+rebuild_source_file <- function(source_file_lines, retain_lines, transformed_box_use) {
+  box_use_pkgs <- character(0)
+  if (!rlang::is_empty(transformed_box_use$pkgs)) {
+    box_use_pkgs <- c(
+      stringr::str_split_1(transformed_box_use$pkgs, "\n"),
+      ""
+    )
+  }
+
+  box_use_mods <- character(0)
+  if (!rlang::is_empty(transformed_box_use$mods)) {
+    box_use_mods <- c(
+      stringr::str_split_1(transformed_box_use$mods, "\n"),
+      ""
+    )
+  }
+
+  output <- c(
+    source_file_lines[retain_lines$before],
+    box_use_pkgs,
+    box_use_mods,
+    source_file_lines[retain_lines$after]
+  )
+  unlist(output)
 }

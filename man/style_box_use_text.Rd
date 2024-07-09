@@ -4,13 +4,49 @@
 \alias{style_box_use_text}
 \title{Style the box::use() calls of source code text}
 \usage{
-style_box_use_text(text, indent_spaces = 2)
+style_box_use_text(
+  text,
+  indent_spaces = 2,
+  colored = getOption("styler.colored_print.vertical", default = FALSE),
+  style = prettycode::default_style()
+)
 }
 \arguments{
 \item{text}{Source code in text format}
 
 \item{indent_spaces}{Number of spaces per indent level}
+
+\item{colored}{Boolean. For syntax highlighting using {prettycode}}
+
+\item{style}{A style from {prettycode}}
 }
 \description{
-Style the box::use() calls of source code text
+Styles \code{box::use()} calls.
+\itemize{
+\item All packages are called under one \code{box::use()}.
+\item All modules are called under one \code{box::use()}.
+\item Package and module levels are re-formatted to multiple lines. One package per line.
+\item Packages and modules are sorted alphabetically, ignoring the aliases.
+\item Functions attached in a single line retain the single line format.
+\item Functions attached in multiple lines retain the multiple line format.
+\item Functions are sorted alphabetically, ignoring the aliases.
+\item A trailing comma is added to packages, modules, and functions.
+}
+}
+\examples{
+code <- "box::use(stringr[str_trim, str_pad], dplyr)"
+
+style_box_use_text(code)
+
+code <- "box::use(stringr[
+  str_trim,
+  str_pad
+],
+shiny[...], # nolint
+dplyr[alias = select, mutate], alias = tidyr
+path/to/module)
+"
+
+style_box_use_text(code)
+
 }
