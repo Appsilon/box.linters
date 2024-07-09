@@ -120,8 +120,8 @@ transform_file <- function(filename, indent_spaces) {
 #'
 #' @param text Source code in text format
 #' @param indent_spaces Number of spaces per indent level
-#' @param colored Boolean. For syntax highlighting using {prettycode}
-#' @param style A style from {prettycode}
+#' @param colored Boolean. For syntax highlighting using \{prettycode\}
+#' @param style A style from \{prettycode\}
 #'
 #' @examples
 #' code <- "box::use(stringr[str_trim, str_pad], dplyr)"

@@ -16,9 +16,9 @@ style_box_use_text(
 
 \item{indent_spaces}{Number of spaces per indent level}
 
-\item{colored}{Boolean. For syntax highlighting using {prettycode}}
+\item{colored}{Boolean. For syntax highlighting using \{prettycode\}}
 
-\item{style}{A style from {prettycode}}
+\item{style}{A style from \{prettycode\}}
 }
 \description{
 Styles \code{box::use()} calls.
