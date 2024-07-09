@@ -1,5 +1,7 @@
 # box.linters (development version)
 
+* Added styling functions for `box::use()` calls.
+
 # box.linters 0.9.1
 
 * Handle `box` recommended method of testing private methods.
