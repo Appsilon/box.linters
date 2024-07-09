@@ -172,9 +172,9 @@ style_box_use_text <- function(
     }
 
     cat(new_source_lines, sep = "\n")
-    cli::cli_inform("Changes were made. Please review the modifications made.")
+    cli::cli_warn("Changes were made. Please review the modifications made.")
   } else {
-    cli::cli_warn("No changes were made to the text.")
+    cli::cli_inform("No changes were made to the text.")
   }
 }
 

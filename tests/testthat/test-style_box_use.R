@@ -1074,7 +1074,7 @@ some_function <- function() {
 }
 ")
 
-  expect_output(style_box_use_text(code), expected_output)
+  expect_output(suppressWarnings(style_box_use_text(code)), expected_output)
 })
 
 test_that("style_box_use_text() returns retains non-box::use() lines between box::use() calls", {
@@ -1137,7 +1137,7 @@ some_function <- function() {
 }
 ")
 
-  expect_output(style_box_use_text(code), expected_output)
+  expect_output(suppressWarnings(style_box_use_text(code)), expected_output)
 })
 
 test_that("style_box_use_text() with only box::use(pkgs) returns correct format to console", {
@@ -1172,7 +1172,7 @@ some_function <- function() {
 }
 ")
 
-  expect_output(style_box_use_text(code), expected_output)
+  expect_output(suppressWarnings(style_box_use_text(code)), expected_output)
 })
 
 test_that("style_box_use_text() with only box::use(mods) returns correct format to console", {
@@ -1208,7 +1208,7 @@ some_function <- function() {
 }
 ")
 
-  expect_output(style_box_use_text(code), expected_output)
+  expect_output(suppressWarnings(style_box_use_text(code)), expected_output)
 })
 
 
