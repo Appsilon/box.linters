@@ -1,6 +1,6 @@
 # box.linters (development version)
 
-* [Bugfix] Allow multiple `box::use(pkg)` calls (#111)
+* [Bug fix] Allow multiple `box::use(pkg)` calls (#111)
 
 # box.linters 0.9.1
 
