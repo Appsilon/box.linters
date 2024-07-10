@@ -5,6 +5,8 @@
 #' @param exclude_files *Not yet implemented*
 #' @param exclude_dirs A character vector of directories to exclude.
 #' @param indent_spaces An integer scalar indicating tab width in units of spaces
+#' @param trailing_commas_func A boolean to activate adding a trailing comma to the end of the lists
+#' of functions to attach.
 #'
 #' @details
 #' Refer to [style_box_use_text()] for styling details.
@@ -20,11 +22,12 @@ style_box_use_dir <- function(
   recursive = TRUE,
   exclude_files = NULL,
   exclude_dirs = c("packrat", "renv"),
-  indent_spaces = 2
+  indent_spaces = 2,
+  trailing_commas_func = FALSE
 ) {
   changed <- withr::with_dir(
     path,
-    style_box_use_files(recursive, exclude_files, exclude_dirs, indent_spaces)
+    style_box_use_files(recursive, exclude_files, exclude_dirs, indent_spaces, trailing_commas_func)
   )
 
   total_files_looked_at <- length(changed)
@@ -48,18 +51,25 @@ style_box_use_dir <- function(
 }
 
 #' @keywords internal
-style_box_use_files <- function(recursive, exclude_files, exclude_dirs, indent_spaces) {
+style_box_use_files <- function(
+  recursive,
+  exclude_files,
+  exclude_dirs,
+  indent_spaces,
+  trailing_commas_func
+) {
   regex_excluded_dirs <- paste(exclude_dirs, collapse = "|")
   files <- fs::dir_ls(".", regexp = "\\.[rR]$", recurse = recursive, all = FALSE)
   files <- files[stringr::str_starts(files, regex_excluded_dirs, negate = TRUE)]
-  purrr::map(files, transform_file, indent_spaces)
+  purrr::map(files, transform_file, indent_spaces, trailing_commas_func)
 }
 
 #' Style the box::use() calls of a source code
 #'
 #' @param filename A file path to style.
 #' @param indent_spaces An integer scalar indicating tab width in units of spaces
-#'
+#' @param trailing_commas_func A boolean to activate adding a trailing comma to the end of the lists
+#' of functions to attach.
 #' @details
 #' Refer to [style_box_use_text()] for styling details.
 #'
@@ -71,8 +81,8 @@ style_box_use_files <- function(recursive, exclude_files, exclude_dirs, indent_s
 #' style_box_use_file(file)
 #'
 #' @export
-style_box_use_file <- function(filename, indent_spaces = 2) {
-  transformed_file <- transform_file(filename, indent_spaces)
+style_box_use_file <- function(filename, indent_spaces = 2, trailing_commas_func = FALSE) {
+  transformed_file <- transform_file(filename, indent_spaces, trailing_commas_func)
 
   if (!isFALSE(transformed_file)) {
     cli::cli_warn("`{filename}` was modified. Please review the modifications made.")
@@ -82,7 +92,7 @@ style_box_use_file <- function(filename, indent_spaces = 2) {
 }
 
 #' @keywords internal
-transform_file <- function(filename, indent_spaces) {
+transform_file <- function(filename, indent_spaces, trailing_commas_func) {
   normal_filename <- normalizePath(filename)
   source_file_lines <- xfun::read_utf8(normal_filename)
 
@@ -91,7 +101,8 @@ transform_file <- function(filename, indent_spaces) {
 
   transformed_box_use <- transform_box_use_text(
     paste(source_file_lines, collapse = "\n"),
-    indent_spaces
+    indent_spaces,
+    trailing_commas_func
   )
 
   new_source_lines <- rebuild_source_file(source_file_lines, retain_lines, transformed_box_use)
@@ -120,6 +131,8 @@ transform_file <- function(filename, indent_spaces) {
 #'
 #' @param text Source code in text format
 #' @param indent_spaces Number of spaces per indent level
+#' @param trailing_commas_func A boolean to activate adding a trailing comma to the end of the lists
+#' of functions to attach.
 #' @param colored Boolean. For syntax highlighting using \{prettycode\}
 #' @param style A style from \{prettycode\}
 #'
@@ -139,10 +152,13 @@ transform_file <- function(filename, indent_spaces) {
 #'
 #' style_box_use_text(code)
 #'
+#' style_box_use_text(code, trailing_commas_func = TRUE)
+#'
 #' @export
 style_box_use_text <- function(
   text,
   indent_spaces = 2,
+  trailing_commas_func = FALSE,
   colored = getOption("styler.colored_print.vertical", default = FALSE),
   style = prettycode::default_style()
 ) {
@@ -151,7 +167,7 @@ style_box_use_text <- function(
   box_lines <- find_box_lines(text)
   retain_lines <- find_source_lines_to_retain(source_text_lines, box_lines)
 
-  transformed_text <- transform_box_use_text(text, indent_spaces)
+  transformed_text <- transform_box_use_text(text, indent_spaces, trailing_commas_func)
 
   new_source_lines <- rebuild_source_file(source_text_lines, retain_lines, transformed_text)
 
@@ -179,14 +195,14 @@ style_box_use_text <- function(
 }
 
 #' @keywords internal
-transform_box_use_text <- function(text, indent_spaces = 2) {
+transform_box_use_text <- function(text, indent_spaces = 2, trailing_commas_func = FALSE) {
   tree_root <- ts_root(text)
 
   box_use_pkgs <- character(0)
   ts_pkgs <- ts_find_all(tree_root, ts_query_pkg)
   if (!rlang::is_empty(ts_pkgs[[1]])) {
     sorted_pkgs <- sort_mod_pkg_calls(ts_pkgs, "pkg")
-    sorted_pkg_funcs <- process_func_calls(sorted_pkgs, indent_spaces)
+    sorted_pkg_funcs <- process_func_calls(sorted_pkgs, indent_spaces, trailing_commas_func)
     box_use_pkgs <- rebuild_pkg_mod_calls(sorted_pkg_funcs, indent_spaces)
   }
 
@@ -194,7 +210,7 @@ transform_box_use_text <- function(text, indent_spaces = 2) {
   ts_mods <- ts_find_all(tree_root, ts_query_mod)
   if (!rlang::is_empty(ts_mods[[1]])) {
     sorted_mods <- sort_mod_pkg_calls(ts_mods, "mod")
-    sorted_mod_funcs <- process_func_calls(sorted_mods, indent_spaces)
+    sorted_mod_funcs <- process_func_calls(sorted_mods, indent_spaces, trailing_commas_func)
     box_use_mods <- rebuild_pkg_mod_calls(sorted_mod_funcs, indent_spaces)
   }
 
@@ -340,10 +356,18 @@ sort_func_calls <- function(call_with_funcs) {
 }
 
 #' @keywords internal
-rebuild_func_calls <- function(func_calls, single_line = c(TRUE, FALSE), indent_spaces = 2) {
+rebuild_func_calls <- function(
+  func_calls,
+  single_line = c(TRUE, FALSE),
+  indent_spaces = 2,
+  trailing_commas_func = FALSE
+) {
   if (single_line) {
-    func_calls_comma <- sprintf("%s, ", func_calls$funcs)
-    flat_func_calls <- paste0(func_calls_comma, collapse = "")
+    func_calls_comma <- func_calls$funcs
+    if (trailing_commas_func) {
+      func_calls_comma <- c(func_calls$funcs, "")
+    }
+    flat_func_calls <- paste0(func_calls_comma, collapse = ", ")
     sprintf("%s[%s]", func_calls$pkg_mod_name, flat_func_calls)
   } else {
     names(func_calls$funcs) <- ifelse(
@@ -352,13 +376,22 @@ rebuild_func_calls <- function(func_calls, single_line = c(TRUE, FALSE), indent_
       names(func_calls$funcs)
     )
 
-    func_calls_comma_line <- sprintf(
-      "%s%s,%s",
+    func_calls_indent <- sprintf(
+      "%s%s",
       strrep(" ", 2 * indent_spaces),
-      func_calls$funcs,
+      func_calls$funcs
+    )
+    if (trailing_commas_func) {
+      func_calls_indent <- c(func_calls_indent, "")
+    }
+    func_calls_comma_lines <- paste(func_calls_indent, collapse = ",\n")
+    func_calls_commas <- stringr::str_split_1(func_calls_comma_lines, "\n")
+    func_calls_commas_comments <- paste0(
+      func_calls_commas[seq_along(func_calls$funcs)],
       names(func_calls$funcs)
     )
-    flat_func_calls <- paste0(func_calls_comma_line, collapse = "\n")
+
+    flat_func_calls <- paste0(func_calls_commas_comments, collapse = "\n")
     sprintf(
       "%s[\n%s\n%s]",
       func_calls$pkg_mod_name,
@@ -369,7 +402,7 @@ rebuild_func_calls <- function(func_calls, single_line = c(TRUE, FALSE), indent_
 }
 
 #' @keywords internal
-process_func_calls <- function(pkg_mod_calls, indent_spaces = 2) {
+process_func_calls <- function(pkg_mod_calls, indent_spaces = 2, trailing_commas_func = FALSE) {
   result <- lapply(pkg_mod_calls, function(call_item) {
     matches <- find_func_calls(call_item)
     if (rlang::is_empty(matches[[1]])) {
@@ -377,7 +410,7 @@ process_func_calls <- function(pkg_mod_calls, indent_spaces = 2) {
     } else {
       sorted_func_calls <- sort_func_calls(matches)
       single_line <- is_single_line_func_list(matches[[1]])
-      rebuild_func_calls(sorted_func_calls, single_line, indent_spaces)
+      rebuild_func_calls(sorted_func_calls, single_line, indent_spaces, trailing_commas_func)
     }
   })
 

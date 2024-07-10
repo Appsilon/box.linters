@@ -840,10 +840,38 @@ test_that("rebuild_func_calls(single_line = TRUE) returns a single line", {
   names(sorted_func_calls$funcs) <- c("", "", "")
 
   result <- rebuild_func_calls(sorted_func_calls, single_line)
-  expected_result <- "stringr[str_count, str_pos, str_trim, ]"
+  expected_result <- "stringr[str_count, str_pos, str_trim]"
 
   expect_identical(result, expected_result)
 })
+
+test_that(
+  "rebuild_func_calls(single_line = TRUE, trailing_commas_func = TRUE) returns
+a single line with a trailing comma",
+  {
+    single_line <- TRUE
+    trailing_commas_func <- TRUE
+
+    sorted_func_calls <- list(
+      "pkg_mod_name" = "stringr",
+      "funcs" = c(
+        "str_count",
+        "str_pos",
+        "str_trim"
+      )
+    )
+    names(sorted_func_calls$funcs) <- c("", "", "")
+
+    result <- rebuild_func_calls(
+      sorted_func_calls,
+      single_line,
+      trailing_commas_func = trailing_commas_func
+    )
+    expected_result <- "stringr[str_count, str_pos, str_trim, ]"
+
+    expect_identical(result, expected_result)
+  }
+)
 
 test_that("rebuild_func_calls(single_line = FALSE) returns multiple lines", {
   single_line <- FALSE
@@ -862,11 +890,43 @@ test_that("rebuild_func_calls(single_line = FALSE) returns multiple lines", {
   expected_result <- "stringr[
     str_count,
     str_pos,
-    str_trim,
+    str_trim
   ]"
 
   expect_identical(result, expected_result)
 })
+
+test_that(
+  "rebuild_func_calls(single_line = FALSE, trailing_commas_func = TRUE) returns
+multiple lines with trailing commas",
+  {
+    single_line <- FALSE
+    trailing_commas_func <- TRUE
+
+    sorted_func_calls <- list(
+      "pkg_mod_name" = "stringr",
+      "funcs" = c(
+        "str_count",
+        "str_pos",
+        "str_trim"
+      )
+    )
+    names(sorted_func_calls$funcs) <- c("", "", "")
+
+    result <- rebuild_func_calls(
+      sorted_func_calls,
+      single_line,
+      trailing_commas_func = trailing_commas_func
+    )
+    expected_result <- "stringr[
+    str_count,
+    str_pos,
+    str_trim,
+  ]"
+
+    expect_identical(result, expected_result)
+  }
+)
 
 test_that("rebuild_func_calls(single_line = FALSE) returns multiple line with correct comments", {
   single_line <- FALSE
@@ -885,7 +945,7 @@ test_that("rebuild_func_calls(single_line = FALSE) returns multiple line with co
   expected_result <- "stringr[
     str_count,
     str_pos, # nolint
-    str_trim,
+    str_trim
   ]"
 
   expect_identical(result, expected_result)
@@ -914,10 +974,10 @@ box::use(
   expected_result <- c(
     "dplyr[...]",
     "shiny",
-    "stringr[str_cat, alias = str_pos, ]",
+    "stringr[str_cat, alias = str_pos]",
     "tidyr[
     pivot_longer, # nolint
-    pivot_wider,
+    pivot_wider
   ]"
   )
   names(expected_result) <- c("# nolint", "", "", "")  # pkg/mod level comments
@@ -946,10 +1006,10 @@ box::use(
   expected_result <- c(
     "path/a/module_a[...]",
     "path/a/module_b",
-    "path/a/module_c[func_a, alias = func_b, ]",
+    "path/a/module_c[func_a, alias = func_b]",
     "path/b/module[
     func_a, # nolint
-    func_b,
+    func_b
   ]"
   )
   names(expected_result) <- c("# nolint", "", "", "") # pkg/mod level comments
@@ -980,10 +1040,10 @@ test_that("rebuild_pkg_mod_calls() works with packages", {
   expected_result <- "box::use(
   dplyr[...], # nolint
   shiny,
-  stringr[str_cat, alias = str_pos, ],
+  stringr[str_cat, alias = str_pos],
   tidyr[
     pivot_longer, # nolint
-    pivot_wider,
+    pivot_wider
   ],
 )"
 
@@ -1011,10 +1071,10 @@ test_that("rebuild_pkg_mod_calls() works with modules", {
   expected_result <- "box::use(
   path/a/module_a[...], # nolint
   path/a/module_b,
-  path/a/module_c[func_a, alias = func_b, ],
+  path/a/module_c[func_a, alias = func_b],
   path/b/module[
     func_a, # nolint
-    func_b,
+    func_b
   ],
 )"
 
@@ -1054,16 +1114,16 @@ some_function <- function() {
   dplyr,
   purrr[
     map,
-    map_chr, # nolint
+    map_chr # nolint
   ],
   alias = shiny,
   stringr[...], # nolint
-  tidyr[zun_alias = long, wide, ],
+  tidyr[zun_alias = long, wide],
 )
 
 box::use(
   path/to/module_a,
-  path/to/module_b[fun_alias = func_a, func_b, ],
+  path/to/module_b[fun_alias = func_a, func_b],
   path/to/module_c[...], # nolint
   alias = path/to/module_d,
   path/to/module_f,
@@ -1115,16 +1175,16 @@ box::use(
   dplyr,
   purrr[
     map,
-    map_chr, # nolint
+    map_chr # nolint
   ],
   alias = shiny,
   stringr[...], # nolint
-  tidyr[zun_alias = long, wide, ],
+  tidyr[zun_alias = long, wide],
 )
 
 box::use(
   path/to/module_a,
-  path/to/module_b[fun_alias = func_a, func_b, ],
+  path/to/module_b[fun_alias = func_a, func_b],
   path/to/module_c[...], # nolint
   alias = path/to/module_d,
   path/to/module_f,
@@ -1160,11 +1220,11 @@ some_function <- function() {
   dplyr,
   purrr[
     map,
-    map_chr, # nolint
+    map_chr # nolint
   ],
   alias = shiny,
   stringr[...], # nolint
-  tidyr[zun_alias = long, wide, ],
+  tidyr[zun_alias = long, wide],
 )
 
 some_function <- function() {
@@ -1197,7 +1257,7 @@ some_function <- function() {
 
   expected_output <- rex::rex("box::use(
   path/to/module_a,
-  path/to/module_b[fun_alias = func_a, func_b, ],
+  path/to/module_b[fun_alias = func_a, func_b],
   path/to/module_c[...], # nolint
   alias = path/to/module_d,
   path/to/module_f,
@@ -1256,15 +1316,15 @@ box::use(
   dplyr,
   purrr[
     map,
-    map_chr, # nolint
+    map_chr # nolint
   ],
   alias = shiny,
   stringr[...], # nolint
-  tidyr[zun_alias = long, wide, ],
+  tidyr[zun_alias = long, wide],
 )",
     "mods" = "box::use(
   path/to/module_a,
-  path/to/module_b[fun_alias = func_a, func_b, ],
+  path/to/module_b[fun_alias = func_a, func_b],
   path/to/module_c[...], # nolint
   alias = path/to/module_d,
   path/to/module_f,

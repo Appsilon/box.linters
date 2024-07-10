@@ -7,6 +7,7 @@
 style_box_use_text(
   text,
   indent_spaces = 2,
+  trailing_commas_func = FALSE,
   colored = getOption("styler.colored_print.vertical", default = FALSE),
   style = prettycode::default_style()
 )
@@ -15,6 +16,9 @@ style_box_use_text(
 \item{text}{Source code in text format}
 
 \item{indent_spaces}{Number of spaces per indent level}
+
+\item{trailing_commas_func}{A boolean to activate adding a trailing comma to the end of the lists
+of functions to attach.}
 
 \item{colored}{Boolean. For syntax highlighting using \{prettycode\}}
 
@@ -48,5 +52,7 @@ path/to/module)
 "
 
 style_box_use_text(code)
+
+style_box_use_text(code, trailing_commas_func = TRUE)
 
 }

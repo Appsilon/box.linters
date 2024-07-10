@@ -4,12 +4,15 @@
 \alias{style_box_use_file}
 \title{Style the box::use() calls of a source code}
 \usage{
-style_box_use_file(filename, indent_spaces = 2)
+style_box_use_file(filename, indent_spaces = 2, trailing_commas_func = FALSE)
 }
 \arguments{
 \item{filename}{A file path to style.}
 
 \item{indent_spaces}{An integer scalar indicating tab width in units of spaces}
+
+\item{trailing_commas_func}{A boolean to activate adding a trailing comma to the end of the lists
+of functions to attach.}
 }
 \description{
 Style the box::use() calls of a source code

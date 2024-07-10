@@ -9,7 +9,8 @@ style_box_use_dir(
   recursive = TRUE,
   exclude_files = NULL,
   exclude_dirs = c("packrat", "renv"),
-  indent_spaces = 2
+  indent_spaces = 2,
+  trailing_commas_func = FALSE
 )
 }
 \arguments{
@@ -22,6 +23,9 @@ style_box_use_dir(
 \item{exclude_dirs}{A character vector of directories to exclude.}
 
 \item{indent_spaces}{An integer scalar indicating tab width in units of spaces}
+
+\item{trailing_commas_func}{A boolean to activate adding a trailing comma to the end of the lists
+of functions to attach.}
 }
 \description{
 Style the box::use() calls for a directory
