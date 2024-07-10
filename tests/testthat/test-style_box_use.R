@@ -1211,7 +1211,19 @@ some_function <- function() {
   expect_output(suppressWarnings(style_box_use_text(code)), expected_output)
 })
 
+test_that("style_box_use_text() does not throw warnings when there is no modification made", {
+  code <- "
+some_function <- function() {
+  1 + 1
+}
+"
 
+  expected_output <- NA
+  expect_output(style_box_use_text(code), expected_output)
+
+  expected_message <- rex::rex("No changes were made to the text.")
+  expect_message(style_box_use_text(code), expected_message)
+})
 ##### transform_box_use_text #####
 
 test_that("transform_box_use_text() returns correct format as list", {

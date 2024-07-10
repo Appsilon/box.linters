@@ -421,11 +421,19 @@ find_box_lines <- function(source_text) {
   source_tree <- ts_root(source_text)
   ts_box_use_calls <- ts_find_all(source_tree, ts_query_box_use)
   box_lines <- get_box_lines(ts_box_use_calls) + 1
-  list(
-    "all" = box_lines,
-    "min" = min(box_lines),
-    "max" = max(box_lines)
-  )
+  if (rlang::is_empty(box_lines)) {
+    list(
+      "all" = box_lines,
+      "min" = -1,
+      "max" = -1
+    )
+  } else {
+    list(
+      "all" = box_lines,
+      "min" = min(box_lines),
+      "max" = max(box_lines)
+    )
+  }
 }
 
 #' @keywords internal
