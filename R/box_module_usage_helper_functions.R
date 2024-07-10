@@ -55,7 +55,11 @@ get_attached_modules <- function(xml) {
   xpath_whole_modules <- paste(box_module_base_path(), whole_module_imports)
   xml_whole_modules <- xml2::xml_find_all(xml, xpath_whole_modules)
 
-  aliased_whole_modules <- paste0(xml2::xml_text(xml_whole_modules), collapse = "")
+  xml_whole_modules_text <- xml2::xml_text(xml_whole_modules)
+
+  hacky_comma_fix <- hacky_comma_fix(xml_whole_modules_text)
+
+  aliased_whole_modules <- paste0(hacky_comma_fix, collapse = "")
   mods <- strsplit(gsub("`", "", aliased_whole_modules), ",")[[1]]
   output <- do.call(rbind, strsplit(mods, "="))
 
