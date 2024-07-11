@@ -270,6 +270,39 @@ test_that("box_unused_attached_mod_linter blocks unused objects in glue string t
   lintr::expect_lint(bad_box_usage, list(message = lint_message), linters = linter)
 })
 
+test_that("box_unused_attached_mod_linter works with relative paths", {
+  linter <- box_unused_attached_mod_linter()
+
+  withr::with_envvar(
+    list(
+      box.path = NULL
+    ),
+    withr::with_dir(file.path(getwd(), "mod", "path", "relative"), {
+      code <- "box::use(../to/module_a)
+      module_a$a_fun_a()
+      "
+
+      lintr::expect_lint(code, NULL, linters = linter)
+    })
+  )
+})
+
+test_that("box_unused_attached_mod_linter detects unused modules with relative paths", {
+  linter <- box_unused_attached_mod_linter()
+  lint_message <- rex::rex("Attached module unused.")
+
+  withr::with_envvar(
+    list(
+      box.path = NULL
+    ),
+    withr::with_dir(file.path(getwd(), "mod", "path", "relative"), {
+      code <- "box::use(../to/module_a)
+      "
+
+      lintr::expect_lint(code, list(message = lint_message), linters = linter)
+    })
+  )
+})
 
 # Box test interfaces, not implementations
 

@@ -69,3 +69,39 @@ test_that("box_mod_fun_exists_linter blocks aliased functions that do not exist 
 
   lintr::expect_lint(bad_box_usage, list(message = lint_message), linter)
 })
+
+test_that("box_mod_fun_exists_linter allows relative module paths", {
+  linter <- box_mod_fun_exists_linter()
+
+  withr::with_envvar(
+    list(
+      box.path = NULL
+    ), {
+      withr::with_dir(file.path(getwd(), "mod", "path", "relative"), {
+        code <- "box::use(../to/module_a[a_fun_a])
+        a_fun_a()
+        "
+
+        lintr::expect_lint(code, NULL, linters = linter)
+      })
+    }
+  )
+})
+
+test_that("box_mod_fun_exists_linter blocks non-existing functions in relative module paths", {
+  linter <- box_mod_fun_exists_linter()
+  lint_message <- rex::rex("Function not exported by module.")
+  withr::with_envvar(
+    list(
+      box.path = NULL
+    ), {
+      withr::with_dir(file.path(getwd(), "mod", "path", "relative"), {
+        code <- "box::use(../to/module_a[not_exist])
+        a_fun_a()
+        "
+
+        lintr::expect_lint(code, list(message = lint_message), linters = linter)
+      })
+    }
+  )
+})

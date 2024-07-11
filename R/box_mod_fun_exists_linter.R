@@ -46,7 +46,11 @@ box_mod_fun_exists_linter <- function() {
 
     xml <- source_expression$full_xml_parsed_content
 
-    mod_fun_not_exists <- check_attached_mod_funs(xml, xpath_module_functions)
+    working_dir <- get_module_working_dir(source_expression)
+
+    withr::with_dir(working_dir, {
+      mod_fun_not_exists <- check_attached_mod_funs(xml, xpath_module_functions)
+    })
 
     lapply(mod_fun_not_exists$xml, function(xml_node) {
       lintr::xml_nodes_to_lints(
