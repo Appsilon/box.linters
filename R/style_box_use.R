@@ -35,7 +35,8 @@ style_box_use_dir <- function(
   unchanged_files <- total_files_looked_at - length(changed_files)
 
   if (length(changed_files) > 0) {
-    cli::cli_warn("Please review the modifications made.")
+    cli::cli_warn("Please review the modifications made.
+    Comments near box::use() are moved to the top of the file.")
 
     cat("Modified the following files:\n")
     cli::cli_bullets(changed_files)
@@ -85,7 +86,8 @@ style_box_use_file <- function(filename, indent_spaces = 2, trailing_commas_func
   transformed_file <- transform_file(filename, indent_spaces, trailing_commas_func)
 
   if (!isFALSE(transformed_file)) {
-    cli::cli_warn("`{filename}` was modified. Please review the modifications made.")
+    cli::cli_warn("`{filename}` was modified. Please review the modifications made.
+                  Comments near box::use() are moved to the top of the file.")
   } else {
     cli::cli_inform("Nothing to modify in `{filename}`.")
   }
@@ -188,7 +190,8 @@ style_box_use_text <- function(
     }
 
     cat(new_source_lines, sep = "\n")
-    cli::cli_warn("Changes were made. Please review the modifications made.")
+    cli::cli_warn("Changes were made. Please review the modifications made.
+                  Comments near box::use() are moved to the top of the file.")
   } else {
     cli::cli_inform("No changes were made to the text.")
   }
