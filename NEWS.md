@@ -1,5 +1,6 @@
 # box.linters (development version)
 
+* Add a switch to `box_alphabetical_calls_linter()` to set verbosity of lint report.
 * [Bug fix] Allow multiple `box::use(pkg)` calls (#111)
 
 # box.linters 0.9.1
