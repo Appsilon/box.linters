@@ -1,12 +1,11 @@
 pandoc: 3.1.11
-pkgdown: 2.0.9
+pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
-  box-default: how-to/box-default.html
-  custom-config: how-to/custom-config.html
-  rhino-default: how-to/rhino-default.html
-last_built: 2024-06-07T06:49Z
+  how-to/box-default: how-to/box-default.html
+  how-to/custom-config: how-to/custom-config.html
+  how-to/rhino-default: how-to/rhino-default.html
+last_built: 2024-07-11T06:02Z
 urls:
   reference: https://appsilon.github.io/box.linters/reference
   article: https://appsilon.github.io/box.linters/articles
-

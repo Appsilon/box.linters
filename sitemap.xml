@@ -1,150 +1,52 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://appsilon.github.io/box.linters/404.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/articles/how-to/box-default.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/articles/how-to/custom-config.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/articles/how-to/rhino-default.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/index.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/box_alphabetical_calls_linter.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/box_default_linters.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/box_func_import_count_linter.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/box_mod_fun_exists_linter.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/box_module_base_path.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/box_package_base_path.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/box_pkg_fun_exists_linter.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/box_separate_calls_linter.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/box_trailing_commas_linter.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/box_universal_import_linter.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/box_unused_att_mod_obj_linter.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/box_unused_att_pkg_fun_linter.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/box_unused_attached_mod_linter.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/box_unused_attached_pkg_linter.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/box_usage_linter.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/check_attached_mod_funs.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/check_attached_pkg_funs.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/extract_xml_and_text.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/get_attached_mod_functions.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/get_attached_mod_three_dots.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/get_attached_modules.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/get_attached_packages.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/get_attached_pkg_functions.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/get_attached_pkg_three_dots.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/get_box_module_exports.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/get_declared_functions.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/get_declared_objects.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/get_function_calls.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/get_function_signature_objs.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/get_module_exports.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/get_object_calls.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/get_objects_in_strings.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/get_packages_exports.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/get_r6_components.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/make_r6_components_xpath.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/make_r6_internal_calls_xpath.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/r6_usage_linter.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/rhino_default_linters.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/unused_declared_object_linter.html</loc>
-  </url>
-  <url>
-    <loc>https://appsilon.github.io/box.linters/reference/use_box_lintr.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://appsilon.github.io/box.linters/404.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/articles/how-to/box-default.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/articles/how-to/custom-config.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/articles/how-to/rhino-default.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/articles/index.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/authors.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/index.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/news/index.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/box_alphabetical_calls_linter.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/box_default_linters.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/box_func_import_count_linter.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/box_mod_fun_exists_linter.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/box_module_base_path.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/box_package_base_path.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/box_pkg_fun_exists_linter.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/box_separate_calls_linter.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/box_trailing_commas_linter.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/box_universal_import_linter.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/box_unused_att_mod_obj_linter.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/box_unused_att_pkg_fun_linter.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/box_unused_attached_mod_linter.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/box_unused_attached_pkg_linter.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/box_usage_linter.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/check_attached_mod_funs.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/check_attached_pkg_funs.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/extract_xml_and_text.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/get_attached_mod_functions.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/get_attached_mod_three_dots.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/get_attached_modules.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/get_attached_packages.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/get_attached_pkg_functions.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/get_attached_pkg_three_dots.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/get_box_module_exports.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/get_declared_functions.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/get_declared_objects.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/get_function_calls.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/get_function_signature_objs.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/get_module_exports.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/get_object_calls.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/get_objects_in_strings.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/get_packages_exports.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/get_r6_components.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/index.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/make_r6_components_xpath.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/make_r6_internal_calls_xpath.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/r6_usage_linter.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/rhino_default_linters.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/unused_declared_object_linter.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/use_box_lintr.html</loc></url>
 </urlset>
+
