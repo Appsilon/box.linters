@@ -188,7 +188,7 @@ get_module_working_dir <- function(source_expression) {
   if (is.null(box_path)) {
     working_dir <- fs::path_dir(source_expression$filename)
   } else {
-    working_dir <- getwd()
+    working_dir <- box_path
   }
   working_dir
 }
