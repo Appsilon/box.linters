@@ -21,7 +21,7 @@ Imports:
   cli,
   fs,
   glue,
-  lintr (>= 3.0.0),
+  lintr (>= 3.1.0),
   purrr,
   rlang,
   stringr,
