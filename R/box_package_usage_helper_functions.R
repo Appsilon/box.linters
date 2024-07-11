@@ -47,7 +47,11 @@ get_attached_packages <- function(xml) {
   xpath_whole_packages <- paste(box_package_base_path(), whole_package_imports)
   xml_whole_packages <- xml2::xml_find_all(xml, xpath_whole_packages)
 
-  aliased_whole_packages <- paste(xml2::xml_text(xml_whole_packages), collapse = "")
+  xml_whole_packages_text <- xml2::xml_text(xml_whole_packages)
+
+  hacky_comma_fix <- hacky_comma_fix(xml_whole_packages_text)
+
+  aliased_whole_packages <- paste(hacky_comma_fix, collapse = "")
   pkgs <- strsplit(gsub("`", "", aliased_whole_packages), ",")[[1]]
   output <- do.call(rbind, strsplit(pkgs, "="))
 
@@ -182,4 +186,29 @@ get_attached_pkg_functions <- function(xml) {
     xml = attached_functions$xml_nodes,
     text = attached_functions$text
   )
+}
+
+#' @keywords internal
+hacky_comma_fix <- function(pkg_imports) {
+  punc <- c("=", ",")
+
+  if (rlang::is_empty(pkg_imports)) {
+    return(pkg_imports)
+  }
+
+  hacky_comma_fix <- pkg_imports[1]
+  if (length(pkg_imports) == 1) {
+    return(hacky_comma_fix)
+  }
+  for (i in seq(2, length(pkg_imports))) {
+    curr <- pkg_imports[i]
+    prev <- pkg_imports[i - 1]
+
+    if (!curr %in% punc && !prev %in% punc) {
+      hacky_comma_fix <- c(hacky_comma_fix, ",", curr)
+    } else {
+      hacky_comma_fix <- c(hacky_comma_fix, curr)
+    }
+  }
+  hacky_comma_fix
 }

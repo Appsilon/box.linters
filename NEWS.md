@@ -1,3 +1,7 @@
+# box.linters (development version)
+
+* [Bug fix] Allow multiple `box::use(pkg)` calls (#111)
+
 # box.linters 0.9.1
 
 * Handle `box` recommended method of testing private methods.

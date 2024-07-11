@@ -27,6 +27,36 @@ test_that("get_attached_packages returns correct list of imported whole packages
   expect_setequal(results$nested$stringr, stringr_functions)
 })
 
+test_that(
+  "get_attached_packages returns correct list of imported whole packages in
+separate box::use calls", {
+    whole_imported_packages <- "
+  box::use(
+    dplyr,
+    stringr,
+  )
+  box::use(
+    fs
+  )
+  "
+
+    xml_whole_imported_packages <- code_to_xml_expr(whole_imported_packages)
+    results <- get_attached_packages(xml_whole_imported_packages)
+    expected_results <- c("dplyr", "stringr", "fs")
+
+    expect_equal(names(results$nested), expected_results)
+
+    dplyr_functions <- getNamespaceExports("dplyr")
+    expect_setequal(results$nested$dplyr, dplyr_functions)
+
+    stringr_functions <- getNamespaceExports("stringr")
+    expect_setequal(results$nested$stringr, stringr_functions)
+
+    fs_functions <- getNamespaceExports("fs")
+    expect_setequal(results$nested$fs, fs_functions)
+  }
+)
+
 test_that("get_attached_packages does not return packages imported with '...'", {
   whole_imported_packages <- "
   box::use(
@@ -132,6 +162,26 @@ test_that("get_attached_pkg_three_dots returns correct list of imported function
 
   expect_setequal(results$text, c(dplyr_results, stringr_results))
 })
+
+test_that(
+  "get_attached_pkg_three_dots separate box::use returns correct list of imported functions", {
+    three_dots_import <- "
+  box::use(dplyr[...])
+  box::use(stringr[...])
+  "
+
+    xml_three_dots_packages <- code_to_xml_expr(three_dots_import)
+    results <- get_attached_pkg_three_dots(xml_three_dots_packages)
+
+    dplyr_results <- getNamespaceExports("dplyr")
+    stringr_results <- getNamespaceExports("stringr")
+
+    expect_setequal(results$nested$dplyr, dplyr_results)
+    expect_setequal(results$nested$stringr, stringr_results)
+
+    expect_setequal(results$text, c(dplyr_results, stringr_results))
+  }
+)
 
 test_that("get_attached_pkg_three_dots does not return whole imported packages", {
   three_dots_import <- "
