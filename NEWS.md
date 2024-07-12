@@ -1,5 +1,6 @@
 # box.linters (development version)
 
+* Added styling functions for `box::use()` calls.
 * [Bug fix] Allow multiple `box::use(pkg)` calls (#111)
 
 # box.linters 0.9.1
