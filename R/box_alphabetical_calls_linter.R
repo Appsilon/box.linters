@@ -8,8 +8,6 @@
 #' [Explanation: Rhino style guide](https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html)
 #' to learn about the details.
 #'
-#' @param verbose A boolean to activate verbose reporting of function list linting.
-#'
 #' @return A custom linter function for use with `r-lib/lintr`.
 #'
 #' @examples
@@ -37,12 +35,6 @@
 #' lintr::lint(
 #'   text = "box::use(path/to/A[alias = functionB, functionA])",
 #'   linters = box_alphabetical_calls_linter()
-#' )
-#'
-#' ## verbose = TRUE
-#' lintr::lint(
-#'   text = "box::use(package[functionB, functionA])",
-#'   linters = box_alphabetical_calls_linter(verbose = TRUE)
 #' )
 #'
 #' # okay
@@ -73,7 +65,7 @@
 #'
 #' @export
 # nolint end
-box_alphabetical_calls_linter <- function(verbose = FALSE) {
+box_alphabetical_calls_linter <- function() {
   xpath_base <- "//SYMBOL_PACKAGE[(text() = 'box' and
   following-sibling::SYMBOL_FUNCTION_CALL[text() = 'use'])]
   /parent::expr
@@ -124,13 +116,8 @@ box_alphabetical_calls_linter <- function(verbose = FALSE) {
       unsorted_functions <- which(functions_check == FALSE)
       unsorted <- any(!functions_check)
 
-      if (verbose) {
-        lint_nodes <- imported_functions[unsorted_functions]
-      } else {
-        lint_nodes <- xml_node
-      }
-
       if (unsorted) {
+        lint_nodes <- imported_functions[unsorted_functions[1]]
         lintr::xml_nodes_to_lints(
           lint_nodes,
           source_expression = source_expression,

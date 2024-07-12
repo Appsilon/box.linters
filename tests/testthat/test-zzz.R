@@ -49,7 +49,7 @@ str_trim()"
 
   lint_message <- rex::rex("Module and function imports must be sorted alphabetically.")
   lintr::expect_lint(bad_code, list(
-    list(message = lint_message, line_number = 4)
+    list(message = lint_message, line_number = 5, column_number = 5)
   ), linters)
 })
 

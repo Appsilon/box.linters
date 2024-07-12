@@ -4,10 +4,7 @@
 \alias{box_alphabetical_calls_linter}
 \title{\code{box} library alphabetical module and function imports linter}
 \usage{
-box_alphabetical_calls_linter(verbose = FALSE)
-}
-\arguments{
-\item{verbose}{A boolean to activate verbose reporting of function list linting.}
+box_alphabetical_calls_linter()
 }
 \value{
 A custom linter function for use with \code{r-lib/lintr}.
@@ -46,12 +43,6 @@ lintr::lint(
 lintr::lint(
   text = "box::use(path/to/A[alias = functionB, functionA])",
   linters = box_alphabetical_calls_linter()
-)
-
-## verbose = TRUE
-lintr::lint(
-  text = "box::use(package[functionB, functionA])",
-  linters = box_alphabetical_calls_linter(verbose = TRUE)
 )
 
 # okay
