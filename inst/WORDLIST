@@ -3,6 +3,7 @@ CMD
 Codecov
 Customizable
 Github
+Linter
 Linters
 RStudio
 Rhinoverse
@@ -15,3 +16,4 @@ linters
 lintr
 nolint
 preconfigured
+prettycode
