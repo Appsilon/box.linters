@@ -1,5 +1,6 @@
 # box.linters (development version)
 
+* Add checks for `package::function()` calls. Allow `box::*()` by default.
 * Added styling functions for `box::use()` calls.
 * [Bug fix] Allow multiple `box::use(pkg)` calls (#111)
 
