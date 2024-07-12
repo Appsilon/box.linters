@@ -46,6 +46,9 @@
 <url><loc>https://appsilon.github.io/box.linters/reference/make_r6_internal_calls_xpath.html</loc></url>
 <url><loc>https://appsilon.github.io/box.linters/reference/r6_usage_linter.html</loc></url>
 <url><loc>https://appsilon.github.io/box.linters/reference/rhino_default_linters.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/style_box_use_dir.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/style_box_use_file.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/style_box_use_text.html</loc></url>
 <url><loc>https://appsilon.github.io/box.linters/reference/unused_declared_object_linter.html</loc></url>
 <url><loc>https://appsilon.github.io/box.linters/reference/use_box_lintr.html</loc></url>
 </urlset>
