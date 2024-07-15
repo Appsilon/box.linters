@@ -89,6 +89,11 @@ reference:
     - box_usage_linter
     - r6_usage_linter
     - unused_declared_object_linter
+  - title: Box Styling
+    contents:
+    - style_box_use_text
+    - style_box_use_file
+    - style_box_use_dir
 
 footer:
   structure:

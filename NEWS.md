@@ -1,6 +1,8 @@
 # box.linters (development version)
 
 * [Bug fix] Allow relative box module paths (#110)
+* Less verbose `box_alphabetical_calls_linter()`. Reports only the first out-of-place function.
+* Added styling functions for `box::use()` calls.
 * [Bug fix] Allow multiple `box::use(pkg)` calls (#111)
 
 # box.linters 0.9.1
