@@ -1,5 +1,6 @@
 # box.linters (development version)
 
+* Add checks for `package::function()` calls. Allow `box::*()` by default.
 * [Bug fix] Allow relative box module paths (#110)
 * Less verbose `box_alphabetical_calls_linter()`. Reports only the first out-of-place function.
 * Added styling functions for `box::use()` calls.
