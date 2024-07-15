@@ -79,8 +79,12 @@ box_unused_attached_mod_linter <- function() {
 
     xml <- source_expression$full_xml_parsed_content
 
-    attached_modules <- get_attached_modules(xml)
-    attached_three_dots <- get_attached_mod_three_dots(xml)
+    working_dir <- get_module_working_dir(source_expression)
+
+    withr::with_dir(working_dir, {
+      attached_modules <- get_attached_modules(xml)
+      attached_three_dots <- get_attached_mod_three_dots(xml)
+    })
     function_calls <- get_function_calls(xml)
     glue_object_calls <- get_objects_in_strings(xml)
     possible_module_calls <- get_object_calls(xml)

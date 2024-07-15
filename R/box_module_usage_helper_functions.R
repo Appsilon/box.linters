@@ -181,3 +181,14 @@ get_attached_mod_functions <- function(xml) {
     text = attached_functions$text
   )
 }
+
+#' @keywords internal
+get_module_working_dir <- function(source_expression) {
+  box_path <- getOption("box.path")
+  if (is.null(box_path)) {
+    working_dir <- fs::path_dir(source_expression$filename)
+  } else {
+    working_dir <- box_path
+  }
+  working_dir
+}

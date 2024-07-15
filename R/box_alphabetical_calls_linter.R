@@ -114,13 +114,17 @@ box_alphabetical_calls_linter <- function() {
       functions_called <- xml2::xml_text(imported_functions)
       functions_check <- functions_called == sort(functions_called)
       unsorted_functions <- which(functions_check == FALSE)
+      unsorted <- any(!functions_check)
 
-      lintr::xml_nodes_to_lints(
-        imported_functions[unsorted_functions],
-        source_expression = source_expression,
-        lint_message = lint_message,
-        type = "style"
-      )
+      if (unsorted) {
+        lint_nodes <- imported_functions[unsorted_functions[1]]
+        lintr::xml_nodes_to_lints(
+          lint_nodes,
+          source_expression = source_expression,
+          lint_message = lint_message,
+          type = "style"
+        )
+      }
     })
 
     c(module_lint, function_lint)
