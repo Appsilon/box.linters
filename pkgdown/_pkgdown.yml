@@ -89,6 +89,7 @@ reference:
     - box_usage_linter
     - r6_usage_linter
     - unused_declared_object_linter
+    - namespaced_function_calls
   - title: Box Styling
     contents:
     - style_box_use_text
