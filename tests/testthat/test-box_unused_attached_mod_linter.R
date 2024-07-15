@@ -270,6 +270,35 @@ test_that("box_unused_attached_mod_linter blocks unused objects in glue string t
   lintr::expect_lint(bad_box_usage, list(message = lint_message), linters = linter)
 })
 
+test_that("box_unused_attached_mod_linter works with relative paths", {
+  linter <- box_unused_attached_mod_linter()
+
+  withr::with_options(
+    list(
+      "box.path" = NULL
+    ),
+    withr::with_dir(file.path(getwd(), "mod", "path", "relative"), {
+      expect_no_message(lintr::lint("module_d.R", linters = linter))
+    })
+  )
+})
+
+test_that("box_unused_attached_mod_linter detects unused modules with relative paths", {
+  linter <- box_unused_attached_mod_linter()
+  lint_message <- "Attached module unused."
+
+  withr::with_options(
+    list(
+      "box.path" = NULL
+    ),
+    withr::with_dir(file.path(getwd(), "mod", "path", "relative"), {
+      result <- lintr::lint("module_g.R", linters = linter)
+    })
+  )
+
+  expect_s3_class(result, "lints")
+  expect_equal(result[[1]]$message, lint_message)
+})
 
 # Box test interfaces, not implementations
 

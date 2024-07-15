@@ -61,7 +61,11 @@ box_unused_att_mod_obj_linter <- function() {
 
     xml <- source_expression$full_xml_parsed_content
 
-    attached_functions_objects <- get_attached_mod_functions(xml)
+    working_dir <- get_module_working_dir(source_expression)
+
+    withr::with_dir(working_dir, {
+      attached_functions_objects <- get_attached_mod_functions(xml)
+    })
     function_calls <- get_function_calls(xml)
     object_calls <- get_object_calls(xml)
     glue_object_calls <- get_objects_in_strings(xml)

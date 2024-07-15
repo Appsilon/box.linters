@@ -209,3 +209,38 @@ test_that("box_unused_att_mod_obj_linter blocks unused objects in glue string te
 
   lintr::expect_lint(bad_box_usage, list(message = lint_message), linters = linter)
 })
+
+test_that("box_unused_att_mod_obj_linter allows relative module paths", {
+  linter <- box_unused_att_mod_obj_linter()
+
+  withr::with_options(
+    list(
+      "box.path" = NULL
+    ), {
+      withr::with_dir(file.path(getwd(), "mod", "path", "relative"), {
+        code <- "box::use(../to/module_a[a_fun_a])
+        a_fun_a()
+        "
+        lintr::expect_lint(code, NULL, linters = linter)
+
+      })
+    }
+  )
+})
+
+test_that("box_unused_att_mod_obj_linter blocks unused functions from relative module paths", {
+  linter <- box_unused_att_mod_obj_linter()
+  lint_message <- rex::rex("Imported function/object unused.")
+
+  withr::with_options(
+    list(
+      "box.path" = NULL
+    ), {
+      withr::with_dir(file.path(getwd(), "mod", "path", "relative"), {
+        code <- "box::use(../to/module_a[a_fun_a])
+        "
+        lintr::expect_lint(code, list(message = lint_message), linters = linter)
+      })
+    }
+  )
+})
