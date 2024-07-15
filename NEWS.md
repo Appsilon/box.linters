@@ -1,5 +1,6 @@
 # box.linters (development version)
 
+* Less verbose `box_alphabetical_calls_linter()`. Reports only the first out-of-place function.
 * Added styling functions for `box::use()` calls.
 * [Bug fix] Allow multiple `box::use(pkg)` calls (#111)
 
