@@ -25,6 +25,7 @@ style_box_use_dir <- function(
   indent_spaces = 2,
   trailing_commas_func = FALSE
 ) {
+  check_treesitter_installed()
   changed <- withr::with_dir(
     path,
     style_box_use_files(recursive, exclude_files, exclude_dirs, indent_spaces, trailing_commas_func)
@@ -83,6 +84,7 @@ style_box_use_files <- function(
 #'
 #' @export
 style_box_use_file <- function(filename, indent_spaces = 2, trailing_commas_func = FALSE) {
+  check_treesitter_installed()
   transformed_file <- transform_file(filename, indent_spaces, trailing_commas_func)
 
   if (!isFALSE(transformed_file)) {
@@ -164,6 +166,7 @@ style_box_use_text <- function(
   colored = getOption("styler.colored_print.vertical", default = FALSE),
   style = prettycode::default_style()
 ) {
+  check_treesitter_installed()
   source_text_lines <- stringr::str_split_1(text, "\n")
 
   box_lines <- find_box_lines(text)
@@ -519,4 +522,16 @@ rebuild_source_file <- function(source_file_lines, retain_lines, transformed_box
     source_file_lines[retain_lines$after]
   )
   unlist(output)
+}
+
+#' @keywords internal
+check_treesitter_installed <- function() {
+  if (length(find.package(c("treesitter", "treesitter.r"), quiet = TRUE)) < 2) {
+    cli::cli_abort(
+      paste(
+        "The packages {{treesitter}} and {{treesitter.r}} are required for styling.",
+        "Please install these packages to perform styling. They require R version >= 4.3.0."
+      )
+    )
+  }
 }

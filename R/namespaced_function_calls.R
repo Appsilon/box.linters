@@ -37,6 +37,17 @@
 #'
 #' @export
 namespaced_function_calls <- function(allow = NULL) {
+  if (length(find.package(c("treesitter", "treesitter.r"), quiet = TRUE)) < 2) {
+    cli::cli_alert_warning(
+      paste(
+        "The packages {{treesitter}} and {{treesitter.r}} are required by",
+        "namespaced_function_calls(). Please install these packages if you want to use",
+        "namespaced_function_calls(). They require R version >= 4.3.0."
+      )
+    )
+    return()
+  }
+
   always_allow <- c("box")
 
   allow <- c(always_allow, allow)
