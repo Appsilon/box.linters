@@ -526,7 +526,7 @@ rebuild_source_file <- function(source_file_lines, retain_lines, transformed_box
 
 #' @keywords internal
 check_treesitter_installed <- function() {
-  if (length(find.package(c("treesitter", "treesitter.r"), quiet = TRUE)) < 2) {
+  if (is_treesitter_installed()) {
     cli::cli_abort(
       paste(
         "The packages {{treesitter}} and {{treesitter.r}} are required for styling.",
@@ -534,4 +534,10 @@ check_treesitter_installed <- function() {
       )
     )
   }
+}
+
+#' @keywords internal
+is_treesitter_installed <- function() {
+  treesitter_pkgs <- c("treesitter", "treesitter.r")
+  length(find.package(treesitter_pkgs, quiet = TRUE)) < length(treesitter_pkgs)
 }
