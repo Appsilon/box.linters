@@ -536,7 +536,11 @@ check_treesitter_installed <- function() {
   }
 }
 
-#' @keywords internal
+#' Check if treesitter and dependencies are installed
+#'
+#' Treesitter required R >= 4.3.0. Treesitter is required by a few `{box.linters}` functions.
+#'
+#' @export
 is_treesitter_installed <- function() {
   treesitter_pkgs <- c("treesitter", "treesitter.r")
   length(find.package(treesitter_pkgs, quiet = TRUE)) < length(treesitter_pkgs)
