@@ -526,7 +526,7 @@ rebuild_source_file <- function(source_file_lines, retain_lines, transformed_box
 
 #' @keywords internal
 check_treesitter_installed <- function() {
-  if (is_treesitter_installed()) {
+  if (!is_treesitter_installed()) {
     cli::cli_abort(
       paste(
         "The packages {{treesitter}} and {{treesitter.r}} are required for styling.",
@@ -540,8 +540,23 @@ check_treesitter_installed <- function() {
 #'
 #' Treesitter required R >= 4.3.0. Treesitter is required by a few `{box.linters}` functions.
 #'
+#'
+#' @examples
+#' \dontrun{
+#'
+#' # Bare environment
+#'
+#' is_treesitter_installed()
+#' #> [1] FALSE
+#'
+#' install.packages(c("treesitter", "treesitter.r"))
+#' is_treesitter_installed()
+#' #> [1] TRUE
+#' }
+#'
+#' @return Logical TRUE/FALSE if the `treesitter` dependencies exist.
 #' @export
 is_treesitter_installed <- function() {
   treesitter_pkgs <- c("treesitter", "treesitter.r")
-  length(find.package(treesitter_pkgs, quiet = TRUE)) < length(treesitter_pkgs)
+  length(find.package(treesitter_pkgs, quiet = TRUE)) >= length(treesitter_pkgs)
 }

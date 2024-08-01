@@ -37,7 +37,7 @@
 #'
 #' @export
 namespaced_function_calls <- function(allow = NULL) {
-  if (is_treesitter_installed()) {
+  if (!is_treesitter_installed()) {
     cli::cli_alert_warning(
       paste(
         "The packages {{treesitter}} and {{treesitter.r}} are required by",

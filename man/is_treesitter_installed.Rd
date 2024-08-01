@@ -6,6 +6,23 @@
 \usage{
 is_treesitter_installed()
 }
+\value{
+Logical TRUE/FALSE if the \code{treesitter} dependencies exist.
+}
 \description{
 Treesitter required R >= 4.3.0. Treesitter is required by a few \code{{box.linters}} functions.
+}
+\examples{
+\dontrun{
+
+# Bare environment
+
+is_treesitter_installed()
+#> [1] FALSE
+
+install.packages(c("treesitter", "treesitter.r"))
+is_treesitter_installed()
+#> [1] TRUE
+}
+
 }
