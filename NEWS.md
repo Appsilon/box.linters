@@ -1,3 +1,7 @@
+# box.linters (development version)
+
+* `box_unused_att_pkg_fun_linter()` allows functions passed into other functions by name without `().
+
 # box.linters 0.10.0
 
 * Add checks for `package::function()` calls. Allow `box::*()` by default.
