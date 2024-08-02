@@ -69,8 +69,9 @@ box_unused_att_pkg_fun_linter <- function() {
       FUN.VALUE = character(1)
     )
 
+    object_calls <- get_object_calls(xml)
     glue_object_calls <- get_objects_in_strings(xml)
-    all_calls_text <- c(function_calls$text, glue_object_calls)
+    all_calls_text <- c(function_calls$text, glue_object_calls, object_calls$text)
 
     lapply(attached_functions$xml, function(fun_import) {
       fun_import_text <- xml2::xml_text(fun_import)
