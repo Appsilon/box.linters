@@ -1,3 +1,7 @@
+# box.linters (development version)
+
+* `package::function()` check is exclusive to `namespace_function_calls()`.
+
 # box.linters 0.10.0
 
 * Add checks for `package::function()` calls. Allow `box::*()` by default.

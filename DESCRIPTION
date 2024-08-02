@@ -1,6 +1,6 @@
 Package: box.linters
 Title: Linters for 'box' Modules
-Version: 0.10.0
+Version: 0.10.0.9002
 Authors@R:
   c(
     person("Ricardo Rodrigo", "Basa", role = c("aut", "cre"), email = "opensource+rodrigo@appsilon.com"),
