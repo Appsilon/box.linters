@@ -54,6 +54,20 @@ obj_a <- obj_b
   expect_setequal(result$text, expected_result)
 })
 
+test_that("get_function_calls does not return package::function() calls", {
+  function_calls <- "
+  fun_a()
+  dplyr::filter()
+  stringr::str_pad()
+"
+
+  xml_function_calls <- code_to_xml_expr(function_calls)
+  result <- get_function_calls(xml_function_calls)
+  expected_result <- c("fun_a")
+
+  expect_setequal(result$text, expected_result)
+})
+
 test_that("get_declared_objects returns correct list of object definitions", {
   # TODO
   expect_true(TRUE)
