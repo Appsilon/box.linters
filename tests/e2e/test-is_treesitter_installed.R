@@ -41,4 +41,3 @@ testthat::test_that("is_treesitter_installed() returns TRUE", {
 
   testthat::expect_true(result)
 })
-
