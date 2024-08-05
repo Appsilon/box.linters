@@ -95,6 +95,9 @@ reference:
     - style_box_use_text
     - style_box_use_file
     - style_box_use_dir
+  - title: Miscellaneous
+    contents:
+    - is_treesitter_installed
 
 footer:
   structure:
