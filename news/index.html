@@ -17,7 +17,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">box.linters</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.0.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.0.9002</small>
 
     <a href="https://rhinoverse.dev" class="external-link home"><i class="fa fa-lg fa-chevron-left"></i></a>
 
@@ -53,7 +53,9 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="boxlinters-development-version">box.linters (development version)<a class="anchor" aria-label="anchor" href="#boxlinters-development-version"></a></h2>
-<ul><li>Move <code>treesitter</code> dependencies to Suggests because of the R &gt;= 4.3.0 requirement. Functions that depend on <code>treesitter</code> now check if it is installed and handle the absence gracefully.</li>
+<ul><li>
+<code>package::function()</code> check is exclusive to <code>namespace_function_calls()</code>.</li>
+<li>Move <code>treesitter</code> dependencies to Suggests because of the R &gt;= 4.3.0 requirement. Functions that depend on <code>treesitter</code> now check if it is installed and handle the absence gracefully.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.10.0" id="boxlinters-0100">box.linters 0.10.0<a class="anchor" aria-label="anchor" href="#boxlinters-0100"></a></h2><p class="text-muted">CRAN release: 2024-07-15</p>
