@@ -56,7 +56,8 @@ get_declared_objects <- function(xml) {
 
 #' Get functions called in current source file
 #'
-#' Will not return package::function() form.
+#' Will not return `package::function()` form. [namespaced_function_calls()] is responsible for
+#' checking `package_function()` use.
 #'
 #' @param xml An XML node list
 #' @return A list of `xml_nodes` and `text`.
