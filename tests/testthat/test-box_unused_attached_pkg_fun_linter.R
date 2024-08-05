@@ -166,3 +166,18 @@ test_that("box_unused_att_pkg_fun_linter blocks unused functions in glue string 
 
   lintr::expect_lint(bad_box_usage, list(message = lint_message_1), linters = linter)
 })
+
+test_that("box_unused_att_pkg_fun_linter allows functions called as objects", {
+  linter <- box_unused_att_pkg_fun_linter()
+
+  good_box_usage <- "box::use(
+  dplyr[storms],
+  purrr[map_chr],
+  stringr[str_to_upper],
+)
+
+  my_names <- map_chr(names(storms), str_to_upper)
+"
+
+  lintr::expect_lint(good_box_usage, NULL, linters = linter)
+})
