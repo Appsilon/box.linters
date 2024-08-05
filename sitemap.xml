@@ -42,6 +42,7 @@
 <url><loc>https://appsilon.github.io/box.linters/reference/get_packages_exports.html</loc></url>
 <url><loc>https://appsilon.github.io/box.linters/reference/get_r6_components.html</loc></url>
 <url><loc>https://appsilon.github.io/box.linters/reference/index.html</loc></url>
+<url><loc>https://appsilon.github.io/box.linters/reference/is_treesitter_installed.html</loc></url>
 <url><loc>https://appsilon.github.io/box.linters/reference/make_r6_components_xpath.html</loc></url>
 <url><loc>https://appsilon.github.io/box.linters/reference/make_r6_internal_calls_xpath.html</loc></url>
 <url><loc>https://appsilon.github.io/box.linters/reference/namespaced_function_calls.html</loc></url>
