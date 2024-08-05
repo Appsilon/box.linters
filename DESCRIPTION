@@ -1,6 +1,6 @@
 Package: box.linters
 Title: Linters for 'box' Modules
-Version: 0.10.0
+Version: 0.10.0.9001
 Authors@R:
   c(
     person("Ricardo Rodrigo", "Basa", role = c("aut", "cre"), email = "opensource+rodrigo@appsilon.com"),
@@ -25,8 +25,6 @@ Imports:
   purrr,
   rlang,
   stringr,
-  treesitter,
-  treesitter.r,
   withr,
   xfun,
   xml2,
@@ -44,7 +42,9 @@ Suggests:
   rhino,
   shiny,
   spelling,
-  testthat (>= 3.0.0)
+  testthat (>= 3.0.0),
+  treesitter,
+  treesitter.r
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Language: en-US

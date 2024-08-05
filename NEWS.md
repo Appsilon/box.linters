@@ -1,3 +1,7 @@
+# box.linters (development version)
+
+* Move `treesitter` dependencies to Suggests because of the R >= 4.3.0 requirement. Functions that depend on `treesitter` now check if it is installed and handle the absence gracefully.
+
 # box.linters 0.10.0
 
 * Add checks for `package::function()` calls. Allow `box::*()` by default.
