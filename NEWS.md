@@ -1,6 +1,6 @@
-# box.linters (development version)
+# box.linters 0.10.1
 
-* `box_unused_att_pkg_fun_linter()` allows functions passed into other functions by name without `().
+* `box_unused_att_pkg_fun_linter()` allows functions passed into other functions by name without `()`.
 * `package::function()` check is exclusive to `namespace_function_calls()`.
 * Move `treesitter` dependencies to Suggests because of the R >= 4.3.0 requirement. Functions that depend on `treesitter` now check if it is installed and handle the absence gracefully.
 
