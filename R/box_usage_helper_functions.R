@@ -56,18 +56,18 @@ get_declared_objects <- function(xml) {
 
 #' Get functions called in current source file
 #'
+#' Will not return `package::function()` form. [namespaced_function_calls()] is responsible for
+#' checking `package_function()` use.
+#'
 #' @param xml An XML node list
 #' @return A list of `xml_nodes` and `text`.
 #' @keywords internal
 get_function_calls <- function(xml) {
   xpath_box_function_calls <- "
   //expr[
-    SYMBOL_FUNCTION_CALL[
-      not(text() = 'use')
-    ] and
-    not(
-      SYMBOL_PACKAGE[text() = 'box']
-    )
+    SYMBOL_FUNCTION_CALL and
+    not(NS_GET) and
+    not(SYMBOL_PACKAGE)
   ] |
   //SPECIAL
   "

@@ -7,6 +7,7 @@ Linter
 Linters
 RStudio
 Rhinoverse
+Treesitter
 XPath
 appsilon
 config
@@ -17,3 +18,4 @@ lintr
 nolint
 preconfigured
 prettycode
+treesitter
