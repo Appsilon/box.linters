@@ -13,6 +13,7 @@ get_function_calls(xml)
 A list of \code{xml_nodes} and \code{text}.
 }
 \description{
-Get functions called in current source file
+Will not return \verb{package::function()} form. \code{\link[=namespaced_function_calls]{namespaced_function_calls()}} is responsible for
+checking \code{package_function()} use.
 }
 \keyword{internal}
