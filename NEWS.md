@@ -1,4 +1,4 @@
-# box.linters (developement version)
+# box.linters (development version)
 
 * Implemented linter tags file compatible with `lintr::available_linters()` and
 `lintr::available_tags()` functions.
