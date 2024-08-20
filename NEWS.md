@@ -1,3 +1,8 @@
+# box.linters (development version)
+
+* Implemented linter tags file compatible with `lintr::available_linters()` and
+`lintr::available_tags()` functions.
+
 # box.linters 0.10.1
 
 * `box_unused_att_pkg_fun_linter()` allows functions passed into other functions by name without `()`.
