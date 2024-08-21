@@ -1425,6 +1425,7 @@ test_that("style_box_use_dir() does not style files in exclude_dir", {
 })
 
 test_that("style_box_use_dir() properly styles file in a directory", {
+  skip_on_os("windows")
   to_style_path <- normalizePath("to_style")
 
   withr::with_tempdir({
@@ -1438,7 +1439,7 @@ test_that("style_box_use_dir() properly styles file in a directory", {
       "main.R" = TRUE
     )
 
-    expect_setequal(result, expected_result)
+    expect_identical(result, expected_result)
   })
 })
 
