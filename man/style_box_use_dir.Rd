@@ -7,7 +7,7 @@
 style_box_use_dir(
   path = ".",
   recursive = TRUE,
-  exclude_files = NULL,
+  exclude_files = c(),
   exclude_dirs = c("packrat", "renv"),
   indent_spaces = 2,
   trailing_commas_func = FALSE
@@ -18,7 +18,8 @@ style_box_use_dir(
 
 \item{recursive}{A logical value indicating whether or not files in sub-directories}
 
-\item{exclude_files}{\emph{Not yet implemented}}
+\item{exclude_files}{A character vector of regular expressions to exclude files (not paths)
+from styling.}
 
 \item{exclude_dirs}{A character vector of directories to exclude.}
 
@@ -36,6 +37,9 @@ Refer to \code{\link[=style_box_use_text]{style_box_use_text()}} for styling det
 \examples{
 \dontrun{
 style_box_use_dir("path/to/dir")
+
+# to exclude `__init__.R` files from styling
+style_box_use_dir("path/to/dir", exclude_files = c("__init__\\\\.R"))
 }
 
 }

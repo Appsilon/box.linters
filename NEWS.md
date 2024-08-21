@@ -1,3 +1,7 @@
+# box.linters (development version)
+
+* Implement `exclude_files` in `style_box_use_dir()` to exclude files from styling.
+
 # box.linters 0.10.2
 
 * Implemented linter tags file compatible with `lintr::available_linters()` and

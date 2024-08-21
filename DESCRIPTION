@@ -1,6 +1,6 @@
 Package: box.linters
 Title: Linters for 'box' Modules
-Version: 0.10.2
+Version: 0.10.2.9001
 Authors@R:
   c(
     person("Ricardo Rodrigo", "Basa", role = c("aut", "cre"), email = "opensource+rodrigo@appsilon.com"),
@@ -15,7 +15,7 @@ URL: https://appsilon.github.io/box.linters/, https://github.com/Appsilon/box.li
 License: LGPL-3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Depends:
   R (>= 2.10)
 Imports:
