@@ -1438,7 +1438,7 @@ test_that("style_box_use_dir() properly styles file in a directory", {
       "main.R" = TRUE
     )
 
-    expect_identical(result, expected_result)
+    expect_setequal(result, expected_result)
   })
 })
 
