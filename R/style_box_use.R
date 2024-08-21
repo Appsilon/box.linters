@@ -2,7 +2,8 @@
 #'
 #' @param path Path to a directory with files to style.
 #' @param recursive A logical value indicating whether or not files in sub-directories
-#' @param exclude_files *Not yet implemented*
+#' @param exclude_files A character vector of regular expressions to exclude files (not paths)
+#' from styling.
 #' @param exclude_dirs A character vector of directories to exclude.
 #' @param indent_spaces An integer scalar indicating tab width in units of spaces
 #' @param trailing_commas_func A boolean to activate adding a trailing comma to the end of the lists
@@ -14,13 +15,16 @@
 #' @examples
 #' \dontrun{
 #' style_box_use_dir("path/to/dir")
+#'
+#' # to exclude `__init__.R` files from styling
+#' style_box_use_dir("path/to/dir", exclude_files = c("__init__\\.R"))
 #' }
 #'
 #' @export
 style_box_use_dir <- function(
   path = ".",
   recursive = TRUE,
-  exclude_files = NULL,
+  exclude_files = c(),
   exclude_dirs = c("packrat", "renv"),
   indent_spaces = 2,
   trailing_commas_func = FALSE
@@ -63,6 +67,12 @@ style_box_use_files <- function(
   regex_excluded_dirs <- paste(exclude_dirs, collapse = "|")
   files <- fs::dir_ls(".", regexp = "\\.[rR]$", recurse = recursive, all = FALSE)
   files <- files[stringr::str_starts(files, regex_excluded_dirs, negate = TRUE)]
+
+  if (!is.null(exclude_files)) {
+    regex_excluded_files <- paste(exclude_files, collapse = "|")
+    files <- files[stringr::str_ends(files, regex_excluded_files, negate = TRUE)]
+  }
+
   purrr::map(files, transform_file, indent_spaces, trailing_commas_func)
 }
 

@@ -1425,6 +1425,7 @@ test_that("style_box_use_dir() does not style files in exclude_dir", {
 })
 
 test_that("style_box_use_dir() properly styles file in a directory", {
+  skip_on_os("windows")
   to_style_path <- normalizePath("to_style")
 
   withr::with_tempdir({
@@ -1433,6 +1434,7 @@ test_that("style_box_use_dir() properly styles file in a directory", {
     result <- suppressWarnings(style_box_use_dir("to_style"))
 
     expected_result <- list(
+      "app/__init__.R" = TRUE,
       "app/app_1.R" = TRUE,
       "main.R" = TRUE
     )
@@ -1449,5 +1451,21 @@ test_that("style_box_use_dir() properly styles file in a directory", {
     fs::dir_copy(to_style_path, "to_style")
 
     expect_warning(style_box_use_dir("to_style"), expected_warning)
+  })
+})
+
+test_that("style_box_use_dir() does not style files in exclude_files", {
+  to_style_path <- normalizePath("to_style")
+  exclude_files <- c("__init__\\.R")
+
+  withr::with_tempdir({
+    fs::dir_copy(to_style_path, "to_style")
+
+    suppressWarnings(style_box_use_dir("to_style", exclude_files = exclude_files))
+
+    result_app_1_no_style <- xfun::read_utf8("to_style/app/__init__.R")
+    expected_app_1_no_style <- xfun::read_utf8(fs::path(to_style_path, "app", "__init__.R"))
+
+    expect_identical(result_app_1_no_style, expected_app_1_no_style)
   })
 })
