@@ -1,4 +1,4 @@
-# box.linters (development version)
+# box.linters 0.10.3
 
 * Implement `exclude_files` in `style_box_use_dir()` to exclude files from styling.
 
