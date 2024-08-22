@@ -1,3 +1,7 @@
+# box.linters (developlment version)
+
+* Fix critical bug of style_box_use_*() converting all lines to NA if there is no `box::use()` call found.
+
 # box.linters 0.10.3
 
 * Implement `exclude_files` in `style_box_use_dir()` to exclude files from styling.

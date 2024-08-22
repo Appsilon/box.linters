@@ -1271,19 +1271,19 @@ some_function <- function() {
   expect_output(suppressWarnings(style_box_use_text(code)), expected_output)
 })
 
-test_that("style_box_use_text() does not throw warnings when there is no modification made", {
+test_that("style_box_use_text() does not modify when there is no box::use()", {
   code <- "
 some_function <- function() {
   1 + 1
 }
 "
 
-  expected_output <- NA
-  expect_output(style_box_use_text(code), expected_output)
+  expect_identical(style_box_use_text(code), code)
 
   expected_message <- rex::rex("No changes were made to the text.")
   expect_message(style_box_use_text(code), expected_message)
 })
+
 ##### transform_box_use_text #####
 
 test_that("transform_box_use_text() returns correct format as list", {
@@ -1381,6 +1381,22 @@ test_that("style_box_use_file() returns a message if a file is not modified", {
     xfun::write_utf8(to_style, "app_1.R")
 
     expect_message(style_box_use_file("app_1.R"), expected_message)
+    expect_identical(xfun::read_utf8("app_1.R"), to_style)
+  })
+})
+
+test_that("style_box_use_file() returns a message if a file has no box::use()", {
+  to_style <- "
+some_function <- function() {
+  1 + 1
+}
+"
+  expected_message <- rex::rex("Nothing to modify in `app.R`.")
+  withr::with_tempdir({
+    xfun::write_utf8(to_style, "app.R")
+
+    expect_message(style_box_use_file("app.R"), expected_message)
+    expect_identical(xfun::read_utf8("app.R"), stringr::str_split_1(to_style, "\n"))
   })
 })
 
@@ -1433,8 +1449,9 @@ test_that("style_box_use_dir() properly styles file in a directory", {
 
     result <- suppressWarnings(style_box_use_dir("to_style"))
 
+    # Should not touch __init__.R because it does not contain any `box::use()` call
     expected_result <- list(
-      "app/__init__.R" = TRUE,
+      "app/__init__.R" = FALSE,
       "app/app_1.R" = TRUE,
       "main.R" = TRUE
     )
