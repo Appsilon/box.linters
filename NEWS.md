@@ -1,4 +1,4 @@
-# box.linters (developlment version)
+# box.linters (development version)
 
 * Fix critical bug of style_box_use_*() converting all lines to NA if there is no `box::use()` call found.
 
