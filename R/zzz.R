@@ -1,5 +1,5 @@
 r_version_compatibility <- function() {
-  if (getRversion() >= 4.3) {
+  if (as.numeric(R.Version()$major) >= 4 & as.numeric(R.Version()$minor) >= 3.0) {
     namespaced_function_calls()
   } else {
     NULL
