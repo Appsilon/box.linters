@@ -45,7 +45,12 @@ namespaced_function_calls <- function(allow = NULL) {
         "namespaced_function_calls(). They require R version >= 4.3.0."
       )
     )
-    return()
+
+    return(
+      lintr::Linter(function(source_expression) {
+        return(list())
+      })
+    )
   }
 
   always_allow <- c("box")

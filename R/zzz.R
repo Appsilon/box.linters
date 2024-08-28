@@ -1,3 +1,12 @@
+r_version_compatibility <- function() {
+  if (as.numeric(R.Version()$major) >= 4 && as.numeric(R.Version()$minor) >= 3.0) {
+    namespaced_function_calls()
+  } else {
+    NULL
+  }
+}
+
+
 # nolint start: line_length_linter
 #' Rhino default linters
 #'
@@ -25,7 +34,7 @@ rhino_default_linters <- lintr::modify_defaults(
   box_unused_att_pkg_linter = box_unused_attached_pkg_linter(),
   box_unused_attached_pkg_fun_linter = box_unused_att_pkg_fun_linter(),
   box_usage_linter = box_usage_linter(),
-  namespaced_function_calls = namespaced_function_calls(),
+  namespaced_function_calls = r_version_compatibility(),
   r6_usage_linter = r6_usage_linter(),
   unused_declared_object_linter = unused_declared_object_linter(),
   object_usage_linter = NULL  # Does not work with `box::use()`
@@ -50,7 +59,7 @@ box_default_linters <- lintr::modify_defaults(
   box_unused_att_pkg_linter = box_unused_attached_pkg_linter(),
   box_unused_attached_pkg_fun_linter = box_unused_att_pkg_fun_linter(),
   box_usage_linter = box_usage_linter(),
-  namespaced_function_calls = namespaced_function_calls(),
+  namespaced_function_calls = r_version_compatibility(),
   r6_usage_linter = r6_usage_linter(),
   unused_declared_object_linter = unused_declared_object_linter(),
   object_usage_linter = NULL  # Does not work with `box::use()`

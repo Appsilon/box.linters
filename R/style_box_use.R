@@ -111,6 +111,9 @@ transform_file <- function(filename, indent_spaces, trailing_commas_func) {
   source_file_lines <- xfun::read_utf8(normal_filename)
 
   box_lines <- find_box_lines(paste(source_file_lines, collapse = "\n"))
+  if (length(box_lines$all) == 0) {
+    return(FALSE)
+  }
   retain_lines <- find_source_lines_to_retain(source_file_lines, box_lines)
 
   transformed_box_use <- transform_box_use_text(
@@ -180,6 +183,10 @@ style_box_use_text <- function(
   source_text_lines <- stringr::str_split_1(text, "\n")
 
   box_lines <- find_box_lines(text)
+  if (length(box_lines$all) == 0) {
+    cli::cli_alert_info("No `box::use()` calls found. No changes were made to the text.")
+    return(invisible(text))
+  }
   retain_lines <- find_source_lines_to_retain(source_text_lines, box_lines)
 
   transformed_text <- transform_box_use_text(text, indent_spaces, trailing_commas_func)
