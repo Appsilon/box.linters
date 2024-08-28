@@ -1,3 +1,13 @@
+# box.linters 0.10.4
+
+## Authors comment
+
+This release contains fixes for two critical bugs that affect all users of the package.
+
+The first bugfix is for a destructive bug of our styling function. If it encounters an R script file without any `box::use()` calls, it replaces all lines with `NA`.
+
+The second is a fix for a bug that only exists on MacOS and R versions >= 4.3.0. Installing `box.linters` from CRAN behaves differently from doing a `devtools::install_local()`. We check for package dependencies (`treesitter` and `treesitter.r`). We then disable the `namespaced_function_calls()` linter if these dependencies are not available. This method to disable the linter fails when installing from CRAN on MacOS and R >= 4.3.0. It, however, works fine when installing from local.
+
 # box.linters 0.10.3
 
 ## Authors comment
