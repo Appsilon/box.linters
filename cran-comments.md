@@ -2,7 +2,7 @@
 
 ## Authors comment
 
-This release contains fixes for two critical bugs that affect all users of the package.
+This release contains fixes for two critical bugs that affect all users of the package. In light of this, we humbly appeal to the reviewer to consider this release. We understand that the last submission was very recent, and we apologize for submitting a publish request soon after the last.
 
 The first bugfix is for a destructive bug of our styling function. If it encounters an R script file without any `box::use()` calls, it replaces all lines with `NA`.
 
