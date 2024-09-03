@@ -1,4 +1,4 @@
-# box.linters (development version)
+# box.linters 0.10.4
 
 * Fix critical bug of style_box_use_*() converting all lines to NA if there is no `box::use()` call found.
 * R version (>= 4.3.0) compatibility fix for MacOS.
