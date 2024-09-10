@@ -528,7 +528,7 @@ box::use(
   ts_tree <- ts_root(code)
   result <- ts_get_start_end_rows(ts_tree)
 
-  expected_result <- list("start" = 1, "end" = 4)
+  expected_result <- list("start" = 0, "end" = 4)
   expect_identical(result, expected_result)
 
   code <- "
@@ -541,7 +541,7 @@ box::use(
   ts_tree <- ts_root(code)
   result <- ts_get_start_end_rows(ts_tree)
 
-  expected_result <- list("start" = 1, "end" = 5)
+  expected_result <- list("start" = 0, "end" = 5)
   expect_identical(result, expected_result)
 })
 

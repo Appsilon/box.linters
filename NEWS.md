@@ -1,3 +1,7 @@
+# box.linters (development version)
+
+* Fix for `treesitter.r` update to version 1.1.0. Change in how treesitter returns the start row of the program node. (#143)
+
 # box.linters 0.10.4
 
 * Fix critical bug of style_box_use_*() converting all lines to NA if there is no `box::use()` call found.
