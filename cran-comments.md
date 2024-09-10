@@ -1,3 +1,9 @@
+# box.linters 0.10.5
+
+## Authors comment
+
+This release contains fixes in unit tests affected by the recent 1.1.0 update of `treesitter.r`.
+
 # box.linters 0.10.4
 
 ## Authors comment
