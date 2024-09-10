@@ -2,7 +2,7 @@
 
 ## Authors comment
 
-This release contains fixes in unit tests affected by the recent 1.1.0 update of `treesitter.r`.
+This release contains fixes in unit tests affected by the recent 1.1.0 update of `treesitter.r`. This also address CRAN Package Check errors.
 
 # box.linters 0.10.4
 
