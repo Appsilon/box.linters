@@ -68,20 +68,20 @@ test_that("box_repeated_calls_linter() points to repeated imports", {
   }
 
   lintr::expect_lint(bad_box_calls_1, list(
-    list(message = lint_message('dplyr'), line_number = 4)
+    list(message = lint_message("dplyr"), line_number = 4)
   ), linter)
 
   lintr::expect_lint(bad_box_calls_2, list(
-    list(message = lint_message('path/to/fileA'), line_number = 4)
+    list(message = lint_message("path/to/fileA"), line_number = 4)
   ), linter)
 
   lintr::expect_lint(bad_box_calls_3, list(
-    list(message = lint_message('tibble'), line_number = 8)
-    ,list(message = lint_message('local/mod'), line_number = 9)
+    list(message = lint_message("tibble"), line_number = 8),
+    list(message = lint_message("local/mod"), line_number = 9)
   ), linter)
 
   lintr::expect_lint(bad_box_calls_4, list(
-    list(message = lint_message('shiny'), line_number = 5)
+    list(message = lint_message("shiny"), line_number = 5)
   ), linter)
 
 })
