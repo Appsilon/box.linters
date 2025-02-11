@@ -1,5 +1,5 @@
 linters:
   linters_with_defaults(
-    line_length_linter = line_length_linter(100),
-    object_usage_linter = NULL
+    defaults = box.linters::box_default_linters
   )
+encoding: "UTF-8"
