@@ -26,6 +26,7 @@ rhino_default_linters <- lintr::modify_defaults(
   box_func_import_count_linter = box_func_import_count_linter(),
   box_mod_fun_exists_linter = box_mod_fun_exists_linter(),
   box_pkg_fun_exists_linter = box_pkg_fun_exists_linter(),
+  box_repeated_calls_linter = box_repeated_calls_linter(),
   box_separate_calls_linter = box_separate_calls_linter(),
   box_trailing_commas_linter = box_trailing_commas_linter(),
   box_universal_import_linter = box_universal_import_linter(),

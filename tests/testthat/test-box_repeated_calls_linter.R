@@ -31,7 +31,7 @@ test_that("box_repeated_calls_linter() skips non-repeated imports", {
   lintr::expect_lint(good_box_calls_4, NULL, linter)
 })
 
-test_that("box_alphabetical_calls_linter() blocks unsorted imports in box::use() call", {
+test_that("box_repeated_calls_linter() points to repeated imports", {
   linter <- box_repeated_calls_linter()
 
   bad_box_calls_1 <- "box::use(
@@ -54,29 +54,17 @@ test_that("box_alphabetical_calls_linter() blocks unsorted imports in box::use()
     dplyr = dplyr[filter, select],
     stats[st_filter = filter, ...],
     tibble[x, ...],
-    local/mod
+    local/mod[f1, f2, f3]
 )"
 
+  bad_box_calls_4 <- "box::use(shiny)
 
-  # bad_box_calls_6 <- "box::use(
-  #   shiny,
-  #   purrr
-  # )
-  #
-  # box::use(
-  #   shiny,
-  #   dplyr
-  # )"
+  box::use(my/dir)
 
-
-  lintr::lint(
-    text = bad_box_calls_3,
-    linters = box_repeated_calls_linter()
-  )
-
+  box::use(shiny)"
 
   lint_message <- function(package) {
-    rex::rex(paste0("Package '", package, "' is imported more than once."))
+    rex::rex(paste0("Module or package '", package, "' is imported more than once."))
   }
 
   lintr::expect_lint(bad_box_calls_1, list(
@@ -91,4 +79,9 @@ test_that("box_alphabetical_calls_linter() blocks unsorted imports in box::use()
     list(message = lint_message('tibble'), line_number = 8)
     ,list(message = lint_message('local/mod'), line_number = 9)
   ), linter)
+
+  lintr::expect_lint(bad_box_calls_4, list(
+    list(message = lint_message('shiny'), line_number = 5)
+  ), linter)
+
 })
