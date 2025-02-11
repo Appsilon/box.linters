@@ -81,52 +81,8 @@ box_repeated_calls_linter <- function() {
     # Find all box::use() calls using XPath
     box_use_calls <- xml2::xml_find_all(xml, xpath_base)
 
-    # List to store all found imports
-    all_imports <- list()
-
-    # Process each box::use() call
-    for (call_node in box_use_calls) {
-      # Get all arguments (import specifications)
-      args <- xml2::xml_find_all(call_node, "./expr[position() > 1]")
-
-      # Process each argument
-      for (arg in args) {
-        # Handle alias assignments (like tbl = tibble)
-        eq_assign <- xml2::xml_find_first(arg, ".//EQ_ASSIGN")
-        if (length(eq_assign) > 0) {
-          # Get right-hand side of assignment
-          rhs_expr <- xml2::xml_find_first(arg, ".//EQ_ASSIGN/following-sibling::expr[1]")
-          if (is.null(rhs_expr)) next
-          target_nodes <- xml2::xml_find_all(rhs_expr, ".//node()")
-        } else {
-          target_nodes <- xml2::xml_find_all(arg, ".//node()")
-        }
-
-        import_parts <- character(0)
-        found_bracket <- FALSE
-
-        # Extract components before [ bracket
-        for (node in target_nodes) {
-          node_name <- xml2::xml_name(node)
-          if (node_name %in% c("SYMBOL", "OP-SLASH")) {
-            # Collect symbols and slashes for path/package
-            import_parts <- c(import_parts, xml2::xml_text(node))
-          } else if (node_name == "OP-LEFT-BRACKET") {
-            # Stop at first [ to ignore attachments
-            found_bracket <- TRUE
-            break
-          }
-        }
-
-        if (length(import_parts) == 0) next
-
-        # Combine parts to form full import specifier
-        import_text <- paste(import_parts, collapse = "")
-
-        # Store the import text and XML node
-        all_imports <- append(all_imports, list(list(text = import_text, node = arg)))
-      }
-    }
+    # Get all imports
+    all_imports <- find_all_imports(box_use_calls)
 
     # Detect duplicates across all imports
     texts <- sapply(all_imports, `[[`, "text")
@@ -144,4 +100,65 @@ box_repeated_calls_linter <- function() {
 
     return(lints)
   })
+}
+
+#' Find all imports from an expression
+#' @param box_use_calls A xml coming from `xml2::xml_find_all(xml, xpath_base)`
+find_all_imports <- function(box_use_calls) {
+  # List to store all found imports
+  all_imports <- list()
+
+  # Process each box::use() call
+  for (call_node in box_use_calls) {
+    # Get all arguments (import specifications)
+    args <- xml2::xml_find_all(call_node, "./expr[position() > 1]")
+
+    # Process each argument
+    for (arg in args) {
+      # Handle alias assignments (like tbl = tibble)
+      eq_assign <- xml2::xml_find_first(arg, ".//EQ_ASSIGN")
+      if (length(eq_assign) > 0) {
+        # Get right-hand side of assignment
+        rhs_expr <- xml2::xml_find_first(arg, ".//EQ_ASSIGN/following-sibling::expr[1]")
+        if (is.null(rhs_expr)) next
+        target_nodes <- xml2::xml_find_all(rhs_expr, ".//node()")
+      } else {
+        target_nodes <- xml2::xml_find_all(arg, ".//node()")
+      }
+
+      #' Extract components before [ bracket
+      import_parts <- extract_import_parts(target_nodes)
+
+      if (length(import_parts) == 0) next
+
+      # Combine parts to form full import specifier
+      import_text <- paste(import_parts, collapse = "")
+
+      # Store the import text and XML node
+      all_imports <- append(all_imports, list(list(text = import_text, node = arg)))
+    }
+  }
+
+  all_imports
+}
+
+#' Extract components before [ bracket
+#' @param target_nodes An expression of target_nodes
+extract_import_parts <- function(target_nodes) {
+  import_parts <- character(0)
+  found_bracket <- FALSE
+
+  for (node in target_nodes) {
+    node_name <- xml2::xml_name(node)
+    if (node_name %in% c("SYMBOL", "OP-SLASH")) {
+      # Collect symbols and slashes for path/package
+      import_parts <- c(import_parts, xml2::xml_text(node))
+    } else if (node_name == "OP-LEFT-BRACKET") {
+      # Stop at first [ to ignore attachments
+      found_bracket <- TRUE
+      break
+    }
+  }
+
+  import_parts
 }
