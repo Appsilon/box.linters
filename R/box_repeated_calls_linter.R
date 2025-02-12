@@ -80,9 +80,6 @@ box_repeated_calls_linter <- function() {
     # Find all box::use() calls using XPath
     all_imports <- find_all_imports(xml)
 
-    # Get all imports
-    # all_imports <- find_all_imports(box_use_calls)
-
     # Detect duplicates across all imports
     texts <- sapply(all_imports, `[[`, "text")
     dupes <- duplicated(texts)
