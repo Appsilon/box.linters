@@ -1,3 +1,59 @@
+code_to_xml_expr <- function(text_code) {
+  xml2::read_xml(
+    xmlparsedata::xml_parse_data(
+      parse(text = text_code, keep.source = TRUE)
+    )
+  )
+}
+
+xml_to_vector = function(code) {
+  xml <- code_to_xml_expr(code)
+  output = find_all_imports(xml)
+  imports = lapply(output, \(x) x$text) |> unlist()
+  imports
+}
+
+test_that("find_all_imports really finds all imports", {
+
+code <- "box::use(dplyr, purrr, shiny)"
+expected_result <- c("dplyr", "purrr", "shiny")
+expect_equal(xml_to_vector(code), expected_result)
+
+code <- "
+box::use(
+  dplyr,
+  purrr,
+  )
+
+box::use(
+  path/to/A[f1, f2],
+  path/to/B,
+  )
+
+box::use(
+  dplyr[...],
+  )
+"
+expected_result <- c("dplyr", "purrr", "path/to/A", "path/to/B", "dplyr")
+expect_equal(xml_to_vector(code), expected_result)
+
+code <- "
+box::use(
+  a = dplyr[...],
+  b = purrr[map],
+
+  c = shiny
+  )
+"
+expected_result <- c("dplyr", "purrr", "shiny")
+expect_equal(xml_to_vector(code), expected_result)
+
+
+code <- "box::use()"
+expected_result <- ""
+expect_null(xml_to_vector(code))
+})
+
 test_that("box_repeated_calls_linter() skips non-repeated imports", {
   linter <- box_repeated_calls_linter()
 

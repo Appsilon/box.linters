@@ -65,7 +65,6 @@
 # nolint end
 box_repeated_calls_linter <- function() {
 
-  xpath_base <- "//expr[expr[SYMBOL_PACKAGE/text()='box' and SYMBOL_FUNCTION_CALL/text()='use']]"
 
   # Main linter function structure
   lintr::Linter(function(source_expression) {
@@ -79,10 +78,10 @@ box_repeated_calls_linter <- function() {
     xml <- source_expression$full_xml_parsed_content
 
     # Find all box::use() calls using XPath
-    box_use_calls <- xml2::xml_find_all(xml, xpath_base)
+    all_imports <- find_all_imports(xml)
 
     # Get all imports
-    all_imports <- find_all_imports(box_use_calls)
+    # all_imports <- find_all_imports(box_use_calls)
 
     # Detect duplicates across all imports
     texts <- sapply(all_imports, `[[`, "text")
@@ -103,8 +102,13 @@ box_repeated_calls_linter <- function() {
 }
 
 #' Find all imports from an expression
-#' @param box_use_calls A xml coming from `xml2::xml_find_all(xml, xpath_base)`
-find_all_imports <- function(box_use_calls) {
+#' @param xml A xml coming usually from `source_expression$full_xml_parsed_content`
+find_all_imports <- function(xml) {
+  xpath_base <- "//expr[expr[SYMBOL_PACKAGE/text()='box' and SYMBOL_FUNCTION_CALL/text()='use']]"
+
+  # Find all box::use() calls using XPath
+  box_use_calls <- xml2::xml_find_all(xml, xpath_base)
+
   # List to store all found imports
   all_imports <- list()
 
@@ -116,20 +120,10 @@ find_all_imports <- function(box_use_calls) {
     # Process each argument
     for (arg in args) {
       # Handle alias assignments (like tbl = tibble)
-      eq_assign <- xml2::xml_find_first(arg, ".//EQ_ASSIGN")
-      if (length(eq_assign) > 0) {
-        # Get right-hand side of assignment
-        rhs_expr <- xml2::xml_find_first(arg, ".//EQ_ASSIGN/following-sibling::expr[1]")
-        if (is.null(rhs_expr)) next
-        target_nodes <- xml2::xml_find_all(rhs_expr, ".//node()")
-      } else {
-        target_nodes <- xml2::xml_find_all(arg, ".//node()")
-      }
+      target_nodes <- xml2::xml_find_all(arg, ".//node()")
 
       #' Extract components before [ bracket
       import_parts <- extract_import_parts(target_nodes)
-
-      if (length(import_parts) == 0) next
 
       # Combine parts to form full import specifier
       import_text <- paste(import_parts, collapse = "")

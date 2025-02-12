@@ -4,10 +4,10 @@
 \alias{find_all_imports}
 \title{Find all imports from an expression}
 \usage{
-find_all_imports(box_use_calls)
+find_all_imports(xml)
 }
 \arguments{
-\item{box_use_calls}{A xml coming from \code{xml2::xml_find_all(xml, xpath_base)}
+\item{xml}{A xml coming usually from \code{source_expression$full_xml_parsed_content}
 Extract components before [ bracket}
 }
 \description{
