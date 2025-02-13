@@ -42,7 +42,7 @@ box::use(
   a = dplyr[...],
   b = purrr[map],
 
-  c = shiny
+  c = shiny[d = runApp]
   )
 "
   expected_result <- c("dplyr", "purrr", "shiny")
@@ -97,9 +97,9 @@ test_that("box_repeated_calls_linter() points to repeated imports", {
   )"
 
   bad_box_calls_2 <- "box::use(
-    path/to/fileA,
+    path/to/fileA[a = f1],
     path/to/fileB[...],
-    path/to/fileA[a, b, c],
+    path/to/fileA[b = f2, c = f3],
   )"
 
   bad_box_calls_3 <- "box::use(

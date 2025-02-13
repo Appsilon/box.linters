@@ -94,7 +94,7 @@ box_repeated_calls_linter <- function() {
       )
     })
 
-    return(lints)
+    lints
   })
 }
 
