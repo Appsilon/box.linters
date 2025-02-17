@@ -35,15 +35,10 @@ get_objects_in_strings <- function(xml) {
         objects_called <- get_object_calls(xml_parsed_code)
         functions_calls <- get_function_calls(xml_parsed_code)
 
-        return(
-          c(
-            objects_called$text,
-            functions_calls$text
-          )
-        )
+        c(objects_called$text, functions_calls$text)
       })
     )
   }, error = function(e) {
-    return(NULL)
+    NULL
   })
 }

@@ -499,7 +499,7 @@ find_source_lines_to_retain <- function(source_file_lines, box_lines) {
   non_box_lines <- source_lines[!source_lines %in% box_lines$all]
   end_of_box_calls <- ifelse(
     !rlang::is_empty(empty_source_lines) &&
-    empty_source_lines[empty_source_lines > box_lines$max][1] == box_lines$max + 1,
+      empty_source_lines[empty_source_lines > box_lines$max][1] == box_lines$max + 1,
     box_lines$max + 1,
     box_lines$max
   )
