@@ -1405,10 +1405,9 @@ test_that("style_box_use_file() works with no empty lines", {
   cli,
 )
 1+1
-
 sin(1)"
 
-  expected_styled <- c("box::use(", "  cli,", ")", "", "1+1", "", "sin(1)")
+  expected_styled <- c("box::use(", "  cli,", ")", "", "1+1", "sin(1)")
   withr::with_tempdir({
     xfun::write_utf8(to_style, "app_1.R")
 
