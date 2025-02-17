@@ -150,12 +150,12 @@ box::use(
   shiny,
 )"
 
-  matches <- ts_find_all(ts_root(code), query)
-  pkgs <- get_nodes_text_by_type(matches, "pkg_name")
+matches <- ts_find_all(ts_root(code), query)
+pkgs <- get_nodes_text_by_type(matches, "pkg_name")
 
-  expected_result <- c("tidyr", "stringr", "shiny")
+expected_result <- c("tidyr", "stringr", "shiny")
 
-  expect_identical(pkgs, expected_result)
+expect_identical(pkgs, expected_result)
 })
 
 ##### sort_mod_pkg_calls #####
@@ -1134,7 +1134,7 @@ some_function <- function() {
 }
 ")
 
-  expect_output(suppressWarnings(style_box_use_text(code)), expected_output)
+expect_output(suppressWarnings(style_box_use_text(code)), expected_output)
 })
 
 test_that("style_box_use_text() returns retains non-box::use() lines between box::use() calls", {
@@ -1197,7 +1197,7 @@ some_function <- function() {
 }
 ")
 
-  expect_output(suppressWarnings(style_box_use_text(code)), expected_output)
+expect_output(suppressWarnings(style_box_use_text(code)), expected_output)
 })
 
 test_that("style_box_use_text() with only box::use(pkgs) returns correct format to console", {
@@ -1232,7 +1232,7 @@ some_function <- function() {
 }
 ")
 
-  expect_output(suppressWarnings(style_box_use_text(code)), expected_output)
+expect_output(suppressWarnings(style_box_use_text(code)), expected_output)
 })
 
 test_that("style_box_use_text() with only box::use(mods) returns correct format to console", {
@@ -1268,7 +1268,7 @@ some_function <- function() {
 }
 ")
 
-  expect_output(suppressWarnings(style_box_use_text(code)), expected_output)
+expect_output(suppressWarnings(style_box_use_text(code)), expected_output)
 })
 
 test_that("style_box_use_text() does not modify when there is no box::use()", {
@@ -1309,10 +1309,10 @@ box::use(
 )
 "
 
-  result <- transform_box_use_text(code)
+result <- transform_box_use_text(code)
 
-  expected_output <- list(
-    "pkgs" = "box::use(
+expected_output <- list(
+  "pkgs" = "box::use(
   dplyr,
   purrr[
     map,
@@ -1322,16 +1322,16 @@ box::use(
   stringr[...], # nolint
   tidyr[zun_alias = long, wide],
 )",
-    "mods" = "box::use(
+  "mods" = "box::use(
   path/to/module_a,
   path/to/module_b[fun_alias = func_a, func_b],
   path/to/module_c[...], # nolint
   alias = path/to/module_d,
   path/to/module_f,
 )"
-  )
+)
 
-  expect_identical(result, expected_output)
+expect_identical(result, expected_output)
 })
 
 ##### style_box_use_file #####
@@ -1398,6 +1398,47 @@ some_function <- function() {
     expect_message(style_box_use_file("app.R"), expected_message)
     expect_identical(xfun::read_utf8("app.R"), stringr::str_split_1(to_style, "\n"))
   })
+})
+
+test_that("style_box_use_file() works with no empty lines", {
+  to_style <- "box::use(
+  cli,
+)
+1+1
+
+sin(1)"
+
+  expected_styled <- c("box::use(", "  cli,", ")", "", "1+1", "", "sin(1)")
+  withr::with_tempdir({
+    xfun::write_utf8(to_style, "app_1.R")
+
+    suppressWarnings(style_box_use_file("app_1.R"))
+
+    result_styled <- xfun::read_utf8("app_1.R")
+
+    expect_identical(result_styled, expected_styled)
+  })
+
+
+
+  to_style <- "box::use(
+  cli,
+)
+
+1+1
+sin(1)"
+
+  expected_styled <- c("box::use(", "  cli,", ")", "", "1+1", "sin(1)")
+  withr::with_tempdir({
+    xfun::write_utf8(to_style, "app_1.R")
+
+    suppressWarnings(style_box_use_file("app_1.R"))
+
+    result_styled <- xfun::read_utf8("app_1.R")
+
+    expect_identical(result_styled, expected_styled)
+  })
+
 })
 
 ##### style_box_use_dir #####
