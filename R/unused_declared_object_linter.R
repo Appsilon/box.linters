@@ -55,13 +55,14 @@ unused_declared_object_linter <- function() {
     xml <- source_expression$full_xml_parsed_content
 
     fun_assignments <- get_declared_objects(xml)
+    deconstructor_assignments <- get_deconstructor_objects(xml)
     exported_objects <- get_exported_objects(xml)
     function_calls <- get_function_calls(xml)
     object_calls <- get_object_calls(xml)
     glue_object_calls <- get_objects_in_strings(xml)
     local_calls_text <- c(function_calls$text, object_calls$text, glue_object_calls)
 
-    lapply(fun_assignments$xml_nodes, function(fun_assign) {
+    lapply(c(fun_assignments$xml_nodes, deconstructor_assignments$xml_nodes), function(fun_assign) {
       fun_assign_text <- xml2::xml_text(fun_assign)
       fun_assign_text <- gsub("[`'\"]", "", fun_assign_text)
 

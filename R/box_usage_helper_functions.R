@@ -86,7 +86,9 @@ get_function_calls <- function(xml) {
   )
 }
 
-#' Get objects called in current source file
+#' Get objects called in current source file.
+#'
+#' This ignores objects to the left of `<-`, `=`, `%<-%` as these are assignments.
 #'
 #' @param xml An XML node list
 #' @return a list of `xml_nodes` and `text`.
@@ -112,7 +114,10 @@ get_object_calls <- function(xml) {
     ./SYMBOL and
     not(
       following-sibling::LEFT_ASSIGN or
-      following-sibling::EQ_ASSIGN
+      following-sibling::EQ_ASSIGN or
+      parent::expr[
+        following-sibling::SPECIAL[text() = '%<-%']
+      ]
     )
   ]
   "
