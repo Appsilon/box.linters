@@ -142,3 +142,24 @@ internal_r6_refs <- function(func_list) {
   r6_refs <- "self|private\\$.+"
   grepl(r6_refs, func_list)
 }
+
+#' Get the output object names of the deconstructor (`rhino::%<-%`) assignment operator.
+#'
+#' @description
+#' This is a naive search for the `SYMBOLS` within a `c()` as the first expression before
+#' the `%<-%`. For example: `c(x, y, z) %<-% ...`.
+#'
+#' @param xml An XML node list
+#' @return a list of `xml_nodes` and `text`
+#' @keywords internal
+get_deconstructor_objects <- function(xml) {
+  xpath_deconstructor_objects <- "
+  //expr[
+    SPECIAL[text() = '%<-%']
+  ]
+  /expr[1 and ./expr/SYMBOL_FUNCTION_CALL[text() = 'c']]
+  //SYMBOL
+  "
+
+  extract_xml_and_text(xml, xpath_deconstructor_objects)
+}
