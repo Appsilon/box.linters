@@ -125,6 +125,31 @@ test_that("box_unused_mod_linter blocks unused three-dots attached packages", {
 
 })
 
+test_that("box_unused_mod_linter allows box modules with nothing exported", {
+  linter <- box_unused_attached_mod_linter()
+
+  good_box_usage <- "box::use(
+    path/to/module_no_exports
+  )
+
+  module_no_exports$e_fun_a()
+  "
+
+  lintr::expect_lint(good_box_usage, NULL, linter)
+})
+
+test_that("box_unused_mod_linter does not throw an error on non-existing module", {
+  linter <- box_unused_attached_mod_linter()
+
+  box_usage <- "box::use(
+    path/to/module_not_exists
+  )
+
+  module_not_exists$fun()
+  "
+
+  lintr::expect_lint(box_usage, NULL, linter)
+})
 
 # Glue compatibility
 

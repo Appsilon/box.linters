@@ -5,12 +5,11 @@
 #' @keywords internal
 get_module_exports <- function(mod_list) {
   exported_funs <- lapply(mod_list, function(mod) {
-    tryCatch(
-      get_box_module_exports(mod),
-      error = function(e) {
-        stop(e)
-      }
-    )
+    tryCatch({
+      get_box_module_exports(mod)
+    }, error = function(e) {
+      NULL
+    })
   })
 
   names(exported_funs) <- mod_list

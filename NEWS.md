@@ -1,3 +1,7 @@
+# development version
+
+* Gracefully handle non-existing module error in `box_unused_attached_mod_linter()`. (#108)
+
 # box.linters 0.10.5
 
 * Fix for `treesitter.r` update to version 1.1.0. Change in how treesitter returns the start row of the program node. (#143)
