@@ -1,3 +1,5 @@
+options(box.path = file.path(getwd(), "mod"))
+
 test_that("box_usage_linter skips allowed base packages functions", {
   linter <- box_usage_linter()
 
@@ -229,6 +231,22 @@ test_that("box_usage_linter skips allowed curried functions", {
 
   this_fun <- some_function(1)
   this_fun(2)
+  "
+
+  lintr::expect_lint(code, NULL, linter)
+})
+
+test_that("box_usage_linter skips function lists declared in function signature", {
+  linter <- box_usage_linter()
+
+  code <- "
+    box::use(
+      path/to/module_e
+    )
+
+    do_something <- function(data) {
+      module_e$summary(data$summary())
+    }
   "
 
   lintr::expect_lint(code, NULL, linter)

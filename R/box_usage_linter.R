@@ -84,7 +84,8 @@ box_usage_linter <- function() {
             split_call_names <- strsplit(fun_call_text, "\\$")[[1]]
             pkg_mod_name_called <- split_call_names[1]
             function_name_called <- split_call_names[2]
-            if (xor(pkg_mod_name_called %in% all_attached_pkg_mod_aliases,
+            if (!(pkg_mod_name_called %in% all_known_fun) &&
+                xor(pkg_mod_name_called %in% all_attached_pkg_mod_aliases,
                     function_name_called %in% all_attached_pkg_mod_fun_flat)) {
               lintr::xml_nodes_to_lints(
                 fun_call,
