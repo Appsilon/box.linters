@@ -68,12 +68,36 @@ get_function_calls <- function(xml) {
     SYMBOL_FUNCTION_CALL and
     not(NS_GET) and
     not(SYMBOL_PACKAGE)
-  ] |
-  //SPECIAL
+  ]
   "
 
   # lintr::get_r_string throws an error when seeing SYMBOL %>%
   xml_nodes <- xml2::xml_find_all(xml, xpath_box_function_calls)
+  text <- xml2::xml_text(xml_nodes, trim = TRUE)
+  r6_refs <- internal_r6_refs(text)
+
+  xml_nodes <- xml_nodes[!r6_refs]
+  text <- text[!r6_refs]
+  text <- gsub("[`'\"]", "", text)
+
+  list(
+    xml_nodes = xml_nodes,
+    text = text
+  )
+}
+
+#' Get specials called in current source file
+#'
+#' @param xml An XML node list
+#' @return A list of `xml_nodes` and `text`.
+#' @keywords internal
+get_special_calls <- function(xml) {
+  xpath_box_special_calls <- "
+  //SPECIAL
+  "
+
+  # lintr::get_r_string throws an error when seeing SYMBOL %>%
+  xml_nodes <- xml2::xml_find_all(xml, xpath_box_special_calls)
   text <- xml2::xml_text(xml_nodes, trim = TRUE)
   r6_refs <- internal_r6_refs(text)
 
