@@ -264,3 +264,24 @@ test_that("unused_declared_object_linter blocks unused objects in glue string te
 
   lintr::expect_lint(code, list(message = lint_message), linters = linter)
 })
+
+test_that("unused_declared_object_linter blocks unused deconstructor assignments", {
+  linter <- unused_declared_object_linter()
+  lint_message <- rex::rex("Declared function/object unused.")
+
+  code <- "box::use(
+    rhino[`%<-%`],
+  )
+
+  # this linter does not look at the right side of the operation
+  c(object1, object2, object3) %<-% list()
+
+  # to simulate a non-reactive object
+  print(object1)
+
+  # to simulate a reactive object
+  print(object2())
+  "
+
+  lintr::expect_lint(code, list(message = lint_message), linter)
+})

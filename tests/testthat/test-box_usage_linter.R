@@ -233,3 +233,23 @@ test_that("box_usage_linter skips allowed curried functions", {
 
   lintr::expect_lint(code, NULL, linter)
 })
+
+test_that("box_usage_linter skips allowed deconstructor assignment objects", {
+  linter <- box_usage_linter()
+
+  code <- "box::use(
+    rhino[`%<-%`],
+  )
+
+  # this linter does not look at the right side of the operation
+  c(object1, object2) %<-% list()
+
+  # to simulate a non-reactive object
+  print(object1)
+
+  # to simulate a reactive object
+  print(object2())
+  "
+
+  lintr::expect_lint(code, NULL, linter)
+})
