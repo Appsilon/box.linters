@@ -81,3 +81,30 @@ box::use(
 
   lintr::expect_lint(code, NULL, linters)
 })
+
+test_that("Should skip allowed non-syntactic names: declared function", {
+  linters <- lintr::linters_with_defaults(defaults = box.linters::box_default_linters)
+
+  code <- "
+`01_function` <- function() {
+
+}
+
+`01_function`()"
+
+lintr::expect_lint(code, NULL, linters)
+})
+
+
+test_that("Should skip allowed non-syntactic names: declared special", {
+  linters <- lintr::linters_with_defaults(defaults = box.linters::box_default_linters)
+
+  code <- "
+`%--%` <- function() {
+
+}
+
+2 %--% 4"
+
+  lintr::expect_lint(code, NULL, linters)
+})
