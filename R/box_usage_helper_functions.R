@@ -116,32 +116,26 @@ get_special_calls <- function(xml) {
 #' @return a list of `xml_nodes` and `text`.
 #' @keywords internal
 get_object_calls <- function(xml) {
-  xpath_all_lines <- "/exprlist/*"
-  xml_all_lines <- xml2::xml_find_all(xml, xpath_all_lines)
-
-  xpath_box_use <- "
+  xpath_object_calls <- "
   //expr[
-    SYMBOL_PACKAGE[
-      (text() = 'box' and following-sibling::SYMBOL_FUNCTION_CALL[text() = 'use'])
-    ]
-  ]
-  /parent::expr
-  "
-
-  xml_box_use <- xml2::xml_find_all(xml, xpath_box_use)
-  xml_no_box_use <- xml_all_lines[!xml_all_lines %in% xml_box_use]
-
-  xpath_all_object_calls <- "
-  .//expr[
     ./SYMBOL and
     not(
       following-sibling::LEFT_ASSIGN or
       following-sibling::EQ_ASSIGN
+    ) and
+    not(
+      ancestor::expr/expr[
+        SYMBOL_PACKAGE and
+        NS_GET and
+        SYMBOL_FUNCTION_CALL
+      ]
     )
   ]
   "
-  xml_object_calls <- xml2::xml_find_all(xml_no_box_use, xpath_all_object_calls)
+
+  xml_object_calls <- xml2::xml_find_all(xml, xpath_object_calls)
   text <- xml2::xml_text(xml_object_calls, trim = TRUE)
+  text <- gsub("[`'\"]", "", text)
 
   list(
     xml_nodes = xml_object_calls,

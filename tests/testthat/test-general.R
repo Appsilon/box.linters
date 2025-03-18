@@ -92,7 +92,7 @@ test_that("Should skip allowed non-syntactic names: declared function", {
 
 `01_function`()"
 
-lintr::expect_lint(code, NULL, linters)
+  lintr::expect_lint(code, NULL, linters)
 })
 
 
@@ -105,6 +105,20 @@ test_that("Should skip allowed non-syntactic names: declared special", {
 }
 
 2 %--% 4"
+
+  lintr::expect_lint(code, NULL, linters)
+})
+
+test_that("Should skip allowed non-syntactic names: declared object", {
+  linters <- lintr::linters_with_defaults(defaults = box.linters::box_default_linters)
+
+  code <- "
+x <- 4
+x
+
+`01_object` <- 4
+
+`01_object`"
 
   lintr::expect_lint(code, NULL, linters)
 })
