@@ -67,7 +67,9 @@ unused_declared_object_linter <- function() {
       glue_object_calls
     )
 
-    lapply(c(object_assignments$xml_nodes, deconstructor_assignments$xml_nodes), function(obj_assign) {
+    all_assignments <- c(object_assignments$xml_nodes, deconstructor_assignments$xml_nodes)
+
+    lapply(all_assignments, function(obj_assign) {
       obj_assign_text <- xml2::xml_text(obj_assign)
       obj_assign_text <- gsub("[`'\"]", "", obj_assign_text)
 

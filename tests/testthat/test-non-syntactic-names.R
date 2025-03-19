@@ -31,7 +31,7 @@ box::use(
 
 c(1, 2, 3) %>% sum()"
 
-lintr::expect_lint(code, NULL, linters)
+  lintr::expect_lint(code, NULL, linters)
 })
 
 test_that("Should skip allowed non-syntactic names: module special", {
@@ -44,7 +44,7 @@ box::use(
 
 2 %--% 4"
 
-lintr::expect_lint(code, NULL, linters)
+  lintr::expect_lint(code, NULL, linters)
 })
 
 test_that("Should skip allowed non-syntactic names: module function", {
@@ -57,7 +57,7 @@ box::use(
 
 `01_function`()"
 
-lintr::expect_lint(code, NULL, linters)
+  lintr::expect_lint(code, NULL, linters)
 })
 
 test_that("Should skip allowed non-syntactic names: module function three dots", {
@@ -70,7 +70,7 @@ box::use(
 
 `01_function`()"
 
-lintr::expect_lint(code, NULL, linters)
+  lintr::expect_lint(code, NULL, linters)
 })
 
 test_that("Should skip allowed non-syntactic names: declared function", {
@@ -128,7 +128,7 @@ a_fun_a()
 b_fun_a()
 `02_fun`()"
 
-lintr::expect_lint(code, NULL, linters)
+  lintr::expect_lint(code, NULL, linters)
 })
 
 test_that("Should skip allowed non-syntactic names: modules functions", {
@@ -145,7 +145,7 @@ a_fun_a()
 b_fun_a()
 `02_fun`()"
 
-lintr::expect_lint(code, NULL, linters)
+  lintr::expect_lint(code, NULL, linters)
 })
 
 test_that("Should skip allowed non-syntactic names: modules", {
@@ -162,5 +162,5 @@ box::use(
 `__module__`$b_fun_a()
 `__module__`$`02_fun`()"
 
-lintr::expect_lint(code, NULL, linters)
+  lintr::expect_lint(code, NULL, linters)
 })
