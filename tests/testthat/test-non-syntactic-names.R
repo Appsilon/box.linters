@@ -1,6 +1,26 @@
 
 options(box.path = file.path(getwd(), "mod"))
 
+test_that("Should skip allowed non-syntactic names: locally declared objects and functions", {
+  linters <- lintr::linters_with_defaults(defaults = box.linters::box_default_linters)
+
+  code <- "
+`%--%` <- function(x, y) {
+  x * y
+}
+
+`_func` <- function() {
+  'A'
+}
+
+`_obj` <- 'B'
+
+2 %--% 4
+`_func`()
+`_obj`
+"
+})
+
 test_that("Should skip allowed non-syntactic names: package special", {
   linters <- lintr::linters_with_defaults(defaults = box.linters::box_default_linters)
 
