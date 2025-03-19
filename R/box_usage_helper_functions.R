@@ -7,7 +7,19 @@
 extract_xml_and_text <- function(xml, xpath) {
   xml_nodes <- xml2::xml_find_all(xml, xpath)
   text <- lintr::get_r_string(xml_nodes)
-  text <- gsub("[`'\"]", "", text)
+
+  is_module_path <- function(s) {
+    grepl("/", s)
+  }
+
+  text <- lapply(text, function(t) {
+    if (is_module_path(t)) {
+      t
+    } else {
+      gsub("[`'\"]", "", t)
+    }
+  })
+  text <- unlist(as.character(text))
 
   list(
     xml_nodes = xml_nodes,

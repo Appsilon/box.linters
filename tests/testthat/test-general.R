@@ -122,3 +122,20 @@ x
 
   lintr::expect_lint(code, NULL, linters)
 })
+
+test_that("Should skip allowed non-syntactic names: modules three-dots", {
+  linters <- lintr::linters_with_defaults(defaults = box.linters::box_default_linters)
+
+  code <- "
+box::use(
+  path/to/`01_module`[...],
+  path/to/`__module__`[...],
+)
+
+a_fun_a()
+`01_fun`()
+b_fun_a()
+`02_fun`()"
+
+  lintr::expect_lint(code, NULL, linters)
+})
