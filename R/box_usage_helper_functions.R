@@ -138,8 +138,7 @@ get_object_calls <- function(xml) {
       following-sibling::EQ_ASSIGN or
       parent::expr[
         following-sibling::SPECIAL[text() = '%<-%']
-    ) and
-    not(
+      ] or
       ancestor::expr/expr[
         SYMBOL_PACKAGE and
         NS_GET and
