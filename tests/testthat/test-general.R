@@ -139,3 +139,37 @@ b_fun_a()
 
   lintr::expect_lint(code, NULL, linters)
 })
+
+test_that("Should skip allowed non-syntactic names: modules functions", {
+  linters <- lintr::linters_with_defaults(defaults = box.linters::box_default_linters)
+
+  code <- "
+box::use(
+  path/to/`01_module`[a_fun_a, `01_fun`],
+  path/to/`__module__`[b_fun_a, `02_fun`],
+)
+
+a_fun_a()
+`01_fun`()
+b_fun_a()
+`02_fun`()"
+
+  lintr::expect_lint(code, NULL, linters)
+})
+
+test_that("Should skip allowed non-syntactic names: modules", {
+  linters <- lintr::linters_with_defaults(defaults = box.linters::box_default_linters)
+
+  code <- "
+box::use(
+  path/to/`01_module`,
+  path/to/`__module__`,
+)
+
+`01_module`$a_fun_a()
+`01_module`$`01_fun`()
+`__module__`$b_fun_a()
+`__module__`$`02_fun`()"
+
+  lintr::expect_lint(code, NULL, linters)
+})
