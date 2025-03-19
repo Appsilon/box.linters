@@ -54,6 +54,7 @@ unused_declared_object_linter <- function() {
     xml <- source_expression$full_xml_parsed_content
 
     object_assignments <- get_declared_objects(xml)
+    deconstructor_assignments <- get_deconstructor_objects(xml)
     exported_objects <- get_exported_objects(xml)
     function_calls <- get_function_calls(xml)
     special_calls <- get_special_calls(xml)
@@ -66,7 +67,7 @@ unused_declared_object_linter <- function() {
       glue_object_calls
     )
 
-    lapply(object_assignments$xml_nodes, function(obj_assign) {
+    lapply(c(object_assignments$xml_nodes, deconstructor_assignments$xml_nodes), function(obj_assign) {
       obj_assign_text <- xml2::xml_text(obj_assign)
       obj_assign_text <- gsub("[`'\"]", "", obj_assign_text)
 

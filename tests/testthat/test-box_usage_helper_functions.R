@@ -200,3 +200,15 @@ test_that("get_object_calls return non-syntactic object calls", {
 
   expect_equal(result$text, expected_results)
 })
+
+test_that("get_deconstructor_objects returns object names declared", {
+  deconstructor_code <- "
+    c(object1, object2) %<-% list()
+  "
+
+  xml_object_definitions <- code_to_xml_expr(deconstructor_code)
+  result <- get_deconstructor_objects(xml_object_definitions)
+  expected_results <- c("object1", "object2")
+
+  expect_equal(result$text, expected_results)
+})
