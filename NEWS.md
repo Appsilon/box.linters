@@ -1,6 +1,7 @@
 # development version
 
 * Support for destructure operator `%<-%`
+* Support for non-syntactic names for objects, functions, module names (#147, #151)
 
 # box.linters 0.10.5
 
