@@ -56,6 +56,11 @@ unused_declared_object_linter <- function() {
     object_assignments <- get_declared_objects(xml)
     deconstructor_assignments <- get_deconstructor_objects(xml)
     exported_objects <- get_exported_objects(xml)
+
+    if (length(exported_objects$xml_nodes) == 0) {
+      exported_objects <- object_assignments
+    }
+
     function_calls <- get_function_calls(xml)
     special_calls <- get_special_calls(xml)
     object_calls <- get_object_calls(xml)
