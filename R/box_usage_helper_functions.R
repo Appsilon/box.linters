@@ -7,7 +7,19 @@
 extract_xml_and_text <- function(xml, xpath) {
   xml_nodes <- xml2::xml_find_all(xml, xpath)
   text <- lintr::get_r_string(xml_nodes)
-  text <- gsub("[`'\"]", "", text)
+
+  is_module_path <- function(s) {
+    grepl("/", s)
+  }
+
+  text <- lapply(text, function(t) {
+    if (is_module_path(t)) {
+      t
+    } else {
+      gsub("[`'\"]", "", t)
+    }
+  })
+  text <- unlist(as.character(text))
 
   list(
     xml_nodes = xml_nodes,
@@ -68,12 +80,36 @@ get_function_calls <- function(xml) {
     SYMBOL_FUNCTION_CALL and
     not(NS_GET) and
     not(SYMBOL_PACKAGE)
-  ] |
-  //SPECIAL
+  ]
   "
 
   # lintr::get_r_string throws an error when seeing SYMBOL %>%
   xml_nodes <- xml2::xml_find_all(xml, xpath_box_function_calls)
+  text <- xml2::xml_text(xml_nodes, trim = TRUE)
+  r6_refs <- internal_r6_refs(text)
+
+  xml_nodes <- xml_nodes[!r6_refs]
+  text <- text[!r6_refs]
+  text <- gsub("[`'\"]", "", text)
+
+  list(
+    xml_nodes = xml_nodes,
+    text = text
+  )
+}
+
+#' Get specials called in current source file
+#'
+#' @param xml An XML node list
+#' @return A list of `xml_nodes` and `text`.
+#' @keywords internal
+get_special_calls <- function(xml) {
+  xpath_box_special_calls <- "
+  //SPECIAL
+  "
+
+  # lintr::get_r_string throws an error when seeing SYMBOL %>%
+  xml_nodes <- xml2::xml_find_all(xml, xpath_box_special_calls)
   text <- xml2::xml_text(xml_nodes, trim = TRUE)
   r6_refs <- internal_r6_refs(text)
 
@@ -86,38 +122,35 @@ get_function_calls <- function(xml) {
   )
 }
 
-#' Get objects called in current source file
+#' Get objects called in current source file.
+#'
+#' This ignores objects to the left of `<-`, `=`, `%<-%` as these are assignments.
 #'
 #' @param xml An XML node list
 #' @return a list of `xml_nodes` and `text`.
 #' @keywords internal
 get_object_calls <- function(xml) {
-  xpath_all_lines <- "/exprlist/*"
-  xml_all_lines <- xml2::xml_find_all(xml, xpath_all_lines)
-
-  xpath_box_use <- "
+  xpath_object_calls <- "
   //expr[
-    SYMBOL_PACKAGE[
-      (text() = 'box' and following-sibling::SYMBOL_FUNCTION_CALL[text() = 'use'])
-    ]
-  ]
-  /parent::expr
-  "
-
-  xml_box_use <- xml2::xml_find_all(xml, xpath_box_use)
-  xml_no_box_use <- xml_all_lines[!xml_all_lines %in% xml_box_use]
-
-  xpath_all_object_calls <- "
-  .//expr[
     ./SYMBOL and
     not(
       following-sibling::LEFT_ASSIGN or
-      following-sibling::EQ_ASSIGN
+      following-sibling::EQ_ASSIGN or
+      parent::expr[
+        following-sibling::SPECIAL[text() = '%<-%']
+      ] or
+      ancestor::expr/expr[
+        SYMBOL_PACKAGE and
+        NS_GET and
+        SYMBOL_FUNCTION_CALL
+      ]
     )
   ]
   "
-  xml_object_calls <- xml2::xml_find_all(xml_no_box_use, xpath_all_object_calls)
+
+  xml_object_calls <- xml2::xml_find_all(xml, xpath_object_calls)
   text <- xml2::xml_text(xml_object_calls, trim = TRUE)
+  text <- gsub("[`'\"]", "", text)
 
   list(
     xml_nodes = xml_object_calls,
@@ -141,4 +174,25 @@ get_function_signature_objs <- function(xml) {
 internal_r6_refs <- function(func_list) {
   r6_refs <- "self|private\\$.+"
   grepl(r6_refs, func_list)
+}
+
+#' Get the output object names of the deconstructor (`rhino::%<-%`) assignment operator.
+#'
+#' @description
+#' This is a naive search for the `SYMBOLS` within a `c()` as the first expression before
+#' the `%<-%`. For example: `c(x, y, z) %<-% ...`.
+#'
+#' @param xml An XML node list
+#' @return a list of `xml_nodes` and `text`
+#' @keywords internal
+get_deconstructor_objects <- function(xml) {
+  xpath_deconstructor_objects <- "
+  //expr[
+    SPECIAL[text() = '%<-%']
+  ]
+  /expr[1 and ./expr/SYMBOL_FUNCTION_CALL[text() = 'c']]
+  //SYMBOL
+  "
+
+  extract_xml_and_text(xml, xpath_deconstructor_objects)
 }

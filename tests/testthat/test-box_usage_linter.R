@@ -247,6 +247,26 @@ test_that("box_usage_linter skips function lists declared in function signature"
     do_something <- function(data) {
       module_e$summary(data$summary())
     }
+    "
+
+  lintr::expect_lint(code, NULL, linter)
+})
+
+test_that("box_usage_linter skips allowed destructure assignment objects", {
+  linter <- box_usage_linter()
+
+  code <- "box::use(
+    rhino[`%<-%`],
+  )
+
+  # this linter does not look at the right side of the operation
+  c(object1, object2) %<-% list()
+
+  # to simulate a non-reactive object
+  print(object1)
+
+  # to simulate a reactive object
+  print(object2())
   "
 
   lintr::expect_lint(code, NULL, linter)
