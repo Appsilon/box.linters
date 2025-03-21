@@ -9,16 +9,17 @@ test_that("Should skip allowed non-syntactic names: locally declared objects and
   x * y
 }
 
-`_func` <- function() {
-  'A'
+`1_func` <- function() {
+  \"A\"
 }
 
-`_obj` <- 'B'
+`1_obj` <- \"B\"
 
 2 %--% 4
-`_func`()
-`_obj`
-"
+`1_func`()
+`1_obj`"
+
+  lintr::expect_lint(code, NULL, linters)
 })
 
 test_that("Should skip allowed non-syntactic names: package special", {
