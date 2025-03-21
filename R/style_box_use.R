@@ -495,10 +495,11 @@ find_box_lines <- function(source_text) {
 #' @keywords internal
 find_source_lines_to_retain <- function(source_file_lines, box_lines) {
   source_lines <- seq(1, length(source_file_lines))
-  empty_source_lines <- which(grepl(pattern = "^[:space:]*$", source_file_lines))
+  empty_source_lines <- which(grepl(pattern = "^[[:space:]]*$", source_file_lines))
   non_box_lines <- source_lines[!source_lines %in% box_lines$all]
   end_of_box_calls <- ifelse(
-    empty_source_lines[empty_source_lines > box_lines$max][1] == box_lines$max + 1,
+    !rlang::is_empty(empty_source_lines) &&
+      empty_source_lines[empty_source_lines > box_lines$max][1] == box_lines$max + 1,
     box_lines$max + 1,
     box_lines$max
   )
