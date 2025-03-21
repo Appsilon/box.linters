@@ -53,7 +53,7 @@ test_that("Should allow modules with nothing exported, and assume all exported -
 
 all_fun_a()"
 
-lintr::expect_lint(code, NULL, linters)
+  lintr::expect_lint(code, NULL, linters)
 })
 
 test_that("Should allow modules with nothing exported, and assume all exported - dots.", {
@@ -66,6 +66,5 @@ test_that("Should allow modules with nothing exported, and assume all exported -
 all_fun_a()
 all_fun_c()"
 
-lintr::expect_lint(code, NULL, linters)
+  lintr::expect_lint(code, NULL, linters)
 })
-
