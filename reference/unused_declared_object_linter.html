@@ -102,9 +102,8 @@ to learn about the details.</p>
 <span class="r-in"><span><span class="co"># okay</span></span></span>
 <span class="r-in"><span><span class="va">code</span> <span class="op">&lt;-</span> <span class="st">"</span></span></span>
 <span class="r-in"><span><span class="st">#' @export</span></span></span>
-<span class="r-in"><span><span class="st">public_function &lt;- function() {</span></span></span>
-<span class="r-in"><span><span class="st">  some_variable &lt;- local_data</span></span></span>
-<span class="r-in"><span><span class="st">  private_function()</span></span></span>
+<span class="r-in"><span><span class="st">public_function &lt;- function(local_data) {</span></span></span>
+<span class="r-in"><span><span class="st">  private_function(local_data)</span></span></span>
 <span class="r-in"><span><span class="st">}</span></span></span>
 <span class="r-in"><span><span class="st"></span></span></span>
 <span class="r-in"><span><span class="st">private_function &lt;- function() {</span></span></span>
@@ -115,9 +114,7 @@ to learn about the details.</p>
 <span class="r-in"><span><span class="st">"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">lintr</span><span class="fu">::</span><span class="fu"><a href="https://lintr.r-lib.org/reference/lint.html" class="external-link">lint</a></span><span class="op">(</span>text <span class="op">=</span> <span class="va">code</span>, linters <span class="op">=</span> <span class="fu">unused_declared_object_linter</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;text&gt;:4:3: </span><span style="color: #BB00BB;">warning: </span>[unused_declared_object_linter] <span style="font-weight: bold;">Declared function/object unused.</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   some_variable &lt;- local_data</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ^~~~~~~~~~~~~</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> No lints found.</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
