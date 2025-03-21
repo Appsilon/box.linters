@@ -1,5 +1,6 @@
 # development version
 
+* Fix for false-positive lint on a list-name function call of a function argument. (#131)
 * Support for destructure operator `%<-%`
 * Support for non-syntactic names for objects, functions, module names (#147, #151)
 
