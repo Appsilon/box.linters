@@ -76,9 +76,12 @@ box_usage_linter <- function() {
                                        unlist(attached_modules$nested))
     base_pkgs <- get_base_packages()
     function_calls <- get_function_calls(xml)
+    special_calls <- get_special_calls(xml)
+    function_special_calls <- c(function_calls$xml_nodes, special_calls$xml_nodes)
 
-    lapply(function_calls$xml_nodes, function(fun_call) {
+    lapply(function_special_calls, function(fun_call) {
       fun_call_text <- xml2::xml_text(fun_call)
+      fun_call_text <- gsub("[`'\"]", "", fun_call_text)
 
       if (!fun_call_text %in% base_pkgs$text) {
         if (grepl(".+\\$.+", fun_call_text)) {

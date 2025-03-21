@@ -34,16 +34,16 @@ get_objects_in_strings <- function(xml) {
         xml_parsed_code <- xml2::read_xml(xmlparsedata::xml_parse_data(parsed_code))
         objects_called <- get_object_calls(xml_parsed_code)
         functions_calls <- get_function_calls(xml_parsed_code)
+        special_calls <- get_special_calls(xml_parsed_code)
 
-        return(
-          c(
-            objects_called$text,
-            functions_calls$text
-          )
+        c(
+          objects_called$text,
+          functions_calls$text,
+          special_calls$text
         )
       })
     )
   }, error = function(e) {
-    return(NULL)
+    NULL
   })
 }

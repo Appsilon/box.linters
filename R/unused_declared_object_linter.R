@@ -30,9 +30,8 @@
 #' # okay
 #' code <- "
 #' #' @export
-#' public_function <- function() {
-#'   some_variable <- local_data
-#'   private_function()
+#' public_function <- function(local_data) {
+#'   private_function(local_data)
 #' }
 #'
 #' private_function <- function() {
@@ -54,22 +53,30 @@ unused_declared_object_linter <- function() {
 
     xml <- source_expression$full_xml_parsed_content
 
-    fun_assignments <- get_declared_objects(xml)
+    object_assignments <- get_declared_objects(xml)
     deconstructor_assignments <- get_deconstructor_objects(xml)
     exported_objects <- get_exported_objects(xml)
     function_calls <- get_function_calls(xml)
+    special_calls <- get_special_calls(xml)
     object_calls <- get_object_calls(xml)
     glue_object_calls <- get_objects_in_strings(xml)
-    local_calls_text <- c(function_calls$text, object_calls$text, glue_object_calls)
+    local_calls_text <- c(
+      function_calls$text,
+      special_calls$text,
+      object_calls$text,
+      glue_object_calls
+    )
 
-    lapply(c(fun_assignments$xml_nodes, deconstructor_assignments$xml_nodes), function(fun_assign) {
-      fun_assign_text <- xml2::xml_text(fun_assign)
-      fun_assign_text <- gsub("[`'\"]", "", fun_assign_text)
+    all_assignments <- c(object_assignments$xml_nodes, deconstructor_assignments$xml_nodes)
 
-      if (!fun_assign_text %in% local_calls_text &
-            !fun_assign_text %in% exported_objects$text) {
+    lapply(all_assignments, function(obj_assign) {
+      obj_assign_text <- xml2::xml_text(obj_assign)
+      obj_assign_text <- gsub("[`'\"]", "", obj_assign_text)
+
+      if (!obj_assign_text %in% local_calls_text &
+            !obj_assign_text %in% exported_objects$text) {
         lintr::xml_nodes_to_lints(
-          fun_assign,
+          obj_assign,
           source_expression = source_expression,
           lint_message = "Declared function/object unused.",
           type = "warning"

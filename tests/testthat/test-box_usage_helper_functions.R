@@ -173,6 +173,34 @@ test_that("get_declared_objects returns object names declared", {
   expect_equal(result$text, expected_results)
 })
 
+test_that("get_object_calls does not return symbols in box::use call", {
+  box_use_call <- "
+    box::use(dplyr)
+
+    some_object
+  "
+
+  xml_box_use_call <- code_to_xml_expr(box_use_call)
+  result <- get_object_calls(xml_box_use_call)
+  expected_results <- c("some_object")
+
+  expect_equal(result$text, expected_results)
+})
+
+test_that("get_object_calls return non-syntactic object calls", {
+  non_syntactic_calls <- "
+    `01_object`
+    2 %>% sum()
+    `01_function`()
+  "
+
+  xml_non_syntactic_calls <- code_to_xml_expr(non_syntactic_calls)
+  result <- get_object_calls(xml_non_syntactic_calls)
+  expected_results <- c("01_object")
+
+  expect_equal(result$text, expected_results)
+})
+
 test_that("get_deconstructor_objects returns object names declared", {
   deconstructor_code <- "
     c(object1, object2) %<-% list()
