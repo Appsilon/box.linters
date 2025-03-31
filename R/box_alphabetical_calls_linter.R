@@ -4,6 +4,8 @@
 #' Checks that module and function imports are sorted alphabetically. Aliases are
 #' ignored. The sort check is on package/module names and attached function names.
 #'
+#' Alphabetical sort order places upper-case/capital letters first: (A, B, C, a, b, c).
+#'
 #' For use in `rhino`, see the
 #' [Explanation: Rhino style guide](https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html)
 #' to learn about the details.
@@ -19,6 +21,11 @@
 #'
 #' lintr::lint(
 #'   text = "box::use(package[functionB, functionA])",
+#'   linters = box_alphabetical_calls_linter()
+#' )
+#'
+#' lintr::lint(
+#'   text = "box::use(bslib, config, dplyr, DT)",
 #'   linters = box_alphabetical_calls_linter()
 #' )
 #'
@@ -45,6 +52,11 @@
 #'
 #' lintr::lint(
 #'   text = "box::use(package[functionA, functionB])",
+#'   linters = box_alphabetical_calls_linter()
+#' )
+#'
+#' lintr::lint(
+#'   text = "box::use(DT, bslib, config, dplyr)",
 #'   linters = box_alphabetical_calls_linter()
 #' )
 #'
