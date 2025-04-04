@@ -4,6 +4,8 @@
 #' Checks that module and function imports are sorted alphabetically. Aliases are
 #' ignored. The sort check is on package/module names and attached function names.
 #'
+#' Alphabetical sort order places upper-case/capital letters first: (A, B, C, a, b, c).
+#'
 #' For use in `rhino`, see the
 #' [Explanation: Rhino style guide](https://appsilon.github.io/rhino/articles/explanation/rhino-style-guide.html)
 #' to learn about the details.
@@ -19,6 +21,11 @@
 #'
 #' lintr::lint(
 #'   text = "box::use(package[functionB, functionA])",
+#'   linters = box_alphabetical_calls_linter()
+#' )
+#'
+#' lintr::lint(
+#'   text = "box::use(bslib, config, dplyr, DT)",
 #'   linters = box_alphabetical_calls_linter()
 #' )
 #'
@@ -45,6 +52,11 @@
 #'
 #' lintr::lint(
 #'   text = "box::use(package[functionA, functionB])",
+#'   linters = box_alphabetical_calls_linter()
+#' )
+#'
+#' lintr::lint(
+#'   text = "box::use(DT, bslib, config, dplyr)",
 #'   linters = box_alphabetical_calls_linter()
 #' )
 #'
@@ -97,7 +109,7 @@ box_alphabetical_calls_linter <- function() {
     xml <- source_expression$xml_parsed_content
     xml_nodes <- xml2::xml_find_all(xml, xpath)
     modules_called <- xml2::xml_text(xml_nodes)
-    modules_check <- modules_called == sort(modules_called)
+    modules_check <- modules_called == sort(modules_called, method = "radix")
 
     unsorted_modules <- which(modules_check == FALSE)
     module_lint <- lintr::xml_nodes_to_lints(
@@ -112,7 +124,7 @@ box_alphabetical_calls_linter <- function() {
     function_lint <- lapply(xml_nodes_with_functions, function(xml_node) {
       imported_functions <- xml2::xml_find_all(xml_node, xpath_functions)
       functions_called <- xml2::xml_text(imported_functions)
-      functions_check <- functions_called == sort(functions_called)
+      functions_check <- functions_called == sort(functions_called, method = "radix")
       unsorted_functions <- which(functions_check == FALSE)
       unsorted <- any(!functions_check)
 
