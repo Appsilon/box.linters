@@ -1,5 +1,8 @@
 # development version
 
+* Support `box` module function for "nothing exported means export all". (#166)
+* Fix for false-positive lint on a list-name function call of a function argument. (#131)
+* Gracefully handle non-existing module error in `box_unused_attached_mod_linter()`. (#108)
 * Support for destructure operator `%<-%`
 * Support for non-syntactic names for objects, functions, module names (#147, #151)
 
