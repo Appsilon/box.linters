@@ -1,5 +1,6 @@
 # development version
 
+* Gracefully handle non-existing module error in `box_unused_attached_mod_linter()`. (#108)
 * Support for destructure operator `%<-%`
 * Support for non-syntactic names for objects, functions, module names (#147, #151)
 
