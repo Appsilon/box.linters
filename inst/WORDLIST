@@ -12,6 +12,8 @@ Treesitter
 XPath
 appsilon
 config
+deconstructor
+destructure
 dplyr
 linter
 linters

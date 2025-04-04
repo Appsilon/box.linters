@@ -38,9 +38,8 @@ lintr::lint(text = code, linters = unused_declared_object_linter())
 # okay
 code <- "
 #' @export
-public_function <- function() {
-  some_variable <- local_data
-  private_function()
+public_function <- function(local_data) {
+  private_function(local_data)
 }
 
 private_function <- function() {
