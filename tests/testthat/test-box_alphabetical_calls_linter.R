@@ -128,3 +128,43 @@ test_that("box_alphabetical_calls_linter() blocks unsorted imports in box::use()
     list(message = lint_message, line_number = 4, column_number = 19)
   ), linter)
 })
+
+test_that("box_alphabetical_calls_linter() works the same cross-platform", {
+  linter <- box_alphabetical_calls_linter()
+
+  good_order <- "box::use(
+    A,
+    Ab1,
+    B,
+    C.r,
+    a,
+    b,
+    c.A
+  )
+"
+
+  lintr::expect_lint(good_order, NULL, linter)
+
+  lint_message <- rex::rex("Module and function imports must be sorted alphabetically.")
+
+  nix_order <- "box::use(
+    a,
+    A,
+    Ab1,
+    b,
+    B,
+    c.A,
+    C.r
+  )
+"
+
+  lintr::expect_lint(nix_order, list(
+    list(message = lint_message, line_number = 2, column_number = 5),
+    list(message = lint_message, line_number = 3, column_number = 5),
+    list(message = lint_message, line_number = 4, column_number = 5),
+    list(message = lint_message, line_number = 5, column_number = 5),
+    list(message = lint_message, line_number = 6, column_number = 5),
+    list(message = lint_message, line_number = 7, column_number = 5),
+    list(message = lint_message, line_number = 8, column_number = 5)
+  ), linter)
+})
