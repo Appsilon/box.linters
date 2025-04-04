@@ -48,7 +48,7 @@ namespaced_function_calls <- function(allow = NULL) {
 
     return(
       lintr::Linter(function(source_expression) {
-        return(list())
+        list()
       })
     )
   }

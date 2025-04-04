@@ -21,3 +21,4 @@ rsconnect/
 .Rproj.user
 docs
 inst/doc
+box.linters.Rproj
