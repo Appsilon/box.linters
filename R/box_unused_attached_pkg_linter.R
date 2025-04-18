@@ -82,7 +82,8 @@ box_unused_attached_pkg_linter <- function() {
     function_calls <- get_function_calls(xml)
     glue_object_calls <- get_objects_in_strings(xml)
 
-    all_calls_text <- c(function_calls$text, glue_object_calls)
+    # Add object calls to function calls to detect usage of list-like objects from packages
+    all_calls_text <- c(function_calls$text, glue_object_calls, get_object_calls(xml)$text)
 
     unused_package <- lapply(attached_packages$xml, function(attached_package) {
       package_text <- lintr::get_r_string(attached_package)
