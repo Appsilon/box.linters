@@ -21,4 +21,5 @@ lintr
 nolint
 preconfigured
 prettycode
+styler
 treesitter
