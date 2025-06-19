@@ -215,3 +215,16 @@ test_that("box_unused_attached_pkg_linter blocks unused functions in glue string
 
   lintr::expect_lint(bad_box_usage, list(message = lint_message_1), linters = linter)
 })
+
+test_that("box_unused_pkg_linter understands lists imported from modules", {
+  linter <- box_unused_attached_pkg_linter()
+
+  good_box_usage <- "box::use(
+    shiny,
+  )
+
+  shiny$tags$hr()
+  "
+
+  lintr::expect_lint(good_box_usage, NULL, linter)
+})
