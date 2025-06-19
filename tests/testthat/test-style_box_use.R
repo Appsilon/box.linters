@@ -1271,6 +1271,32 @@ some_function <- function() {
   expect_output(suppressWarnings(style_box_use_text(code)), expected_output)
 })
 
+test_that("style_box_use_text() has cross-platform consistency", {
+  code <- "box::use(
+  a,
+  A,
+  Ab1,
+  b,
+  B,
+  c.A,
+  C.r
+)
+"
+
+  expected_output <- rex::rex("box::use(
+  A,
+  Ab1,
+  B,
+  C.r,
+  a,
+  b,
+  c.A,
+)
+")
+
+  expect_output(suppressWarnings(style_box_use_text(code)), expected_output)
+})
+
 test_that("style_box_use_text() does not modify when there is no box::use()", {
   code <- "
 some_function <- function() {

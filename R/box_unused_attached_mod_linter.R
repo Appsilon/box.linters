@@ -86,13 +86,14 @@ box_unused_attached_mod_linter <- function() {
       attached_three_dots <- get_attached_mod_three_dots(xml)
     })
     function_calls <- get_function_calls(xml)
+    special_calls <- get_special_calls(xml)
     glue_object_calls <- get_objects_in_strings(xml)
     possible_module_calls <- get_object_calls(xml)
 
-    all_calls_text <- c(function_calls$text, glue_object_calls)
+    all_calls_text <- c(function_calls$text, special_calls$text, glue_object_calls)
 
     unused_module <- lapply(attached_modules$xml, function(attached_module) {
-      module_text <- basename(lintr::get_r_string(attached_module))
+      module_text <- gsub("`", "", basename(lintr::get_r_string(attached_module)))
       aliased_module_text <- attached_modules$aliases[module_text]
 
       func_list <- paste(

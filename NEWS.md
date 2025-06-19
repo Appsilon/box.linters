@@ -1,3 +1,12 @@
+# development version
+
+* Support `box` module function for "nothing exported means export all". (#166)
+* Fix for false-positive lint on a list-name function call of a function argument. (#131)
+* Gracefully handle non-existing module error in `box_unused_attached_mod_linter()`. (#108)
+* Support for destructure operator `%<-%`
+* Support for non-syntactic names for objects, functions, module names (#147, #151)
+* Change alphabetical sort to `radix` for cross-platform consistency. (#168)
+
 # box.linters 0.10.5
 
 * Fix for `treesitter.r` update to version 1.1.0. Change in how treesitter returns the start row of the program node. (#143)

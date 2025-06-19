@@ -33,24 +33,23 @@ test_that("unused_declared_object_linter skips used declared functions", {
 
 test_that("unused_declared_object_linter blocks unused declared functions", {
   linter <- unused_declared_object_linter()
-  lint_message <- rex::rex("Declared function/object unused.")
 
-  bad_box_usage_1 <- "sample_fun <- function(x, y) {
+  good_box_usage_1 <- "sample_fun <- function(x, y) {
     x + y
   }
   "
 
-  bad_box_usage_2 <- "assign('x', function(y) {y + 1})
+  good_box_usage_2 <- "assign('x', function(y) {y + 1})
   assign('y', 4)
   "
 
-  bad_box_usage_3 <- 'assign("x", function(y) {y + 1})
+  good_box_usage_3 <- 'assign("x", function(y) {y + 1})
   assign("y", 4)
   '
 
-  lintr::expect_lint(bad_box_usage_1, list(message = lint_message), linter)
-  lintr::expect_lint(bad_box_usage_2, list(message = lint_message), linter)
-  lintr::expect_lint(bad_box_usage_3, list(message = lint_message), linter)
+  lintr::expect_lint(good_box_usage_1, NULL, linter)
+  lintr::expect_lint(good_box_usage_2, NULL, linter)
+  lintr::expect_lint(good_box_usage_3, NULL, linter)
 })
 
 test_that("get_exported_objects returns correct list of exported objects", {
@@ -249,18 +248,40 @@ test_that("unused_declared_object_linter skips literal braces in glue string tem
   lintr::expect_lint(code, NULL, linters = linter)
 })
 
-test_that("unused_declared_object_linter blocks unused objects in glue string templates", {
+test_that("unused_declared_object_linter blocks unused deconstructor assignments", {
   linter <- unused_declared_object_linter()
   lint_message <- rex::rex("Declared function/object unused.")
 
-  code <- "
-    box::use(
-      glue[glue],
-    )
+  code <- "box::use(
+    rhino[`%<-%`],
+  )
 
-    some_value <- 4
-    glue(\"This does not have a parseable object.\")
+  # this linter does not look at the right side of the operation
+  c(object1, object2, object3) %<-% list()
+
+  # to simulate a non-reactive object
+  print(object1)
+
+  # to simulate a reactive object
+  print(object2())
   "
 
-  lintr::expect_lint(code, list(message = lint_message), linters = linter)
+  lintr::expect_lint(code, list(message = lint_message), linter)
+})
+
+test_that("when none are @export'ed, all are @export'ed. Don't lint on unused objects.", {
+  linter <- unused_declared_object_linter()
+
+  code <- "
+foo <- function() {
+
+}
+
+bar <- function() {
+
+}
+
+baz <- 3"
+
+  lintr::expect_lint(code, NULL, linter)
 })

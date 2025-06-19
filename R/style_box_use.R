@@ -300,7 +300,7 @@ sort_mod_pkg_calls <- function(tree_matches, pkg_or_mod = c("mod", "pkg")) {
   )
 
   attached_names <- get_nodes_text_by_type(tree_matches, node_names)
-  order_attached_names <- order(attached_names)
+  order_attached_names <- order(attached_names, method = "radix")
   attached_calls <- get_nodes_text_by_type(tree_matches, node_calls)
   comments <- get_nodes_text_by_type(tree_matches, "comment")
   names(attached_calls) <- comments
@@ -371,7 +371,7 @@ sort_func_calls <- function(call_with_funcs) {
   comments <- get_nodes_text_by_type(call_with_funcs, "comment")
   names(func_calls) <- comments
 
-  order_func_names <- order(func_names)
+  order_func_names <- order(func_names, method = "radix")
   list(
     pkg_mod_name = pkg_mod_name,
     funcs = func_calls[order_func_names]

@@ -5,12 +5,11 @@
 #' @keywords internal
 get_module_exports <- function(mod_list) {
   exported_funs <- lapply(mod_list, function(mod) {
-    tryCatch(
-      get_box_module_exports(mod),
-      error = function(e) {
-        stop(e)
-      }
-    )
+    tryCatch({
+      get_box_module_exports(mod)
+    }, error = function(e) {
+      NULL
+    })
   })
 
   names(exported_funs) <- mod_list
@@ -39,7 +38,7 @@ get_attached_modules <- function(xml) {
   nested_list <- get_module_exports(attached_modules$text)
   # normalize module names
   attached_modules$text <- basename(attached_modules$text)
-  names(nested_list) <- basename(names(nested_list))
+  names(nested_list) <- gsub("`", "", basename(names(nested_list)))
 
   whole_module_imports <- "
   /child::*[
