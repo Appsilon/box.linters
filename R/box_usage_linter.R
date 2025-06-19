@@ -60,7 +60,7 @@ box_usage_linter <- function() {
     fun_assignments <- get_declared_functions(xml)
     obj_assignments <- get_declared_objects(xml)
     fun_sig_objects <- get_function_signature_objs(xml)
-    deconstructor_assignments <- get_deconstructor_objects(xml)
+    deconstructor_assignments <- get_destructure_objects(xml)
     all_known_fun <- c(all_attached_pkg_fun,
                        all_attached_mod_fun,
                        fun_assignments$text,
