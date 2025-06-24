@@ -7,6 +7,7 @@
 * Support for destructure operator `%<-%`
 * Support for non-syntactic names for objects, functions, module names (#147, #151)
 * Change alphabetical sort to `radix` for cross-platform consistency. (#168)
+* Add `box_repeated_calls_linter` which checks for repeated calls in `box::use`. (#149)
 * Fixes a styler bug when there are no empty lines in the source code. (#134)
 
 # box.linters 0.10.5
