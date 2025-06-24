@@ -248,7 +248,7 @@ test_that("unused_declared_object_linter skips literal braces in glue string tem
   lintr::expect_lint(code, NULL, linters = linter)
 })
 
-test_that("unused_declared_object_linter blocks unused deconstructor assignments", {
+test_that("unused_declared_object_linter blocks unused destructure assignments", {
   linter <- unused_declared_object_linter()
   lint_message <- rex::rex("Declared function/object unused.")
 
