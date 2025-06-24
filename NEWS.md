@@ -1,5 +1,6 @@
 # development version
 
+* Fixed an issue in `box_unused_attached_pkg_linter()` where list members accessed via `$` were not recognized as usage of the attached package. (#148)
 * Support `box` module function for "nothing exported means export all". (#166)
 * Fix for false-positive lint on a list-name function call of a function argument. (#131)
 * Gracefully handle non-existing module error in `box_unused_attached_mod_linter()`. (#108)
@@ -7,6 +8,7 @@
 * Support for non-syntactic names for objects, functions, module names (#147, #151)
 * Change alphabetical sort to `radix` for cross-platform consistency. (#168)
 * Add `box_repeated_calls_linter` which checks for repeated calls in `box::use`. (#149)
+* Fixes a styler bug when there are no empty lines in the source code. (#134)
 
 # box.linters 0.10.5
 

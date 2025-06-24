@@ -174,7 +174,7 @@ box::use(
   sorted_pkgs <- sort_mod_pkg_calls(matches, "pkg")
 
   expected_result <- c("dplyr", "stringr", "tidyr")
-  names(expected_result) <- c("", "", "")   # comments are used as names
+  names(expected_result) <- c("", "", "") # comments are used as names
 
   expect_identical(sorted_pkgs, expected_result)
 })
@@ -193,7 +193,7 @@ box::use(
   sorted_pkgs <- sort_mod_pkg_calls(matches, "pkg")
 
   expected_result <- c("dplyr", "stringr", "alias = tidyr")
-  names(expected_result) <- c("", "", "")   # comments are used as names
+  names(expected_result) <- c("", "", "") # comments are used as names
 
   expect_identical(sorted_pkgs, expected_result)
 })
@@ -212,7 +212,7 @@ box::use(
   sorted_pkgs <- sort_mod_pkg_calls(matches, "pkg")
 
   expected_result <- c("dplyr", "stringr", "tidyr[pivot_wider, pivot_longer]")
-  names(expected_result) <- c("", "", "")   # comments are used as names
+  names(expected_result) <- c("", "", "") # comments are used as names
 
   expect_identical(sorted_pkgs, expected_result)
 })
@@ -234,7 +234,7 @@ box::use(
   sorted_pkgs <- sort_mod_pkg_calls(matches, "pkg")
 
   expected_result <- c("dplyr", "stringr", "tidyr[\n    pivot_wider,\n    pivot_longer\n  ]")
-  names(expected_result) <- c("", "", "")   # comments are used as names
+  names(expected_result) <- c("", "", "") # comments are used as names
 
   expect_identical(sorted_pkgs, expected_result)
 })
@@ -253,7 +253,7 @@ box::use(
   sorted_pkgs <- sort_mod_pkg_calls(matches, "pkg")
 
   expected_result <- c("dplyr", "stringr[...]", "tidyr[...]")
-  names(expected_result) <- c("", "# nolint", "# nolint")   # comments are used as names
+  names(expected_result) <- c("", "# nolint", "# nolint") # comments are used as names
 
   expect_identical(sorted_pkgs, expected_result)
 })
@@ -279,7 +279,7 @@ box::use(
     "stringr",
     "tidyr[\n    pivot_wider, # nolint\n    pivot_longer\n  ]"
   )
-  names(expected_result) <- c("", "", "")   # comments are used as names
+  names(expected_result) <- c("", "", "") # comments are used as names
 
   expect_identical(sorted_pkgs, expected_result)
 })
@@ -302,7 +302,7 @@ box::use(
     "path/a/module_b",
     "path/b/module_a"
   )
-  names(expected_result) <- c("", "", "")   # comments are used as names
+  names(expected_result) <- c("", "", "") # comments are used as names
 
   expect_identical(sorted_mods, expected_result)
 })
@@ -325,7 +325,7 @@ box::use(
     "alias = path/a/module_b",
     "path/b/module_a"
   )
-  names(expected_result) <- c("", "", "")   # comments are used as names
+  names(expected_result) <- c("", "", "") # comments are used as names
 
   expect_identical(sorted_mods, expected_result)
 })
@@ -348,7 +348,7 @@ box::use(
     "path/a/module_b[func_b, func_a]",
     "path/b/module_a"
   )
-  names(expected_result) <- c("", "", "")   # comments are used as names
+  names(expected_result) <- c("", "", "") # comments are used as names
 
   expect_identical(sorted_mods, expected_result)
 })
@@ -377,7 +377,7 @@ box::use(
   ]",
     "path/b/module_a"
   )
-  names(expected_result) <- c("", "", "")   # comments are used as names
+  names(expected_result) <- c("", "", "") # comments are used as names
 
   expect_identical(sorted_mods, expected_result)
 })
@@ -400,7 +400,7 @@ box::use(
     "path/a/module_b[...]",
     "path/b/module_a"
   )
-  names(expected_result) <- c("# nolint", "# nolint", "")   # comments are used as names
+  names(expected_result) <- c("# nolint", "# nolint", "") # comments are used as names
 
   expect_identical(sorted_mods, expected_result)
 })
@@ -429,7 +429,7 @@ box::use(
   ]",
     "path/b/module_a"
   )
-  names(expected_result) <- c("", "", "")   # comments are used as names
+  names(expected_result) <- c("", "", "") # comments are used as names
 
   expect_identical(sorted_mods, expected_result)
 })
@@ -980,7 +980,7 @@ box::use(
     pivot_wider
   ]"
   )
-  names(expected_result) <- c("# nolint", "", "", "")  # pkg/mod level comments
+  names(expected_result) <- c("# nolint", "", "", "") # pkg/mod level comments
 
   expect_identical(result, expected_result)
 })
@@ -1426,6 +1426,45 @@ some_function <- function() {
   })
 })
 
+test_that("style_box_use_file() works with no empty lines", {
+  to_style <- "box::use(
+  cli,
+)
+1+1
+sin(1)"
+
+  expected_styled <- c("box::use(", "  cli,", ")", "", "1+1", "sin(1)")
+  withr::with_tempdir({
+    xfun::write_utf8(to_style, "app_1.R")
+
+    suppressWarnings(style_box_use_file("app_1.R"))
+
+    result_styled <- xfun::read_utf8("app_1.R")
+
+    expect_identical(result_styled, expected_styled)
+  })
+
+
+
+  to_style <- "box::use(
+  cli,
+)
+
+1+1
+sin(1)"
+
+  expected_styled <- c("box::use(", "  cli,", ")", "", "1+1", "sin(1)")
+  withr::with_tempdir({
+    xfun::write_utf8(to_style, "app_1.R")
+
+    suppressWarnings(style_box_use_file("app_1.R"))
+
+    result_styled <- xfun::read_utf8("app_1.R")
+
+    expect_identical(result_styled, expected_styled)
+  })
+})
+
 ##### style_box_use_dir #####
 
 test_that("style_box_use_dir() properly styles file in a directory", {
@@ -1462,7 +1501,6 @@ test_that("style_box_use_dir() does not style files in exclude_dir", {
     result_renv_no_style <- xfun::read_utf8("to_style/renv/no_style.R")
     expected_renv_no_style <- xfun::read_utf8(fs::path(to_style_path, "renv", "no_style.R"))
     expect_identical(result_renv_no_style, expected_renv_no_style)
-
   })
 })
 

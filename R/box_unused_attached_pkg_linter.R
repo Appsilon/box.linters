@@ -81,8 +81,9 @@ box_unused_attached_pkg_linter <- function() {
     attached_three_dots <- get_attached_pkg_three_dots(xml)
     function_calls <- get_function_calls(xml)
     glue_object_calls <- get_objects_in_strings(xml)
+    object_calls <- get_object_calls(xml)
 
-    all_calls_text <- c(function_calls$text, glue_object_calls)
+    all_calls_text <- c(function_calls$text, glue_object_calls, object_calls$text)
 
     unused_package <- lapply(attached_packages$xml, function(attached_package) {
       package_text <- lintr::get_r_string(attached_package)
