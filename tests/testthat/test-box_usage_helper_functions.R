@@ -202,11 +202,11 @@ test_that("get_object_calls return non-syntactic object calls", {
 })
 
 test_that("get_destructure_objects returns object names declared", {
-  deconstructor_code <- "
+  destructure_code <- "
     c(object1, object2) %<-% list()
   "
 
-  xml_object_definitions <- code_to_xml_expr(deconstructor_code)
+  xml_object_definitions <- code_to_xml_expr(destructure_code)
   result <- get_destructure_objects(xml_object_definitions)
   expected_results <- c("object1", "object2")
 

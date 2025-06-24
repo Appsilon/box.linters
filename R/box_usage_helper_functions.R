@@ -186,7 +186,7 @@ internal_r6_refs <- function(func_list) {
 #' @return a list of `xml_nodes` and `text`
 #' @keywords internal
 get_destructure_objects <- function(xml) {
-  xpath_deconstructor_objects <- "
+  xpath_destructure_objects <- "
   //expr[
     SPECIAL[text() = '%<-%']
   ]
@@ -194,5 +194,5 @@ get_destructure_objects <- function(xml) {
   //SYMBOL
   "
 
-  extract_xml_and_text(xml, xpath_deconstructor_objects)
+  extract_xml_and_text(xml, xpath_destructure_objects)
 }
