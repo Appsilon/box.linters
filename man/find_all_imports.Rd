@@ -2,14 +2,17 @@
 % Please edit documentation in R/box_repeated_calls_linter.R
 \name{find_all_imports}
 \alias{find_all_imports}
-\title{Find all imports from an expression}
+\title{Get all modules and packages called as a whole, functions, or three-dots}
 \usage{
 find_all_imports(xml)
 }
 \arguments{
-\item{xml}{A xml coming usually from \code{source_expression$full_xml_parsed_content}
-Extract components before [ bracket}
+\item{xml}{An XML node list}
+}
+\value{
+\code{xml} list of \code{xml_nodes}, \code{text} list of module/package names.
 }
 \description{
-Find all imports from an expression
+Get all modules and packages called as a whole, functions, or three-dots
 }
+\keyword{internal}

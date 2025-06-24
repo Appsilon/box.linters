@@ -6,18 +6,37 @@ code_to_xml_expr <- function(text_code) {
   )
 }
 
-xml_to_vector <- function(code) {
-  xml <- code_to_xml_expr(code)
-  output <- find_all_imports(xml)
-  imports <- lapply(output, \(x) x$text) |> unlist()
-  imports
-}
+test_that("retrive_text_before_bracket returns correct text", {
+
+  test_vector <- c(
+    "packageA",
+    "packageB[function, function]",
+    "packageC[...]",
+    "path/modA",
+    "path/modB[function, function]",
+    "path/modC[...]"
+  )
+
+  output <- retrieve_text_before_bracket(test_vector)
+
+  expected_result <- c(
+    "packageA",
+    "packageB",
+    "packageC",
+    "path/modA",
+    "path/modB",
+    "path/modC"
+  )
+
+  expect_equal(output, expected_result)
+})
 
 test_that("find_all_imports really finds all imports", {
 
   code <- "box::use(dplyr, purrr, shiny)"
+  xml <- code_to_xml_expr(code)
   expected_result <- c("dplyr", "purrr", "shiny")
-  expect_equal(xml_to_vector(code), expected_result)
+  expect_equal(find_all_imports(xml)$text, expected_result)
 
   code <- "
 box::use(
@@ -26,7 +45,10 @@ box::use(
   )
 
 box::use(
-  path/to/A[f1, f2],
+  path/to/A[
+    f1,
+    f2
+  ],
   path/to/B,
   )
 
@@ -34,8 +56,9 @@ box::use(
   dplyr[...],
   )
 "
+  xml <- code_to_xml_expr(code)
   expected_result <- c("dplyr", "purrr", "path/to/A", "path/to/B", "dplyr")
-  expect_equal(xml_to_vector(code), expected_result)
+  expect_equal(find_all_imports(xml)$text, expected_result)
 
   code <- "
 box::use(
@@ -45,13 +68,15 @@ box::use(
   c = shiny[d = runApp]
   )
 "
+  xml <- code_to_xml_expr(code)
   expected_result <- c("dplyr", "purrr", "shiny")
-  expect_equal(xml_to_vector(code), expected_result)
+  expect_equal(find_all_imports(xml)$text, expected_result)
 
 
   code <- "box::use()"
+  xml <- code_to_xml_expr(code)
   expected_result <- ""
-  expect_null(xml_to_vector(code))
+  expect_null(find_all_imports(xml)$text)
 })
 
 test_that("box_repeated_calls_linter() skips non-repeated imports", {
@@ -70,7 +95,11 @@ test_that("box_repeated_calls_linter() skips non-repeated imports", {
   )"
 
   good_box_calls_3 <- "box::use(
-    dplyr[filter, mutate, select],
+    dplyr[
+      filter,
+      mutate,
+      select
+    ],
     shiny,
     tidyr[long, pivot, wide],
   )"
@@ -99,7 +128,10 @@ test_that("box_repeated_calls_linter() points to repeated imports", {
   bad_box_calls_2 <- "box::use(
     path/to/fileA[a = f1],
     path/to/fileB[...],
-    path/to/fileA[b = f2, c = f3],
+    path/to/fileA[
+      b = f2,
+      c = f3
+    ],
   )"
 
   bad_box_calls_3 <- "box::use(
@@ -110,7 +142,11 @@ test_that("box_repeated_calls_linter() points to repeated imports", {
     dplyr = dplyr[filter, select],
     stats[st_filter = filter, ...],
     tibble[x, ...],
-    local/mod[f1, f2, f3]
+    local/mod[
+      f1,
+      f2,
+      f3
+    ]
 )"
 
   bad_box_calls_4 <- "box::use(shiny)

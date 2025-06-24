@@ -66,90 +66,69 @@
 box_repeated_calls_linter <- function() {
 
 
-  # Main linter function structure
   lintr::Linter(function(source_expression) {
 
-    # Only process full files, not partial expressions
     if (!lintr::is_lint_level(source_expression, "file")) {
       return(list())
     }
 
-    # Get parsed XML content of the source code
     xml <- source_expression$full_xml_parsed_content
 
-    # Find all box::use() calls using XPath
     all_imports <- find_all_imports(xml)
+    duplicated_imports <- duplicated(all_imports$text)
+    duplicated_import_nodes <- all_imports$xml[duplicated_imports]
 
-    # Detect duplicates across all imports
-    texts <- sapply(all_imports, `[[`, "text")
-    dupes <- duplicated(texts)
+    lapply(duplicated_import_nodes, function(duplicate_node) {
+      import_text <- retrieve_text_before_bracket(lintr::get_r_string(duplicate_node))
 
-    # Create lint objects for duplicates
-    lints <- lapply(which(dupes), function(i) {
       lintr::xml_nodes_to_lints(
-        all_imports[[i]]$node,
+        duplicate_node,
         source_expression = source_expression,
-        lint_message = sprintf("Module or package '%s' is imported more than once.", texts[i]),
+        lint_message = sprintf("Module or package '%s' is imported more than once.", import_text),
         type = "warning"
       )
     })
-
-    lints
   })
 }
 
-#' Find all imports from an expression
-#' @param xml A xml coming usually from `source_expression$full_xml_parsed_content`
+#' Get all modules and packages called as a whole, functions, or three-dots
+#'
+#' @param xml An XML node list
+#' @return `xml` list of `xml_nodes`, `text` list of module/package names.
+#' @keywords internal
 find_all_imports <- function(xml) {
-  xpath_base <- "//expr[expr[SYMBOL_PACKAGE/text()='box' and SYMBOL_FUNCTION_CALL/text()='use']]"
+  xpath_imports <- "
+  //SYMBOL_PACKAGE[(text() = 'box' and following-sibling::SYMBOL_FUNCTION_CALL[text() = 'use'])]
+  /parent::expr
+  /parent::expr
+  /expr[
+    descendant::SYMBOL
+  ]
+"
 
-  # Find all box::use() calls using XPath
-  box_use_calls <- xml2::xml_find_all(xml, xpath_base)
+  called_imports <- extract_xml_and_text(xml, xpath_imports)
+  called_imports$text <- retrieve_text_before_bracket(called_imports$text)
 
-  # List to store all found imports
-  all_imports <- list()
-
-  # Process each box::use() call
-  for (call_node in box_use_calls) {
-    # Get all arguments (import specifications)
-    args <- xml2::xml_find_all(call_node, "./expr[position() > 1]")
-
-    # Process each argument
-    for (arg in args) {
-      # Handle alias assignments (like tbl = tibble)
-      target_nodes <- xml2::xml_find_all(arg, ".//node()")
-
-      #' Extract components before [ bracket
-      import_parts <- extract_import_parts(target_nodes)
-
-      # Combine parts to form full import specifier
-      import_text <- paste(import_parts, collapse = "")
-
-      # Store the import text and XML node
-      all_imports <- append(all_imports, list(list(text = import_text, node = arg)))
-    }
-  }
-
-  all_imports
+  list(
+    xml = called_imports$xml,
+    text = called_imports$text
+  )
 }
 
-#' Extract components before [ bracket
-#' @param target_nodes An expression of target_nodes
-extract_import_parts <- function(target_nodes) {
-  import_parts <- character(0)
-  found_bracket <- FALSE
-
-  for (node in target_nodes) {
-    node_name <- xml2::xml_name(node)
-    if (node_name %in% c("SYMBOL", "OP-SLASH")) {
-      # Collect symbols and slashes for path/package
-      import_parts <- c(import_parts, xml2::xml_text(node))
-    } else if (node_name == "OP-LEFT-BRACKET") {
-      # Stop at first [ to ignore attachments
-      found_bracket <- TRUE
-      break
-    }
-  }
-
-  import_parts
+#' Extract the text before the `[` bracket
+#'
+#' @param text_vector A character vector
+#' @return character vector of text before the first `[`
+#' @keywords internal
+retrieve_text_before_bracket <- function(text_vector) {
+  unlist(
+    lapply(text_vector, function(text) {
+      text_before_bracket <- stringr::str_match(text, "^(.*?)\\[")
+      if (!is.na(text_before_bracket[1, 2])) {
+        text_before_bracket[1, 2]
+      } else {
+        text
+      }
+    })
+  )
 }
