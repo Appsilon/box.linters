@@ -54,7 +54,7 @@ unused_declared_object_linter <- function() {
     xml <- source_expression$full_xml_parsed_content
 
     object_assignments <- get_declared_objects(xml)
-    deconstructor_assignments <- get_deconstructor_objects(xml)
+    destructure_assignments <- get_destructure_objects(xml)
     exported_objects <- get_exported_objects(xml)
 
     if (length(exported_objects$xml_nodes) == 0) {
@@ -72,7 +72,7 @@ unused_declared_object_linter <- function() {
       glue_object_calls
     )
 
-    all_assignments <- c(object_assignments$xml_nodes, deconstructor_assignments$xml_nodes)
+    all_assignments <- c(object_assignments$xml_nodes, destructure_assignments$xml_nodes)
 
     lapply(all_assignments, function(obj_assign) {
       obj_assign_text <- xml2::xml_text(obj_assign)
