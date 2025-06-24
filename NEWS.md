@@ -1,13 +1,13 @@
-# development version
+# box.linters 0.10.6
 
-* Fixed an issue in `box_unused_attached_pkg_linter()` where list members accessed via `$` were not recognized as usage of the attached package. (#148)
-* Support `box` module function for "nothing exported means export all". (#166)
-* Fix for false-positive lint on a list-name function call of a function argument. (#131)
-* Gracefully handle non-existing module error in `box_unused_attached_mod_linter()`. (#108)
-* Support for destructure operator `%<-%`
-* Support for non-syntactic names for objects, functions, module names (#147, #151)
-* Change alphabetical sort to `radix` for cross-platform consistency. (#168)
-* Fixes a styler bug when there are no empty lines in the source code. (#134)
+* The `box_unused_attached_pkg_linter()` now correctly recognizes list elements accessed via `$` as valid uses of an attached package. (#148)
+* `box_unused_attached_mod_linter()` now handles errors gracefully when a module does not exist. (#108)
+* Now respects the `box` convention that "nothing exported means export all". (#166)
+* Introduces support for destructure operator `%<-%`
+* Now handles non-syntactic names for object names, function definitions, and module references (#147, #151)
+* Resolved a false-positive lint triggered by calling a function argument via list notation. (#131)
+* Alphabetical sorting now uses the `radix` method, ensuring consistent behavior across systems. (#168)
+* Fixed a bug in styling that caused issues when the source code contained no empty lines. (#134)
 
 # box.linters 0.10.5
 
