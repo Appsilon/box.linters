@@ -64,10 +64,7 @@
 #' @export
 # nolint end
 box_repeated_calls_linter <- function() {
-
-
   lintr::Linter(function(source_expression) {
-
     if (!lintr::is_lint_level(source_expression, "file")) {
       return(list())
     }
