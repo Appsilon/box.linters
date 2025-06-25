@@ -17,7 +17,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">box.linters</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.5.9009</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.6</small>
 
     <a href="https://rhinoverse.dev" class="external-link home"><i class="fa fa-lg fa-chevron-left"></i></a>
 
@@ -51,6 +51,19 @@
       <small>Source: <a href="https://github.com/Appsilon/box.linters/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.10.6" id="boxlinters-0106">box.linters 0.10.6<a class="anchor" aria-label="anchor" href="#boxlinters-0106"></a></h2>
+<ul><li>The <code><a href="../reference/box_unused_attached_pkg_linter.html">box_unused_attached_pkg_linter()</a></code> now correctly recognizes list elements accessed via <code>$</code> as valid uses of an attached package. (<a href="https://github.com/Appsilon/box.linters/issues/148" class="external-link">#148</a>)</li>
+<li>
+<code><a href="../reference/box_unused_attached_mod_linter.html">box_unused_attached_mod_linter()</a></code> now handles errors gracefully when a module does not exist. (<a href="https://github.com/Appsilon/box.linters/issues/108" class="external-link">#108</a>)</li>
+<li>Now respects the <code>box</code> convention that “nothing exported means export all”. (<a href="https://github.com/Appsilon/box.linters/issues/166" class="external-link">#166</a>)</li>
+<li>Introduces support for destructure operator <code>%&lt;-%</code>
+</li>
+<li>Now handles non-syntactic names for object names, function definitions, and module references (<a href="https://github.com/Appsilon/box.linters/issues/147" class="external-link">#147</a>, <a href="https://github.com/Appsilon/box.linters/issues/151" class="external-link">#151</a>)</li>
+<li>Resolved a false-positive lint triggered by calling a function argument via list notation. (<a href="https://github.com/Appsilon/box.linters/issues/131" class="external-link">#131</a>)</li>
+<li>Alphabetical sorting now uses the <code>radix</code> method, ensuring consistent behavior across systems. (<a href="https://github.com/Appsilon/box.linters/issues/168" class="external-link">#168</a>)</li>
+<li>Fixed a bug in styling that caused issues when the source code contained no empty lines. (<a href="https://github.com/Appsilon/box.linters/issues/134" class="external-link">#134</a>)</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.10.5" id="boxlinters-0105">box.linters 0.10.5<a class="anchor" aria-label="anchor" href="#boxlinters-0105"></a></h2><p class="text-muted">CRAN release: 2024-09-10</p>
 <ul><li>Fix for <code>treesitter.r</code> update to version 1.1.0. Change in how treesitter returns the start row of the program node. (<a href="https://github.com/Appsilon/box.linters/issues/143" class="external-link">#143</a>)</li>
