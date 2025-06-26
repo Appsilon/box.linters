@@ -1,3 +1,17 @@
+# box.linters 0.10.6
+
+## Authors comment
+
+This release includes several bug fixes and feature enhancements:
+
+* Fixed false positives in linters related to list-based function calls and non-syntactic names.
+* Improved compatibility with the {box} package, including handling of un-exported modules and better detection of used objects.
+* Added support for the rhino::%<-% destructure operator.
+* Changed sorting method to radix for consistent behavior across platforms.
+* Resolved an issue in styler integration when no empty lines are present in the source code.
+
+All examples, tests, and vignettes run cleanly on local and R-hub checks.
+
 # box.linters 0.10.5
 
 ## Authors comment
