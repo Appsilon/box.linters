@@ -1,6 +1,6 @@
 options(box.path = file.path(getwd(), "mod"))
 
-test_that("box_unique_names_linter should skip an attached package, and an attached function from the same package", {
+test_that("box_unique_names_linter should skip an attached package and specific function", {
   linter <- box_unique_names_linter()
 
   good_box_usage_1 <- "box::use(
@@ -152,14 +152,7 @@ test_that("box_unique_names_linter blocks duplicated functions", {
   lintr::expect_lint(bad_box_usage_4, list(message = lint_message), linter)
   lintr::expect_lint(bad_box_usage_5, list(message = lint_message), linter)
   lintr::expect_lint(bad_box_usage_6, list(message = lint_message), linter)
-  lintr::expect_lint(
-    bad_box_usage_7,
-    list(
-      list(message = lint_message),
-      list(message = lint_message)
-    ),
-    linter
-  )
+  lintr::expect_lint(bad_box_usage_7, list(message = lint_message), linter)
   lintr::expect_lint(bad_box_usage_8, list(message = lint_message), linter)
   lintr::expect_lint(bad_box_usage_9, list(message = lint_message), linter)
 })
@@ -244,4 +237,58 @@ test_that("box_unique_names_linter blocks duplicated aliases", {
   lintr::expect_lint(bad_box_usage_5, list(message = lint_message), linter)
   lintr::expect_lint(bad_box_usage_6, list(message = lint_message), linter)
   lintr::expect_lint(bad_box_usage_7, list(message = lint_message), linter)
+})
+
+test_that("cross_duplicated_values returns the correct result finding a duplicate", {
+  vec1 <- c("A", "B", "C")
+  vec2 <- c("C", "D", "E")
+  vectors <- list(vec1, vec2)
+
+  expected_result <- list(
+    flags = c(FALSE, TRUE),
+    values = list(character(0), "C")
+  )
+
+  result <- cross_duplicated_values(vectors)
+  expect_equal(result, expected_result)
+})
+
+test_that("cross_duplicated_values returns the correct result not finding a duplicate", {
+  vec1 <- c("A", "B", "C")
+  vec2 <- c("E", "F", "G")
+  vectors <- list(vec1, vec2)
+
+  expected_result <- list(
+    flags = c(FALSE, FALSE),
+    values = list(character(0), character(0))
+  )
+
+  result <- cross_duplicated_values(vectors)
+  expect_equal(result, expected_result)
+})
+
+test_that("cross_duplicated_values returns the correct result for duplicates in three vectors", {
+  vec1 <- c("A", "B", "C")
+  vec2 <- c("C", "D", "E")
+  vec3 <- c("D", "E", "F")
+  vectors <- list(vec1, vec2, vec3)
+
+  expected_result <- list(
+    flags = c(FALSE, TRUE, TRUE),
+    values = list(character(0), "C", c("D", "E"))
+  )
+
+  result <- cross_duplicated_values(vectors)
+  expect_equal(result, expected_result)
+
+  vec3 <- c("C", "E", "F")
+  vectors <- list(vec1, vec2, vec3)
+
+  expected_result <- list(
+    flags = c(FALSE, TRUE, TRUE),
+    values = list(character(0), "C", c("C", "E"))
+  )
+
+  result <- cross_duplicated_values(vectors)
+  expect_equal(result, expected_result)
 })
