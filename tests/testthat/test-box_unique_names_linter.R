@@ -9,7 +9,14 @@ test_that("box_unique_names_linter should skip an attached package and specific 
   )
   "
 
+  good_box_usage_2 <- "box::use(
+    path/to/nested1/module,
+    path/to/nested1/module[fun_a],
+  )
+  "
+
   lintr::expect_lint(good_box_usage_1, NULL, linter)
+  lintr::expect_lint(good_box_usage_2, NULL, linter)
 })
 
 test_that("box_unique_names_linter should skip same function names with different aliases", {
@@ -27,8 +34,22 @@ test_that("box_unique_names_linter should skip same function names with differen
   )
   "
 
+  good_box_usage_3 <- "box::use(
+    path/to/nested1/module[alias = fun_a],
+    path/to/nested2/module[fun_a]
+  )
+  "
+
+  good_box_usage_4 <- "box::use(
+    path/to/nested1/module[alias_a = fun_a],
+    path/to/nested2/module[alias_b = fun_a]
+  )
+  "
+
   lintr::expect_lint(good_box_usage_1, NULL, linter)
   lintr::expect_lint(good_box_usage_2, NULL, linter)
+  lintr::expect_lint(good_box_usage_3, NULL, linter)
+  lintr::expect_lint(good_box_usage_4, NULL, linter)
 })
 
 test_that("box_unique_names_linter blocks duplicated packages or modules", {
