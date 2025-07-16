@@ -1,3 +1,4 @@
+#' @export
 box_unique_names_linter <- function() {
   lintr::Linter(function(source_expression) {
     if (!lintr::is_lint_level(source_expression, "file")) {
@@ -14,52 +15,60 @@ box_unique_names_linter <- function() {
     attached_mod_functions <- get_attached_mod_functions(xml)
     attached_mod_three_dots <- get_attached_mod_three_dots(xml)
 
-    combined_packages_and_functions <- list()
-    combined_packages_and_functions$xml <- c(
+    combined_pkgs_mods_and_funs <- list()
+    combined_pkgs_mods_and_funs$xml <- c(
       attached_packages$xml,
       attached_pkg_functions$xml,
-      attached_modules$xml
+      attached_modules$xml,
+      attached_mod_functions$xml
     )
-    class(combined_packages_and_functions$xml) <- "xml_nodeset"
-    combined_packages_and_functions$aliases <- c(
+    class(combined_pkgs_mods_and_funs$xml) <- "xml_nodeset"
+    combined_pkgs_mods_and_funs$aliases <- c(
       attached_packages$aliases,
       attached_pkg_functions$text,
       attached_modules$aliases,
       attached_mod_functions$text
     )
-    duplicated_combined_packages_functions <- duplicated(combined_packages_and_functions$aliases)
+    duped_combined_pkgs_mods_funs <- duplicated(combined_pkgs_mods_and_funs$aliases)
 
-    combined_functions_and_three_dots <- list()
-    combined_functions_and_three_dots$xml <- c(
+    combined_funs_and_three_dots <- list()
+    combined_funs_and_three_dots$xml <- c(
       attached_pkg_functions$xml,
       attached_pkg_three_dots$xml,
       attached_mod_functions$xml,
       attached_mod_three_dots$xml
     )
-    class(combined_functions_and_three_dots$xml) <- "xml_nodeset"
-    combined_functions_and_three_dots$text <- c(
+    class(combined_funs_and_three_dots$xml) <- "xml_nodeset"
+    combined_funs_and_three_dots$text <- c(
       attached_pkg_functions$text,
       attached_pkg_three_dots$nested,
       attached_mod_functions$text,
       attached_mod_three_dots$nested
     )
-    duplicated_combined_functions_and_three_dots <- cross_duplicated_values(combined_functions_and_three_dots$text)
+    duped_comb_funs_and_three_dots <- cross_duplicated_values(
+      combined_funs_and_three_dots$text
+    )
 
-    yyy <- Map(
+    duplicate_pkgs_mods_functions <- Map(
       function(a, b) list("xml" = a, "text" = b),
-      combined_packages_and_functions$xml,
-      combined_packages_and_functions$aliases
-    )[duplicated_combined_packages_functions]
+      combined_pkgs_mods_and_funs$xml,
+      combined_pkgs_mods_and_funs$aliases
+    )[duped_combined_pkgs_mods_funs]
 
-    xxx <- Map(
+    duplicate_functions_three_dots <- Map(
       function(a, b) list("xml" = a, "text" = b),
-      combined_functions_and_three_dots$xml,
-      duplicated_combined_functions_and_three_dots$values
-    )[duplicated_combined_functions_and_three_dots$flags]
+      combined_funs_and_three_dots$xml,
+      duped_comb_funs_and_three_dots$values
+    )[duped_comb_funs_and_three_dots$flags]
 
-    duplicated_import_combined_nodes <- unique(c(yyy, xxx))
+    duped_import_combined_nodes <- unique(
+      c(
+        duplicate_pkgs_mods_functions,
+        duplicate_functions_three_dots
+      )
+    )
 
-    cross_lint <- lapply(duplicated_import_combined_nodes, function(duplicate_node) {
+    lapply(duped_import_combined_nodes, function(duplicate_node) {
       lint_name <- paste(duplicate_node$text, collapse = ", ")
       lintr::xml_nodes_to_lints(
         duplicate_node$xml,
@@ -68,8 +77,6 @@ box_unique_names_linter <- function() {
         type = "warning"
       )
     })
-
-    cross_lint
   })
 }
 
