@@ -10,16 +10,39 @@ box_unique_names_linter <- function() {
     attached_pkg_functions <- get_attached_pkg_functions(xml)
     attached_pkg_three_dots <- get_attached_pkg_three_dots(xml)
 
+    attached_modules <- get_attached_modules(xml)
+    attached_mod_functions <- get_attached_mod_functions(xml)
+    attached_mod_three_dots <- get_attached_mod_three_dots(xml)
+
     combined_packages_and_functions <- list()
-    combined_packages_and_functions$xml <- c(attached_packages$xml, attached_pkg_functions$xml)
+    combined_packages_and_functions$xml <- c(
+      attached_packages$xml,
+      attached_pkg_functions$xml,
+      attached_modules$xml
+    )
     class(combined_packages_and_functions$xml) <- "xml_nodeset"
-    combined_packages_and_functions$aliases <- c(attached_packages$aliases, attached_pkg_functions$text)
+    combined_packages_and_functions$aliases <- c(
+      attached_packages$aliases,
+      attached_pkg_functions$text,
+      attached_modules$aliases,
+      attached_mod_functions$text
+    )
     duplicated_combined_packages_functions <- duplicated(combined_packages_and_functions$aliases)
 
     combined_functions_and_three_dots <- list()
-    combined_functions_and_three_dots$xml <- c(attached_pkg_functions$xml, attached_pkg_three_dots$xml)
+    combined_functions_and_three_dots$xml <- c(
+      attached_pkg_functions$xml,
+      attached_pkg_three_dots$xml,
+      attached_mod_functions$xml,
+      attached_mod_three_dots$xml
+    )
     class(combined_functions_and_three_dots$xml) <- "xml_nodeset"
-    combined_functions_and_three_dots$text <- c(attached_pkg_functions$text, attached_pkg_three_dots$nested)
+    combined_functions_and_three_dots$text <- c(
+      attached_pkg_functions$text,
+      attached_pkg_three_dots$nested,
+      attached_mod_functions$text,
+      attached_mod_three_dots$nested
+    )
     duplicated_combined_functions_and_three_dots <- cross_duplicated_values(combined_functions_and_three_dots$text)
 
     yyy <- Map(
