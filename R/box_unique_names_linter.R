@@ -130,6 +130,7 @@ box_unique_names_linter <- function() {
   })
 }
 
+# nolint start: line_length_linter
 #' Identify Cross-Duplicated Values Across Vectors
 #'
 #' This function checks for duplicate values across a list of vectors.
@@ -146,6 +147,7 @@ box_unique_names_linter <- function() {
 #' }
 #'
 #' @examples
+#'  \dontrun{
 #' cross_duplicated_values(list(
 #'   c("a", "b", "c"),
 #'   c("d", "b", "e"),
@@ -167,6 +169,10 @@ box_unique_names_linter <- function() {
 #' #
 #' # [[4]]
 #' # character(0)
+#' }
+#'
+#' @keywords internal
+# nolint end
 cross_duplicated_values <- function(vecs) {
   result <- purrr::map(seq_along(vecs), function(i) {
     if (i == 1) {
