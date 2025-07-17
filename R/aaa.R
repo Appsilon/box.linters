@@ -15,9 +15,7 @@
 box_module_base_path <- function() {
   "//SYMBOL_PACKAGE[(text() = 'box' and following-sibling::SYMBOL_FUNCTION_CALL[text() = 'use'])]
   /parent::expr
-  /parent::expr[
-    ./expr/OP-SLASH
-  ]
+  /parent::expr
   "
 }
 
@@ -38,8 +36,6 @@ box_module_base_path <- function() {
 box_package_base_path <- function() {
   "//SYMBOL_PACKAGE[(text() = 'box' and following-sibling::SYMBOL_FUNCTION_CALL[text() = 'use'])]
   /parent::expr
-  /parent::expr[
-    not(./expr/OP-SLASH)
-  ]
+  /parent::expr
   "
 }

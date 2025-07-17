@@ -25,7 +25,8 @@ get_packages_exports <- function(pkg_list) {
 get_attached_packages <- function(xml) {
   box_package_import <- "
   /child::expr[
-    SYMBOL
+    SYMBOL and
+    not(./OP-SLASH)
   ]
   "
 
@@ -40,6 +41,15 @@ get_attached_packages <- function(xml) {
     not(
       child::expr[
         following-sibling::OP-LEFT-BRACKET
+      ]
+    ) and
+    not(
+      ./OP-SLASH or
+      self::SYMBOL_SUB[
+        following-sibling::*[2][self::expr[.//OP-SLASH]]
+      ] or
+      self::EQ_SUB[
+        following-sibling::*[1][self::expr[.//OP-SLASH]]
       ]
     )
   ]

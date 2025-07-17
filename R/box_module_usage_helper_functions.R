@@ -47,6 +47,13 @@ get_attached_modules <- function(xml) {
     not(
       child::expr/expr[
         following-sibling::OP-LEFT-BRACKET
+      ]  or
+      (self::expr and not(.//OP-SLASH)) or
+      self::SYMBOL_SUB[
+        following-sibling::*[2][self::expr and not(.//OP-SLASH)]
+      ] or
+      self::EQ_SUB[
+        following-sibling::*[1][self::expr and not(.//OP-SLASH)]
       ]
     )
   ]
