@@ -174,7 +174,7 @@ get_attached_mod_functions <- function(xml) {
     list_output
   })
 
-  attached_functions$text <- unlist(aliases)[attached_functions$text]
+  attached_functions$text <- unlist(aliases)
   list(
     xml = attached_functions$xml_nodes,
     text = attached_functions$text

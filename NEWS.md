@@ -1,5 +1,7 @@
 # development version
 
+* New `box_unique_names_linter()` that checks for duplicate object names in the `box` namespace. (#177)
+
 # box.linters 0.10.6
 
 * The `box_unused_attached_pkg_linter()` now correctly recognizes list elements accessed via `$` as valid uses of an attached package. (#148)
