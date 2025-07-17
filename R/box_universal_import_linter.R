@@ -37,12 +37,11 @@
 box_universal_import_linter <- function() {
   lint_message <- "Explicitly declare imports rather than universally import with `...`."
 
-  xpath <- "
-  //SYMBOL_PACKAGE[(text() = 'box' and following-sibling::SYMBOL_FUNCTION_CALL[text() = 'use'])]
-    /parent::expr
-    /parent::expr
+  xpath_three_dots <- "
     //SYMBOL[text() = '...']
   "
+
+  xpath <- paste(box_base_path(), xpath_three_dots)
 
   lintr::Linter(function(source_expression) {
     if (!lintr::is_lint_level(source_expression, "file")) {

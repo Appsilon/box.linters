@@ -1,28 +1,14 @@
-#' Find `box::use` calls for local modules
+#' Find `box::use` calls for libraries/packages and local modules
 #'
 #' @details
-#' Base XPath to find `box::use` declarations that match the following pattern:
+#' Base XPath to find `box::use` declarations that match the following patterns:
 #' \code{
 #' box::use(
 #'   path/to/module,
 #' )
 #' }
 #'
-#' @seealso [box_separate_calls_linter()]
-#'
-#' @return An XPath
-#' @keywords internal
-box_module_base_path <- function() {
-  "//SYMBOL_PACKAGE[(text() = 'box' and following-sibling::SYMBOL_FUNCTION_CALL[text() = 'use'])]
-  /parent::expr
-  /parent::expr
-  "
-}
-
-#' Find `box::use` calls for R libraries/packages
-#'
-#' @details
-#' Base XPath to find `box::use` declarations that match the following pattern:
+#' and
 #' \code{
 #' box::use(
 #'   package,
@@ -33,7 +19,7 @@ box_module_base_path <- function() {
 #'
 #' @return An XPath
 #' @keywords internal
-box_package_base_path <- function() {
+box_base_path <- function() {
   "//SYMBOL_PACKAGE[(text() = 'box' and following-sibling::SYMBOL_FUNCTION_CALL[text() = 'use'])]
   /parent::expr
   /parent::expr

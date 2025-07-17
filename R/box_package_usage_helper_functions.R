@@ -30,7 +30,7 @@ get_attached_packages <- function(xml) {
   ]
   "
 
-  xpath_package_import <- paste(box_package_base_path(), box_package_import)
+  xpath_package_import <- paste(box_base_path(), box_package_import)
   attached_packages <- extract_xml_and_text(xml, xpath_package_import)
   nested_list <- get_packages_exports(attached_packages$text)
 
@@ -54,7 +54,7 @@ get_attached_packages <- function(xml) {
     )
   ]
 "
-  xpath_whole_packages <- paste(box_package_base_path(), whole_package_imports)
+  xpath_whole_packages <- paste(box_base_path(), whole_package_imports)
   xml_whole_packages <- xml2::xml_find_all(xml, xpath_whole_packages)
 
   xml_whole_packages_text <- xml2::xml_text(xml_whole_packages)
@@ -112,7 +112,7 @@ get_attached_pkg_three_dots <- function(xml) {
   /SYMBOL
   "
 
-  xpath_package_three_dots <- paste(box_package_base_path(), box_package_three_dots)
+  xpath_package_three_dots <- paste(box_base_path(), box_package_three_dots)
   attached_three_dots <- extract_xml_and_text(xml, xpath_package_three_dots)
   nested_list <- get_packages_exports(attached_three_dots$text)
   flat_list <- unlist(nested_list, use.names = FALSE)
@@ -144,7 +144,7 @@ get_attached_pkg_functions <- function(xml) {
     )
   ]
 "
-  xpath_package_functions <- paste(box_package_base_path(), xpath_package_functions)
+  xpath_package_functions <- paste(box_base_path(), xpath_package_functions)
   xml_package_functions <- xml2::xml_find_all(xml, xpath_package_functions)
 
   xpath_just_functions <- "

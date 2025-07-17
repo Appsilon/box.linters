@@ -31,10 +31,8 @@
 #' @export
 # nolint end
 box_separate_calls_linter <- function() {
-  xpath <- "
-  //SYMBOL_PACKAGE[(text() = 'box' and following-sibling::SYMBOL_FUNCTION_CALL[text() = 'use'])]
-  /parent::expr
-  /parent::expr[
+  xpath_imports <- "
+  [
     (
       ./child::expr[child::SYMBOL] or
       ./child::expr[
@@ -44,6 +42,9 @@ box_separate_calls_linter <- function() {
     ./child::expr[child::expr[child::OP-SLASH]]
   ]
   "
+
+  xpath <- paste0(box_base_path(), xpath_imports)
+
   lint_message <- "Separate packages and modules in their respective box::use() calls."
 
   lintr::Linter(function(source_expression) {

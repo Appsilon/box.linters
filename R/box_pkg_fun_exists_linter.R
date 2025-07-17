@@ -38,7 +38,7 @@ box_pkg_fun_exists_linter <- function() {
   ]
   "
 
-  xpath_package_functions <- paste(box_package_base_path(), box_package_functions)
+  xpath_package_functions <- paste(box_base_path(), box_package_functions)
 
   lintr::Linter(function(source_expression) {
     if (!lintr::is_lint_level(source_expression, "file")) {
