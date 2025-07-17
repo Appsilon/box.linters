@@ -37,12 +37,7 @@
 #' @export
 # nolint end
 box_func_import_count_linter <- function(max = 8L) {
-  xpath <- glue::glue("//SYMBOL_PACKAGE[
-                      (text() = 'box' and
-                      following-sibling::SYMBOL_FUNCTION_CALL[text() = 'use'])
-                    ]
-  /parent::expr
-  /parent::expr
+  xpath_max_count <- glue::glue("
   /descendant::OP-LEFT-BRACKET[
     count(
       following-sibling::expr[
@@ -52,6 +47,8 @@ box_func_import_count_linter <- function(max = 8L) {
     ) > {max}
   ]
   /parent::expr")
+
+  xpath <- paste(box_base_xpath(), xpath_max_count)
 
   lint_message <- glue::glue("Limit the function imports to a max of {max}.")
 

@@ -15,8 +15,23 @@ test_that("box_unique_names_linter should skip an attached package and specific 
   )
   "
 
+  good_box_usage_3 <- "box::use(
+    dplyr,
+    path/to/nested1/module[fun_a],
+
+  )
+  "
+
+  good_box_usage_4 <- "box::use(
+    path/to/nested1/module,
+    dplyr[filter],
+  )
+  "
+
   lintr::expect_lint(good_box_usage_1, NULL, linter)
   lintr::expect_lint(good_box_usage_2, NULL, linter)
+  lintr::expect_lint(good_box_usage_3, NULL, linter)
+  lintr::expect_lint(good_box_usage_4, NULL, linter)
 })
 
 test_that("box_unique_names_linter should skip same function names with different aliases", {
@@ -46,10 +61,17 @@ test_that("box_unique_names_linter should skip same function names with differen
   )
   "
 
+  good_box_usage_5 <- "box::use(
+    dplyr[filter],
+    path/to/nested1/module[alias = filter]
+  )
+  "
+
   lintr::expect_lint(good_box_usage_1, NULL, linter)
   lintr::expect_lint(good_box_usage_2, NULL, linter)
   lintr::expect_lint(good_box_usage_3, NULL, linter)
   lintr::expect_lint(good_box_usage_4, NULL, linter)
+  lintr::expect_lint(good_box_usage_5, NULL, linter)
 })
 
 test_that("box_unique_names_linter blocks duplicated packages or modules", {
@@ -92,11 +114,18 @@ test_that("box_unique_names_linter blocks duplicated packages or modules", {
   )
   "
 
+  bad_box_usage_6 <- "box::use(
+    dplyr,
+    path/to/nested1/dplyr
+  )
+  "
+
   lintr::expect_lint(bad_box_usage_1, list(message = lint_message), linter)
   lintr::expect_lint(bad_box_usage_2, list(message = lint_message), linter)
   lintr::expect_lint(bad_box_usage_3, list(message = lint_message), linter)
   lintr::expect_lint(bad_box_usage_4, list(message = lint_message), linter)
   lintr::expect_lint(bad_box_usage_5, list(message = lint_message), linter)
+  lintr::expect_lint(bad_box_usage_6, list(message = lint_message), linter)
 })
 
 test_that("box_unique_names_linter blocks duplicated functions", {
@@ -167,6 +196,24 @@ test_that("box_unique_names_linter blocks duplicated functions", {
   )
   "
 
+  bad_box_usage_10 <- "box::use(
+    dplyr[filter],
+    path/to/nested1/module[filter],
+  )
+  "
+
+  bad_box_usage_11 <- "box::use(
+    dplyr[filter],
+    path/to/nested1/module[...],
+  )
+  "
+
+  bad_box_usage_12 <- "box::use(
+    dplyr[...],
+    path/to/nested1/module[filter],
+  )
+  "
+
   lintr::expect_lint(bad_box_usage_1, list(message = lint_message), linter)
   lintr::expect_lint(bad_box_usage_2, list(message = lint_message), linter)
   lintr::expect_lint(bad_box_usage_3, list(message = lint_message), linter)
@@ -176,6 +223,9 @@ test_that("box_unique_names_linter blocks duplicated functions", {
   lintr::expect_lint(bad_box_usage_7, list(message = lint_message), linter)
   lintr::expect_lint(bad_box_usage_8, list(message = lint_message), linter)
   lintr::expect_lint(bad_box_usage_9, list(message = lint_message), linter)
+  lintr::expect_lint(bad_box_usage_10, list(message = lint_message), linter)
+  lintr::expect_lint(bad_box_usage_11, list(message = lint_message), linter)
+  lintr::expect_lint(bad_box_usage_12, list(message = lint_message), linter)
 })
 
 test_that("box_unique_names_linter blocks duplicated aliases", {
@@ -225,29 +275,47 @@ test_that("box_unique_names_linter blocks duplicated aliases", {
   "
 
   bad_box_usage_8 <- "box::use(
-    duplicate = dplyr
+    duplicate = dplyr,
   )
 
   box::use(
-    duplicate = path/to/nested1/module
+    duplicate = path/to/nested1/module,
   )
   "
 
   bad_box_usage_9 <- "box::use(
-    duplicate = dplyr
+    duplicate = dplyr,
   )
 
   box::use(
-    path/to/nested1/module[duplicate = fun_a]
+    path/to/nested1/module[duplicate = fun_a],
   )
   "
 
   bad_box_usage_10 <- "box::use(
-    dplyr[duplicate = filter]
+    dplyr[duplicate = filter],
   )
 
   box::use(
-    duplicate = path/to/nested1/module
+    duplicate = path/to/nested1/module,
+  )
+  "
+
+  bad_box_usage_11 <- "box::use(
+    duplicate = dplyr,
+    duplicate = path/to/nested1/module,
+  )
+  "
+
+  bad_box_usage_12 <- "box::use(
+    duplicate = dplyr,
+    path/to/nested1/module[duplicate = fun_a],
+  )
+  "
+
+  bad_box_usage_13 <- "box::use(
+    dplyr[duplicate = filter],
+    duplicate = path/to/nested1/module,
   )
   "
 
@@ -258,7 +326,14 @@ test_that("box_unique_names_linter blocks duplicated aliases", {
   lintr::expect_lint(bad_box_usage_5, list(message = lint_message), linter)
   lintr::expect_lint(bad_box_usage_6, list(message = lint_message), linter)
   lintr::expect_lint(bad_box_usage_7, list(message = lint_message), linter)
+  lintr::expect_lint(bad_box_usage_8, list(message = lint_message), linter)
+  lintr::expect_lint(bad_box_usage_9, list(message = lint_message), linter)
+  lintr::expect_lint(bad_box_usage_10, list(message = lint_message), linter)
+  lintr::expect_lint(bad_box_usage_11, list(message = lint_message), linter)
+  lintr::expect_lint(bad_box_usage_12, list(message = lint_message), linter)
+  lintr::expect_lint(bad_box_usage_13, list(message = lint_message), linter)
 })
+
 
 test_that("cross_duplicated_values returns the correct result finding a duplicate", {
   vec1 <- c("A", "B", "C")
