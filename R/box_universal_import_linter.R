@@ -41,7 +41,7 @@ box_universal_import_linter <- function() {
     //SYMBOL[text() = '...']
   "
 
-  xpath <- paste(box_base_path(), xpath_three_dots)
+  xpath <- paste(box_base_xpath(), xpath_three_dots)
 
   lintr::Linter(function(source_expression) {
     if (!lintr::is_lint_level(source_expression, "file")) {

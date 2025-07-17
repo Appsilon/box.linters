@@ -19,7 +19,7 @@
 #'
 #' @return An XPath
 #' @keywords internal
-box_base_path <- function() {
+box_base_xpath <- function() {
   "//SYMBOL_PACKAGE[(text() = 'box' and following-sibling::SYMBOL_FUNCTION_CALL[text() = 'use'])]
   /parent::expr
   /parent::expr

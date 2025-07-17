@@ -48,7 +48,7 @@ box_func_import_count_linter <- function(max = 8L) {
   ]
   /parent::expr")
 
-  xpath <- paste(box_base_path(), xpath_max_count)
+  xpath <- paste(box_base_xpath(), xpath_max_count)
 
   lint_message <- glue::glue("Limit the function imports to a max of {max}.")
 

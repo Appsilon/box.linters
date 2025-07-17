@@ -43,7 +43,7 @@ box_separate_calls_linter <- function() {
   ]
   "
 
-  xpath <- paste0(box_base_path(), xpath_imports)
+  xpath <- paste0(box_base_xpath(), xpath_imports)
 
   lint_message <- "Separate packages and modules in their respective box::use() calls."
 

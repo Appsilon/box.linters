@@ -78,12 +78,12 @@
 #' @export
 # nolint end
 box_alphabetical_calls_linter <- function() {
-  xpath <- paste(box_base_path(), "
+  xpath <- paste(box_base_xpath(), "
   /child::expr[
     descendant::SYMBOL
   ]")
 
-  xpath_modules_with_functions <- paste(box_base_path(), "
+  xpath_modules_with_functions <- paste(box_base_xpath(), "
   /child::expr[
     descendant::SYMBOL and
     descendant::OP-LEFT-BRACKET

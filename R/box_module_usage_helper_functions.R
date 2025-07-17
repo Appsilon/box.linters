@@ -33,7 +33,7 @@ get_attached_modules <- function(xml) {
   ]
 "
 
-  xpath_module_import <- paste(box_base_path(), box_module_import)
+  xpath_module_import <- paste(box_base_xpath(), box_module_import)
   attached_modules <- extract_xml_and_text(xml, xpath_module_import)
   nested_list <- get_module_exports(attached_modules$text)
   # normalize module names
@@ -58,7 +58,7 @@ get_attached_modules <- function(xml) {
     )
   ]
 "
-  xpath_whole_modules <- paste(box_base_path(), whole_module_imports)
+  xpath_whole_modules <- paste(box_base_xpath(), whole_module_imports)
   xml_whole_modules <- xml2::xml_find_all(xml, xpath_whole_modules)
 
   xml_whole_modules_text <- xml2::xml_text(xml_whole_modules)
@@ -112,7 +112,7 @@ get_attached_mod_three_dots <- function(xml) {
   ]
   "
 
-  xpath_module_three_dots <- paste(box_base_path(), box_module_three_dots)
+  xpath_module_three_dots <- paste(box_base_xpath(), box_module_three_dots)
   attached_three_dots <- extract_xml_and_text(xml, xpath_module_three_dots)
   attached_three_dots$text <- sub("\\[\\.\\.\\.\\]", "", attached_three_dots$text)
 
@@ -145,7 +145,7 @@ get_attached_mod_functions <- function(xml) {
   ]
 ]"
 
-  xpath_module_functions <- paste(box_base_path(), xpath_module_functions)
+  xpath_module_functions <- paste(box_base_xpath(), xpath_module_functions)
   xml_module_functions <- xml2::xml_find_all(xml, xpath_module_functions)
 
   xpath_just_functions <- "
