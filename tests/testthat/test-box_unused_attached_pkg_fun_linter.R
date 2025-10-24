@@ -182,7 +182,7 @@ test_that("box_unused_att_pkg_fun_linter allows functions called as objects", {
   lintr::expect_lint(good_box_usage, NULL, linters = linter)
 })
 
-test_that("box_unused_att_pkg_fun_linter handles nolint comments correctly (issue #182)", {
+test_that("box_unused_att_pkg_fun_linter handles nolint comments correctly", {
   linter <- box_unused_att_pkg_fun_linter()
 
   # Test case 1: nolint on first import should not affect second import
