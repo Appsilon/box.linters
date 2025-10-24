@@ -182,11 +182,10 @@ test_that("box_unused_att_pkg_fun_linter allows functions called as objects", {
   lintr::expect_lint(good_box_usage, NULL, linters = linter)
 })
 
-test_that("box_unused_att_pkg_fun_linter handles nolint comments correctly", {
+test_that("box_unused_att_pkg_fun_linter handles nolint on first import (issue #182)", {
   linter <- box_unused_att_pkg_fun_linter()
 
-  # Test case 1: nolint on first import should not affect second import
-  good_box_usage_1 <- "box::use(
+  good_box_usage <- "box::use(
   methods[
     `slot<-`, # nolint: box_unused_att_pkg_fun_linter
     setClass,
@@ -198,10 +197,13 @@ person <- new('Person')
 slot(person, 'name') <- 'John'
 "
 
-  lintr::expect_lint(good_box_usage_1, NULL, linters = linter)
+  lintr::expect_lint(good_box_usage, NULL, linters = linter)
+})
 
-  # Test case 2: nolint in middle of imports
-  good_box_usage_2 <- "box::use(
+test_that("box_unused_att_pkg_fun_linter handles nolint in middle of imports", {
+  linter <- box_unused_att_pkg_fun_linter()
+
+  good_box_usage <- "box::use(
   methods[
     setClass,
     `slot<-`, # nolint: box_unused_att_pkg_fun_linter
@@ -213,10 +215,13 @@ setClass('Person', slots = c(name = 'character'))
 person <- new('Person')
 "
 
-  lintr::expect_lint(good_box_usage_2, NULL, linters = linter)
+  lintr::expect_lint(good_box_usage, NULL, linters = linter)
+})
 
-  # Test case 3: Multiple nolint comments
-  good_box_usage_3 <- "box::use(
+test_that("box_unused_att_pkg_fun_linter handles multiple nolint comments", {
+  linter <- box_unused_att_pkg_fun_linter()
+
+  good_box_usage <- "box::use(
   methods[
     setClass,
     `slot<-`, # nolint: box_unused_att_pkg_fun_linter
@@ -229,5 +234,5 @@ setClass('Person', slots = c(name = 'character'))
 person <- new('Person')
 "
 
-  lintr::expect_lint(good_box_usage_3, NULL, linters = linter)
+  lintr::expect_lint(good_box_usage, NULL, linters = linter)
 })
