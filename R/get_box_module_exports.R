@@ -29,6 +29,10 @@ get_box_module_exports <- function(declaration, alias = "", caller = globalenv()
 
   spec <- parse_spec(declaration, alias)
   info <- find_mod(spec, caller)
-  mod_ns <- load_mod(info)
+  mod_ns <- if (utils::packageVersion("box") < "1.2.1") {
+    load_mod(info)
+  } else {
+    load_mod(info)$mod_ns
+  }
   namespace_info(mod_ns, "exports")
 }
