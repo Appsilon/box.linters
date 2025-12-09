@@ -37,7 +37,8 @@ rhino_default_linters <- lintr::modify_defaults(
   namespaced_function_calls = r_version_compatibility(),
   r6_usage_linter = r6_usage_linter(),
   unused_declared_object_linter = unused_declared_object_linter(),
-  object_usage_linter = NULL  # Does not work with `box::use()`
+  object_usage_linter = NULL,  # Does not work with `box::use()`
+  pipe_consistency_linter = lintr::pipe_consistency_linter("auto")
 )
 
 #' Box-compatible default linters
@@ -62,5 +63,6 @@ box_default_linters <- lintr::modify_defaults(
   namespaced_function_calls = r_version_compatibility(),
   r6_usage_linter = r6_usage_linter(),
   unused_declared_object_linter = unused_declared_object_linter(),
-  object_usage_linter = NULL  # Does not work with `box::use()`
+  object_usage_linter = NULL,  # Does not work with `box::use()`
+  pipe_consistency_linter = lintr::pipe_consistency_linter("auto")
 )

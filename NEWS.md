@@ -2,7 +2,7 @@
 
 * Addresses breaking changes introduced in `box` v1.2.1 (#184).
 * Addresses breaking changes introduced in `lintr` v3.3.0.1 (#185)
-* Sets the default pipe to `%>%` for backwards compatibility. The new Tidyverse default is `|>`.
+* New `lintr::pipe_consistency_linter()` set to `auto` to enforce one pipe type `%>%` xor `|>` per source file. The Tidyverse recommended pipe is now `|>`.
 
 # box.linters 0.10.6
 

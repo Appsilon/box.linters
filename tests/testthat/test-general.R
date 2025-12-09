@@ -1,8 +1,5 @@
 test_that("Should skip columns in dplyr commands", {
-  linters <- lintr::linters_with_defaults(
-    defaults = box.linters::rhino_default_linters,
-    pipe_consistency_linter = lintr::pipe_consistency_linter("%>%")
-  )
+  linters <- lintr::linters_with_defaults(defaults = box.linters::rhino_default_linters)
 
   code <- "
 box::use(
