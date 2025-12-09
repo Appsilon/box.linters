@@ -8,6 +8,7 @@ Linters
 MacOS
 RStudio
 Rhinoverse
+Tidyverse
 Treesitter
 XPath
 appsilon
@@ -20,5 +21,4 @@ lintr
 nolint
 preconfigured
 prettycode
-styler
 treesitter
