@@ -1,6 +1,8 @@
-# development version
+# box.linters 0.10.7
 
-* The implementation was changed to keep compatibility with `box` v1.2.1 (#184).
+* Addresses breaking changes introduced in `box` v1.2.1 (#184).
+* Addresses breaking changes introduced in `lintr` v3.3.0.1 (#185)
+* Sets the default pipe to `%>%` for backwards compatibility. The new Tidyverse default is `|>`.
 
 # box.linters 0.10.6
 
