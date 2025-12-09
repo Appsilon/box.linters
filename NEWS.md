@@ -1,5 +1,7 @@
 # development version
 
+* The implementation was changed to keep compatibility with `box` v1.2.1 (#184).
+
 # box.linters 0.10.6
 
 * The `box_unused_attached_pkg_linter()` now correctly recognizes list elements accessed via `$` as valid uses of an attached package. (#148)
