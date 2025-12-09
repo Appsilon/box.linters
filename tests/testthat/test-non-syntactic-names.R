@@ -23,7 +23,10 @@ test_that("Should skip allowed non-syntactic names: locally declared objects and
 })
 
 test_that("Should skip allowed non-syntactic names: package special", {
-  linters <- lintr::linters_with_defaults(defaults = box.linters::box_default_linters)
+  linters <- lintr::linters_with_defaults(
+    defaults = box.linters::box_default_linters,
+    pipe_consistency_linter = lintr::pipe_consistency_linter("%>%")
+  )
 
   code <- "
 box::use(

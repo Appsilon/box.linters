@@ -53,7 +53,7 @@ box_func_import_count_linter <- function(max = 8L) {
   ]
   /parent::expr")
 
-  lint_message <- glue::glue("Limit the function imports to a max of {max}.")
+  lint_message <- as.character(glue::glue("Limit the function imports to a max of {max}."))
 
   lintr::Linter(function(source_expression) {
     if (!lintr::is_lint_level(source_expression, "file")) {
