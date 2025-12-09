@@ -1,5 +1,16 @@
 # Changelog
 
+## box.linters 0.10.7
+
+- Addresses breaking changes introduced in `box` v1.2.1
+  ([\#184](https://github.com/Appsilon/box.linters/issues/184)).
+- Addresses breaking changes introduced in `lintr` v3.3.0.1
+  ([\#185](https://github.com/Appsilon/box.linters/issues/185))
+- New
+  [`lintr::pipe_consistency_linter()`](https://lintr.r-lib.org/reference/pipe_consistency_linter.html)
+  set to `auto` to enforce one pipe type `%>%` xor `|>` per source file.
+  The Tidyverse recommended pipe is now `|>`.
+
 ## box.linters 0.10.6
 
 CRAN release: 2025-06-26

@@ -12,7 +12,7 @@ box_default_linters
 
 ## Format
 
-An object of class `list` of length 34.
+An object of class `list` of length 35.
 
 ## Examples
 

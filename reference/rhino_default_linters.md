@@ -12,7 +12,7 @@ rhino_default_linters
 
 ## Format
 
-An object of class `list` of length 39.
+An object of class `list` of length 40.
 
 ## Examples
 
