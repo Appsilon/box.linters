@@ -1,0 +1,278 @@
+# box.linters
+
+> *lintr-compatible linters for box modules in R*
+
+`box.linters` is an R package that provides the [`{lintr}`
+package](https://github.com/r-lib/lintr/) compatibility with [`{box}`
+package](https://github.com/klmr/box) modules. In addition to providing
+code-styling checks for
+[`box::use()`](http://klmr.me/box/reference/use.md) function calls,
+`box.linters` includes a collection of linter functions to replace
+[`lintr::object_usage_linter()`](https://lintr.r-lib.org/reference/object_usage_linter.html).
+
+While the primary purpose of
+[box.linters](https://appsilon.github.io/box.linters/) is for use with
+the [`{rhino}`](https://appsilon.github.io/rhino/) package, its
+functions and features are available for use with any R code or project
+that uses the [box](https://klmr.me/box/) package for modular R code.
+
+## Motivation
+
+[`lintr::object_usage_linter`](https://lintr.r-lib.org/reference/object_usage_linter.html)
+is not compatible with [box](https://klmr.me/box/) modules.
+
+``` r
+# use of box modules
+box::use(
+  stringr[...]
+)
+
+some_function <- function() {
+  str_trim("  String with trailing and leading white space\t")
+}
+```
+
+    > lintr::lint(box-module.R)
+    <text>:6:3: warning: [object_usage_linter] no visible global function definition for 'str_trim'
+      str_trim("  String with trailing and leading white space ")
+      ^~~~~~~~
+
+In order to use `lintr` and `box` together, it was necessary to disable
+[`lintr::object_usage_linter()`](https://lintr.r-lib.org/reference/object_usage_linter.html):
+
+``` r
+lintr::lint(box-module.R,
+            linters = lintr::linters_with_defaults(object_usage_linter = NULL))
+```
+
+However, this meant we lose the functionality provided by
+[`lintr::object_usage_linter()`](https://lintr.r-lib.org/reference/object_usage_linter.html).
+
+## Installation
+
+Stable version:
+
+``` r
+install.packages("box.linters")
+```
+
+Development version:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("Appsilon/box.linters")
+```
+
+## Usage
+
+Create a configuration file and run selected linters:
+
+### .lintr setup
+
+``` r
+# create a .lintr file
+box.linters::use_box_lintr()
+
+# a file:
+lintr::lint(filename.R)
+
+# in a project:
+lintr::lint_dir()
+```
+
+### Manually
+
+Or, use `box.linters` manually with `lintr`:
+
+``` r
+# a file:
+lintr::lint(filename.R, linters = box.linters::box_default_linters)
+
+# in a project:
+lintr::lint_dir(linters = box.linters::box_default_linters)
+```
+
+### Rhino
+
+Or, use `box.linters` from within a
+[rhino](https://appsilon.github.io/rhino/) project:
+
+``` r
+# a .lintr file should already exist when a rhino project is created
+# box.linters::use_box_lintr(type = "rhino")
+
+# in a rhino project:
+rhino::lint_r()
+```
+
+## {glue} String Interpolation
+
+[box.linters](https://appsilon.github.io/box.linters/) also looks inside
+[glue](https://glue.tidyverse.org/) strings. The default opening and
+closing delimiters are “`{`” and “`}`”.
+[glue](https://glue.tidyverse.org/) provides a way to [customize
+delimiters](https://glue.tidyverse.org/reference/glue.html). Support for
+custom [glue](https://glue.tidyverse.org/) delimiters are provided
+*project-wide* by setting `glue.open` and `glue.close` options in the
+following manner:
+
+``` r
+options(
+  list(
+    glue.open = "<<",
+    glue.close = ">>"
+  )
+)
+```
+
+This is consistent with
+[`glue::glue()`](https://glue.tidyverse.org/reference/glue.html),
+doubling the full delimiter escapes it.
+
+Because setting `glue.open` and `glue.close` will be *global* or
+*project-wide*, it is advised to invoke `glue` in the following manner
+to avoid confusion:
+
+``` r
+glue::glue(..., .open = getOption("glue.open"), .close = getOption("glue.close"))
+```
+
+## Contribute
+
+If you want to contribute to this project, please submit a regular PR,
+once you’re done with the new feature or bug fix.
+
+Reporting a bug is also helpful - please use [Github
+issues](https://github.com/Appsilon/box.linters/issues) and describe
+your problem as detailed as possible.
+
+## Appsilon
+
+![](https://avatars0.githubusercontent.com/u/6096772)
+
+Appsilon is a **Posit (formerly RStudio) Full Service Certified
+Partner**.  
+Learn more at [appsilon.com](https://appsilon.com).
+
+Get in touch <opensource@appsilon.com>
+
+Explore the [Rhinoverse](https://rhinoverse.dev) - a family of R
+packages built around [Rhino](https://appsilon.github.io/rhino/)!
+
+[![Subscribe for Shiny tutorials, exclusive articles, R/Shiny community
+events, and
+more.](https://raw.githubusercontent.com/Appsilon/website-cdn/gh-pages/shiny_weekly_light.jpg)](https://appsilon.us16.list-manage.com/subscribe?u=c042d7c0dbf57c5c6f8b54598&id=870d5bfc05)
+
+# Package index
+
+## Utilities
+
+- [`use_box_lintr()`](https://appsilon.github.io/box.linters/reference/use_box_lintr.md)
+  : Use lintr with box.linters in your project
+
+## Configuration
+
+- [`box_default_linters`](https://appsilon.github.io/box.linters/reference/box_default_linters.md)
+  : Box-compatible default linters
+- [`rhino_default_linters`](https://appsilon.github.io/box.linters/reference/rhino_default_linters.md)
+  : Rhino default linters
+
+## Individual linters
+
+- [`box_alphabetical_calls_linter()`](https://appsilon.github.io/box.linters/reference/box_alphabetical_calls_linter.md)
+  :
+
+  `box` library alphabetical module and function imports linter
+
+- [`box_func_import_count_linter()`](https://appsilon.github.io/box.linters/reference/box_func_import_count_linter.md)
+  :
+
+  `box` library function import count linter
+
+- [`box_mod_fun_exists_linter()`](https://appsilon.github.io/box.linters/reference/box_mod_fun_exists_linter.md)
+  :
+
+  `box` library attached function exists and exported by called module
+  linter
+
+- [`box_pkg_fun_exists_linter()`](https://appsilon.github.io/box.linters/reference/box_pkg_fun_exists_linter.md)
+  :
+
+  `box` library attached function exists and exported by package linter
+
+- [`box_separate_calls_linter()`](https://appsilon.github.io/box.linters/reference/box_separate_calls_linter.md)
+  :
+
+  `box` library separate packages and module imports linter
+
+- [`box_trailing_commas_linter()`](https://appsilon.github.io/box.linters/reference/box_trailing_commas_linter.md)
+  :
+
+  `box` library trailing commas linter
+
+- [`box_universal_import_linter()`](https://appsilon.github.io/box.linters/reference/box_universal_import_linter.md)
+  :
+
+  `box` library universal import linter
+
+- [`box_unused_att_mod_obj_linter()`](https://appsilon.github.io/box.linters/reference/box_unused_att_mod_obj_linter.md)
+  :
+
+  `box` library unused attached module object linter
+
+- [`box_unused_att_pkg_fun_linter()`](https://appsilon.github.io/box.linters/reference/box_unused_att_pkg_fun_linter.md)
+  :
+
+  `box` library unused attached package function linter
+
+- [`box_unused_attached_mod_linter()`](https://appsilon.github.io/box.linters/reference/box_unused_attached_mod_linter.md)
+  :
+
+  `box` library unused attached module linter
+
+- [`box_unused_attached_pkg_linter()`](https://appsilon.github.io/box.linters/reference/box_unused_attached_pkg_linter.md)
+  :
+
+  `box` library unused attached package linter
+
+- [`box_usage_linter()`](https://appsilon.github.io/box.linters/reference/box_usage_linter.md)
+  :
+
+  `box` library-aware object usage linter
+
+- [`r6_usage_linter()`](https://appsilon.github.io/box.linters/reference/r6_usage_linter.md)
+  : R6 class usage linter
+
+- [`unused_declared_object_linter()`](https://appsilon.github.io/box.linters/reference/unused_declared_object_linter.md)
+  : Unused declared function and data objects linter
+
+- [`namespaced_function_calls()`](https://appsilon.github.io/box.linters/reference/namespaced_function_calls.md)
+  :
+
+  Check that `namespace::function()` calls except for `box::*()` are not
+  made.
+
+## Box Styling
+
+- [`style_box_use_text()`](https://appsilon.github.io/box.linters/reference/style_box_use_text.md)
+  : Style the box::use() calls of source code text
+- [`style_box_use_file()`](https://appsilon.github.io/box.linters/reference/style_box_use_file.md)
+  : Style the box::use() calls of a source code
+- [`style_box_use_dir()`](https://appsilon.github.io/box.linters/reference/style_box_use_dir.md)
+  : Style the box::use() calls for a directory
+
+## Miscellaneous
+
+- [`is_treesitter_installed()`](https://appsilon.github.io/box.linters/reference/is_treesitter_installed.md)
+  : Check if treesitter and dependencies are installed
+
+# Articles
+
+### All vignettes
+
+- [Running lintr with box.linters on a
+  project](https://appsilon.github.io/box.linters/articles/how-to/box-default.md):
+- [Custom
+  Configuration](https://appsilon.github.io/box.linters/articles/how-to/custom-config.md):
+- [Running lintr with box.linters on a rhino
+  project](https://appsilon.github.io/box.linters/articles/how-to/rhino-default.md):
