@@ -5,7 +5,7 @@
 \alias{box_default_linters}
 \title{Box-compatible default linters}
 \format{
-An object of class \code{list} of length 34.
+An object of class \code{list} of length 35.
 }
 \usage{
 box_default_linters

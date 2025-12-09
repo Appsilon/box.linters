@@ -1,6 +1,8 @@
-# development version
+# box.linters 0.10.7
 
-* The implementation was changed to keep compatibility with `box` v1.2.1 (#184).
+* Addresses breaking changes introduced in `box` v1.2.1 (#184).
+* Addresses breaking changes introduced in `lintr` v3.3.0.1 (#185)
+* New `lintr::pipe_consistency_linter()` set to `auto` to enforce one pipe type `%>%` xor `|>` per source file. The Tidyverse recommended pipe is now `|>`.
 
 # box.linters 0.10.6
 
