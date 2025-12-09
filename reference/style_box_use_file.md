@@ -37,6 +37,6 @@ file <- tempfile("style", fileext = ".R")
 writeLines(code, file)
 
 style_box_use_file(file)
-#> Warning: `/tmp/RtmpUr32ic/style31b92a757ec6.R` was modified. Please review the
+#> Warning: `/tmp/RtmpI3uvJe/style18a117d8d0a.R` was modified. Please review the
 #> modifications made. Comments near box::use() are moved to the top of the file.
 ```

@@ -5,7 +5,7 @@ articles:
   how-to/box-default: how-to/box-default.html
   how-to/custom-config: how-to/custom-config.html
   how-to/rhino-default: how-to/rhino-default.html
-last_built: 2025-12-09T08:58Z
+last_built: 2025-12-09T09:00Z
 urls:
   reference: https://appsilon.github.io/box.linters/reference
   article: https://appsilon.github.io/box.linters/articles
