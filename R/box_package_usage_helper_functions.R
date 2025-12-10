@@ -164,7 +164,8 @@ get_attached_pkg_functions <- function(xml) {
     xpath_each_function <- "
   ./*[
     preceding-sibling::OP-LEFT-BRACKET and
-    following-sibling::OP-RIGHT-BRACKET
+    following-sibling::OP-RIGHT-BRACKET and
+    not(self::COMMENT)
   ]
 "
     package_function_call <- xml2::xml_find_all(xml_node, xpath_each_function)
